@@ -77,19 +77,28 @@ WSGI_APPLICATION = 'ProjectManagement.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
-        'ENGINE': 'mssql',
-        'NAME': 'ManagementDB',
-        'USER': '',
-        'HOST': 'ITZIK',
-        'PORT': '',
-
-        "OPTIONS": 
-            {"driver": "ODBC Driver 17 for SQL Server", 'Extra_Params':'Trusted_Connection=True'
-        },
-    },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'mssql',
+#         'NAME': 'ManagementDB',
+#         'USER': '',
+#         'HOST': 'ITZIK',
+#         'PORT': '',
+
+#         "OPTIONS": 
+#             {"driver": "ODBC Driver 17 for SQL Server", 'Extra_Params':'Trusted_Connection=True'
+#         },
+#     },
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
