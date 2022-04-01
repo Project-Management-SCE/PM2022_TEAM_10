@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'home.apps.HomeConfig',
-    'register.apps.RegisterConfig',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -136,7 +136,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-CRISPY_TEMPLATE_PACK = "bootstrap5" # Set bootstrap version!
+CRISPY_TEMPLATE_PACK = "bootstrap4" # Set bootstrap version!
+# CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+#redirect after login   
+LOGIN_REDIRECT_URL = '/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
