@@ -136,6 +136,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'static')
+]
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
+
 CRISPY_TEMPLATE_PACK = "bootstrap4" # Set bootstrap version!
 # CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 

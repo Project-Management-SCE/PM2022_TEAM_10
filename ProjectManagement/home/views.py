@@ -3,4 +3,6 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(response):
-    return render(response,"home/homepage.html",{})
+    return render(response,"index.html",{})
+
+#"home/homepage.html"
