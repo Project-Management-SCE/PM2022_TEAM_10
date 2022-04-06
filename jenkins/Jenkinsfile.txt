@@ -23,7 +23,7 @@ pipeline {
             steps {
                 sh 'echo TODO1'
                 withEnv(["HOME=${env.WORKSPACE}"]){
-                    sh 'python ProjectManagement/manage.py test'
+                    sh 'python ProjectManagement/manage.py test ./ProjectManagement'
                 }
             }
         }
