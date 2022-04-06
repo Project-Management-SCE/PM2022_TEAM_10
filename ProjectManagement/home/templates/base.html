@@ -54,7 +54,6 @@
           <li><a class="nav-link scrollto " href="#portfolio">Portfolio</a></li>
           <li><a class="nav-link scrollto" href="#team">Team</a></li>
           <li><a href="blog.html">Blog</a></li>
-          <li><a class="nav-link scrollto " href="/login">Login</a></li>
           <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Drop Down 1</a></li>
@@ -73,6 +72,12 @@
             </ul>
           </li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+          {% if user.is_authenticated%}
+          {% comment %} <li><a class="nav-link scrollto">Hello, {{user.username}}</a></li> {% endcomment %}
+          <li><a class="nav-link scrollto " href="/accounts/logout">Hello {{user.username}}, Logout</a></li>
+          {%else%}
+          <li><a class="nav-link scrollto " href="/login">Login</a></li>
+          {%endif%}
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
