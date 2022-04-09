@@ -40,7 +40,8 @@
 
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top ">
-    <div class="container d-flex align-items-center justify-content-between">
+    <div class="container d-flex align-items-center "> <!-- justify-content-between => Class to right side -->
+      
 
       <h1 class="logo"><a href="">Helpo</a></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
@@ -48,12 +49,13 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+          <li><a class="nav-link scrollto active" href="/">Home</a></li>
           <li><a class="nav-link scrollto" href="#about">About</a></li>
           <li><a class="nav-link scrollto" href="#services">Services</a></li>
           <li><a class="nav-link scrollto " href="#portfolio">Portfolio</a></li>
           <li><a class="nav-link scrollto" href="#team">Team</a></li>
-          <li><a href="blog.html">Blog</a></li>
+          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+
           <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Drop Down 1</a></li>
@@ -71,10 +73,15 @@
               <li><a href="#">Drop Down 4</a></li>
             </ul>
           </li>
-          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+
+          <!-- {% if not user.is_authenticated%} -->
+          <li><a class="nav-link scrollto" href="/accounts/test">Sign Up</a></li>
+          <!-- {%endif%} -->
+
           {% if user.is_authenticated%}
           {% comment %} <li><a class="nav-link scrollto">Hello, {{user.username}}</a></li> {% endcomment %}
-          <li><a class="nav-link scrollto " href="/accounts/logout">Hello {{user.username}}, Logout</a></li>
+          <li style="color: aliceblue;">Hello {{user.username}}!</li>
+          <li><a class="nav-link scrollto" href="/accounts/logout">Logout</a></li>
           {%else%}
           <li><a class="nav-link scrollto " href="/login">Login</a></li>
           {%endif%}
@@ -92,7 +99,7 @@
 <!-- ======= Footer ======= -->
   <footer id="footer">
 
-    <div class="footer-top">
+    <!-- <div class="footer-top">
       <div class="container">
         <div class="row">
 
@@ -136,13 +143,13 @@
               <input type="email" name="email"><input type="submit" value="Subscribe">
             </form>
           </div>
-
+          
         </div>
       </div>
-    </div>
-
+    </div> -->
+    
     <div class="container d-md-flex py-4">
-
+      
       <div class="me-md-auto text-center text-md-start">
         <div class="copyright">
           &copy; Copyright <strong><span>Helpo</span></strong>. All Rights Reserved
@@ -166,17 +173,17 @@
   </footer><!-- End Footer -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
-
+  
   <!-- Vendor JS Files -->
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
   <script src="{% static 'vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
   <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
   <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
-
+  
   <!-- Template Main JS File -->
   <script src="{% static 'js/main.js' %}"></script>
-
-</body>
-
-</html>
+  
+  </body>
+  
+  </html>
