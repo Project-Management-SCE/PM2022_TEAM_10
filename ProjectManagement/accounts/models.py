@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinLengthValidator
 # Create your models here.
 
 '''
@@ -16,14 +17,17 @@ class User(AbstractUser):
     # is_volenteer = models.BooleanField('volenteer status', default=False)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    id_number = models.CharField(max_length=100)
-    phone_number = models.CharField(max_length=100)
+    phone_number = models.CharField(max_length=10, validators=[MinLengthValidator(10)])
 
 class associationManager(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     association_number = models.CharField(max_length=100)
 
-
+    def __str__(self):
+        status = "Wait-for-activate"
+        if(self.user.is_active):
+            status = "active"
+        return self.user.username + ' : ' + status
 
 
 

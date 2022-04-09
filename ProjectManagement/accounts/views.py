@@ -5,7 +5,6 @@ from django.contrib.auth import login
 from django.views.generic import CreateView
 from .models import User 
 from .forms import AssociationManagerSignUpform
-from django.contrib import messages
 
 # Create your views here.
 
@@ -13,7 +12,7 @@ def logout(request):
     auth.logout(request)
     return redirect("index")
 
-def test(response):
+def pickType(response):
     return render(response,"registration/PickType.html",{})
 
 
@@ -25,4 +24,4 @@ class AssociationManagerSignUp(CreateView):
     def form_valid(self, form):  
         user = form.save()
         # login(self.request, user)
-        return redirect('index')
+        return redirect('login')
