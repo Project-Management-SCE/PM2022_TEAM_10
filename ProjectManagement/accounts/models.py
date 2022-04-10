@@ -13,11 +13,11 @@ password
 '''
 
 class User(AbstractUser):
-    is_association_manager = models.BooleanField(default=False)
-    # is_volenteer = models.BooleanField('volenteer status', default=False)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=10, validators=[MinLengthValidator(10)])
+    is_association_manager = models.BooleanField(default=False)
+    # is_volenteer = models.BooleanField('volenteer status', default=False)
 
 class associationManager(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -28,6 +28,10 @@ class associationManager(models.Model):
         if(self.user.is_active):
             status = "active"
         return self.user.username + ' : ' + status
+    
+    def user_is_active(self):
+        return self.user.is_active
+    user_is_active.short_description = 'Is Active'
 
 
 
