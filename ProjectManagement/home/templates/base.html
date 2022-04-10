@@ -74,14 +74,18 @@
             </ul>
           </li>
 
-          <!-- {% if not user.is_authenticated%} -->
+          {% if not user.is_authenticated%}
           <li><a class="nav-link scrollto" href="/accounts/pickType">Sign Up</a></li>
-          <!-- {%endif%} -->
+          {%endif%}
 
-          {% if user.is_authenticated%}
+          {% if user.is_authenticated %}
           {% comment %} <li><a class="nav-link scrollto">Hello, {{user.username}}</a></li> {% endcomment %}
+          
           <li style="color: aliceblue;">Hello {{user.username}}!</li>
-          <li><a class="nav-link scrollto" href="/accounts/logout">Logout</a></li>
+          {% if user.is_superuser %}
+            <li><a class="nav-link scrollto " href="/admin">Admin panel</a></li>
+          {%endif%}
+            <li><a class="nav-link scrollto" href="/accounts/logout">Logout</a></li>
           {%else%}
           <li><a class="nav-link scrollto " href="/login">Login</a></li>
           {%endif%}

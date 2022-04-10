@@ -12,6 +12,10 @@ def logout(request):
     auth.logout(request)
     return redirect("index")
 
+def login(request):
+    login(request)
+    return("index")
+
 def pickType(response):
     return render(response,"registration/PickType.html",{})
 
