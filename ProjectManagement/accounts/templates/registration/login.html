@@ -16,7 +16,7 @@
           </div>
           {% else %}
           <div class="section-title">
-            <h3>Have an account? <span>Please login</span></h3>
+            <h3>Have an account? <span>Login now!</span></h3>
           </div>
   
           <div class="row content" style="display: flex;align-items: center;justify-content: center;" >
@@ -24,12 +24,12 @@
             <form method = "post" class="from-group" style="  width: 300px; height: 200px;">
               {%csrf_token%}
               {{form|crispy}}
-              <button type="submit" class="btn btn-success">Login</button>
-              <p> Go to admin login: <a href="/admin">Here</a></p>
+              <button style="margin-top: 10px;" type="submit" class="btn btn-success">Login</button>
+              <p> Don't have an account? <a href="/accounts/pickType">CLICK HERE</a></p>
             </form>
           </div>
           {% endif%}
-  
+          
         </div>
       </section><!-- End About Section -->
   
