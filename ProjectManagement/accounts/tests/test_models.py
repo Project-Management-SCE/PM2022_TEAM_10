@@ -1,5 +1,5 @@
 from django.test import TestCase
-from accounts.models import User, associationManager
+from accounts.models import User, associationManager, HelpoUser
 
 class TestModels(TestCase):
 
@@ -17,16 +17,20 @@ class TestModels(TestCase):
             user = self.UserObj,
             association_number = '123456'
         )
+        
+        self.HelpoUserObj = HelpoUser.objects.create(
+            user = self.UserObj,
+            city = "BS"
+        )
 
     def test_User(self):
-        # self.assertTrue(self.UserObj.is_association_manager)
+        # Test basic user
         self.assertEqual(self.UserObj.username, 'jimb')
         self.assertEqual(self.UserObj.first_name, 'Jim')
         self.assertEqual(self.UserObj.last_name, 'Botten')
         self.assertEqual(self.UserObj.phone_number, '0524619773')
         self.assertFalse(self.UserObj.is_active)
-        self.assertEqual(self.UserObj.__str__(), 'jimb')
-        
+        self.assertEqual(self.UserObj.__str__(), 'jimb')        
         
 
     def test_association_manager(self):
@@ -43,4 +47,21 @@ class TestModels(TestCase):
         self.associationManagerObj.user.is_active = True
         self.assertTrue(self.associationManagerObj.user.is_active)
         self.assertEqual(self.associationManagerObj.__str__(), 'jimb : active')
+        
+        
+    def test_helpo_user(self):
+        self.assertFalse(self.HelpoUserObj.user.is_association_manager)
+        self.assertEqual(self.HelpoUserObj.user.username, 'jimb')
+        self.assertEqual(self.HelpoUserObj.user.first_name, 'Jim')
+        self.assertEqual(self.HelpoUserObj.user.last_name, 'Botten')
+        self.assertEqual(self.HelpoUserObj.user.phone_number, '0524619773')
+        self.assertEqual(self.HelpoUserObj.city, 'BS')
+        #admin page approval
+        self.assertFalse(self.HelpoUserObj.user.is_active)
+        self.assertEqual(self.HelpoUserObj.__str__(), 'jimb')
+        
+        self.HelpoUserObj.user.is_active = True
+        self.assertTrue(self.HelpoUserObj.user.is_active)
+        
+        
         

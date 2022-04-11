@@ -1,11 +1,10 @@
 from django.contrib import admin
-from .models import User, associationManager
+from .models import User, associationManager, HelpoUser
 # Register your models here.
-
-
 
 admin.site.register(User)
 
+admin.site.register(HelpoUser)
 
 @admin.register(associationManager)
 class associationManagerAdmin(admin.ModelAdmin):
@@ -14,3 +13,4 @@ class associationManagerAdmin(admin.ModelAdmin):
     ordering = ('association_number',)
     list_filter = ('user__is_active',)
     search_fields = ('association_number',)
+
