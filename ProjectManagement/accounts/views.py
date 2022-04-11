@@ -3,8 +3,8 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import auth
 from django.contrib.auth import login
 from django.views.generic import CreateView
-from .models import User 
-from .forms import AssociationManagerSignUpform
+from .models import User
+from .forms import AssociationManagerSignUpform, HelpoUserSignUpform
 
 # Create your views here.
 
@@ -24,6 +24,16 @@ class AssociationManagerSignUp(CreateView):
     model = User
     form_class = AssociationManagerSignUpform
     template_name = 'registration/ManagerSignup.html'
+
+    def form_valid(self, form):  
+        user = form.save()
+        # login(self.request, user)
+        return redirect('login')
+
+class HelpoUserSignUp(CreateView):
+    model = User
+    form_class = HelpoUserSignUpform
+    template_name = 'registration/HelpoUserSignup.html'
 
     def form_valid(self, form):  
         user = form.save()

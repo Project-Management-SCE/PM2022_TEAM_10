@@ -34,6 +34,13 @@ class associationManager(models.Model):
     user_is_active.short_description = 'Is Active'
 
 
+class HelpoUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    city = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.user.username
+    
 
 
 
@@ -54,23 +61,4 @@ class associationManager(models.Model):
     # type = models.CharField(_('Type'), max_length=50, choices=Types.choices, default=Types.ASSOCIATION_MANAGER)
 
     # def get_absolute_url(self):
-    #     return reverse("users:detail", kwargs={"username:",self.username})
-
-
-
-# class associationManagerManager(models.Manager):
-#     def get_queryset(self, *args, **kwargs):
-#         return super().get_queryset(*args, **kwargs).filter(type=User.Types.ASSOCIATION_MANAGER)
-
-# class associationManager(User):
-#     # asso_number = models.CharField('')
-#     objects = associationManagerManager()
-
-#     class Meta:
-#         proxy = True
-
-#     def save(self, *args, **kwargs):
-#         if not self.pk:
-#             self.type = User.Types.ASSOCIATION_MANAGER
-#         return super().save(*args, **kwargs)
-
+    #     return reverse("users:detail", kwarg

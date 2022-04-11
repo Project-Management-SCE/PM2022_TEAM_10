@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from accounts.views import logout, pickType
+from accounts.views import logout, pickType, login
 
 class TestUrls(SimpleTestCase):
     
@@ -11,8 +11,6 @@ class TestUrls(SimpleTestCase):
     def test_pickType_url_is_resolved(self):
         url = reverse('pickType')
         self.assertEqual(resolve(url).func, pickType)
-
-
 
 
         
