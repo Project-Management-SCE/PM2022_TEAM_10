@@ -64,3 +64,18 @@ class HelpoUserSignUpform(UserCreationForm):
 
         assoManager.save()
         return user
+    
+    
+class AssociationManagerUpdateform(forms.ModelForm):
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
+    phone_number = forms.CharField(required=True)
+    association_number = forms.CharField(required=True)
+    email = forms.EmailField(max_length=100)
+    
+    class Meta(UserCreationForm.Meta):
+        model = associationManager
+        fields = ('first_name', 'last_name', 'email' , 'phone_number', 'association_number')
+    
+    
+    
