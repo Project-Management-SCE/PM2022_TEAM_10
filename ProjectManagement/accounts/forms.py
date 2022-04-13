@@ -9,10 +9,11 @@ class AssociationManagerSignUpform(UserCreationForm):
     phone_number = forms.CharField(required=True)
     association_number = forms.CharField(required=True)
     email = forms.EmailField(max_length=100)
+    high_privacy =forms.BooleanField(required=False)
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email' , 'phone_number', 'association_number')
+        fields = ('username', 'first_name', 'last_name', 'email' , 'phone_number', 'association_number','password1','password2','high_privacy')
 
     @transaction.atomic
     def save(self):
@@ -24,6 +25,7 @@ class AssociationManagerSignUpform(UserCreationForm):
         user.last_name = self.cleaned_data.get('last_name')
         user.email = self.cleaned_data.get('email')
         user.phone_number = self.cleaned_data.get('phone_number')
+        user.high_privacy = self.cleaned_data.get('high_privacy')
         user.save()
 
         assoManager = associationManager.objects.create(user=user)
