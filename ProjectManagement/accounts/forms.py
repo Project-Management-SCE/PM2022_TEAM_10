@@ -90,4 +90,9 @@ class AssociationManagerUpdateform(forms.ModelForm):
         fields = ( 'association_number',)
     
     
+class HelpoUserUpdateform(forms.ModelForm):
+    
+    class Meta(UserCreationForm.Meta):
+        model = HelpoUser
+        fields = ( 'city',)
     
