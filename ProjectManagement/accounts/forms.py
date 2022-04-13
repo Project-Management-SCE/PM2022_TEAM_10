@@ -66,16 +66,26 @@ class HelpoUserSignUpform(UserCreationForm):
         return user
     
     
-class AssociationManagerUpdateform(forms.ModelForm):
+
+class UserUpdateform(forms.ModelForm):
+    username = forms.CharField(required=True)
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
     phone_number = forms.CharField(required=True)
-    association_number = forms.CharField(required=True)
     email = forms.EmailField(max_length=100)
+
+    class Meta:
+        model = User
+        fields = ('username','first_name', 'last_name', 'email' , 'phone_number', 'high_privacy')
+
+
+
+class AssociationManagerUpdateform(forms.ModelForm):
+    association_number = forms.CharField(required=True)
     
     class Meta(UserCreationForm.Meta):
         model = associationManager
-        fields = ('first_name', 'last_name', 'email' , 'phone_number', 'association_number')
+        fields = ( 'association_number',)
     
     
     
