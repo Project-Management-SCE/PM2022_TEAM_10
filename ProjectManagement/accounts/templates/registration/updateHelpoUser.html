@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<!-- <section id="hero">
+</section> -->
+<section id="contact" class="contact">
+    
+    <div class="container" style="margin-top: 70px; align-items: center; justify-content: center;">
+
+        <div class="section-title"> 
+        <h3>Update page, <span>Helpo User</span></h3>
+        </div>
+
+        <div class="row content" style="display: flex;align-items: center;justify-content: center;" >
+            {% load crispy_forms_tags %}
+            <form method = "post">
+            {%csrf_token%}
+            {{form|crispy}}
+            <button type="submit" class="btn btn-success">Update!</button>
+            </form>
+        </div>
+    </div>
+</section><!-- End About Section -->
+
+
+
+
+
+{%endblock%}

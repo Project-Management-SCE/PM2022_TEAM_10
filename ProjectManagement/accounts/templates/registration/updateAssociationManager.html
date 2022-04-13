@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<!-- <section id="hero">
+</section> -->
+<section id="contact" class="contact">
+    
+    <div class="container" style="margin-top: 70px; align-items: center; justify-content: center;">
+
+        {% if user.id == user_id %}
+        <div class="section-title"> 
+            <h3>Update page, <span>Association Manager</span></h3>
+        </div>
+
+        <div class="row content" style="display: flex;align-items: center;justify-content: center;" >
+                {% load crispy_forms_tags %}
+                <form method = "post">
+                {%csrf_token%}
+                {{form|crispy}}
+                <button type="submit" class="btn btn-success">Update!</button>
+                </form>
+        {% else %}
+        <div class="section-title"> 
+            <h3>Update page, <span>Association Manager</span></h3>
+        </div>
+        {% endif %}
+
+        </div>
+    </div>
+</section><!-- End About Section -->
+
+
+
+
+
+{%endblock%}

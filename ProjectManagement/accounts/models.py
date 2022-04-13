@@ -33,7 +33,6 @@ class associationManager(models.Model):
         return self.user.is_active
     user_is_active.short_description = 'Is Active'
 
-
 class HelpoUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     city = models.CharField(max_length=100)
