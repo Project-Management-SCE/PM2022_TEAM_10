@@ -5,7 +5,7 @@ from django.contrib.auth.models import auth
 from django.contrib.auth import login
 from django.views.generic import CreateView
 from .models import User, HelpoUser, associationManager
-from .forms import AssociationManagerUpdateform,UserUpdateform, AssociationManagerSignUpform, HelpoUserSignUpform
+from .forms import AssociationManagerUpdateform,UserUpdateform, AssociationManagerSignUpform, HelpoUserSignUpform, HelpoUserUpdateform
 from django.contrib import messages
 
 # Create your views here.
@@ -72,6 +72,33 @@ def updateAssociationManager(request, pk): # pk - primary key
             }
 
     return render(request, 'registration/updateAssociationManager.html', context)
+
+
+@login_required
+def updateHelpoUser(request, pk): # pk - primary key
+    user_id = int(pk)
+
+    if request.method == 'POST':
+        u_form = UserUpdateform(request.POST, instance=request.user)
+        h_form = HelpoUserUpdateform(request.POST, instance=request.user.helpouser)
+
+        if u_form.is_valid() and h_form.is_valid():
+            u_form.save()
+            h_form.save()
+            messages.success(request,f'Your account has been updated!')
+            return redirect('index')
+    
+    else:
+        u_form = UserUpdateform(instance=request.user)
+        h_form = HelpoUserUpdateform(instance=request.user.helpouser)
+
+    context = {
+                'u_form' : u_form,
+                'h_form' : h_form,
+                'user_id': user_id
+            }
+
+    return render(request, 'registration/updateHelpoUser.html', context)
 
 
 

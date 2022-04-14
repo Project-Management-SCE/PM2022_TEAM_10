@@ -81,12 +81,16 @@
           {% if user.is_authenticated %}
           {% comment %} <li><a class="nav-link scrollto">Hello, {{user.username}}</a></li> {% endcomment %}
           
-          <li style="color: aliceblue;">Hello {{user.username}}!</li>
-          {% if user.is_superuser %}
-            <li><a class="nav-link scrollto " href="/admin">Admin panel</a></li>
-          {%endif%}
-            <li><a class="nav-link scrollto" href="/accounts/logout">Logout</a></li>
-            <li><a class="nav-link scrollto" href="/accounts/updateAssociationManager/{{user.id}}">Edit Account</a></li>
+            <li style="color: aliceblue;">Hello {{user.username}}!</li>
+            {% if user.is_superuser %}
+              <li><a class="nav-link scrollto " href="/admin">Admin panel</a></li>
+            {%endif%}
+              <li><a class="nav-link scrollto" href="/accounts/logout">Logout</a></li>
+            {%if user.is_association_manager%}
+              <li><a class="nav-link scrollto" href="/accounts/updateAssociationManager/{{user.id}}">Edit Account</a></li>
+            {%else%}
+              <li><a class="nav-link scrollto" href="/accounts/updateHelpoUser/{{user.id}}">Edit Account</a></li>
+            {%endif%}
 
           {%else%}
           <li><a class="nav-link scrollto " href="/login">Login</a></li>

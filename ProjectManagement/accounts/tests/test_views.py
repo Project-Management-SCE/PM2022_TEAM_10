@@ -12,3 +12,4 @@ class TestViews(TestCase):
         response = self.client.get(self.pick_type_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'registration/PickType.html')
+
