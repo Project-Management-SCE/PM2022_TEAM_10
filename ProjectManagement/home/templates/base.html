@@ -89,7 +89,9 @@
             {%if user.is_association_manager%}
               <li><a class="nav-link scrollto" href="/accounts/updateAssociationManager/{{user.id}}">Edit Account</a></li>
             {%else%}
-              <li><a class="nav-link scrollto" href="/accounts/updateHelpoUser/{{user.id}}">Edit Account</a></li>
+              {%if not user.is_superuser%}
+               <li><a class="nav-link scrollto" href="/accounts/updateHelpoUser/{{user.id}}">Edit Account</a></li>
+              {%endif%}
             {%endif%}
 
           {%else%}

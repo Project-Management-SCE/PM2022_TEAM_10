@@ -21,4 +21,6 @@ urlpatterns = [
     path('', include("home.urls")) ,#Connect urls in home app
     path('',include("django.contrib.auth.urls")),
     path('accounts/', include('accounts.urls')),
+    path('associations/', include('associations.urls')),
+
 ]
