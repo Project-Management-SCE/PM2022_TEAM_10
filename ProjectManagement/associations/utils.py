@@ -9,7 +9,7 @@ def InsertAssociationData():
     header =[]
     header = next(csr)
     for header in csr:
-        if(header[4] == 'רשומה'):
+        if(header[4] == 'רשומה'):       #check status of asso
             try:
                 Association.objects.create(
                     id=header[0],
