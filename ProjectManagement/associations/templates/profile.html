@@ -2,7 +2,7 @@
 
 {% block link_css %}
 {%load static%}
-    <link href="{% static 'css/asso_profile.css' %}" rel="stylesheet">
+    <link href="{% static 'css/asso_profile.css' %}?{%now 'U'%}" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
