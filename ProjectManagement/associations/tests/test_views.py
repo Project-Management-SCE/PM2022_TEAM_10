@@ -14,3 +14,10 @@ class TestViews(TestCase):
         response = self.client.get(self.all_url)      # Get response from the url
         self.assertEqual(response.status_code, 200)     # Check status
         self.assertTemplateUsed(response, 'table.html') # Check if the right page has returned
+        
+        
+    def test_profile(self):
+        response = self.client.get(self.all_url)      # Get response from the url
+        self.assertEqual(response.status_code, 200)     # Check status
+        self.assertTemplateUsed(response, 'table.html') # Check if the right page has returned
+        

@@ -1,7 +1,7 @@
 # Create your tests here.
 from django.test import TestCase
-from associations.models import Association
-from accounts.models import User, associationManager
+from associations.models import Association,volunteeringRequest
+from accounts.models import User, associationManager,HelpoUser
 from associations.utils import getAsso
 
 class TestModels(TestCase):
@@ -13,12 +13,19 @@ class TestModels(TestCase):
             first_name = 'Jim',
             last_name = 'Botten',
             phone_number = '0524619773',
-            is_active = True
+            is_active = True,
+            is_helpo_user=True
         )
 
         self.associationManagerObj = associationManager.objects.create(
             user = self.UserObj,
             association_number = '123123123'
+        )
+        
+        #create helpo user
+        self.HelpoUserObj = HelpoUser.objects.create(
+            user = self.UserObj,
+            city = "BS"
         )
         
         #create association object
@@ -34,6 +41,13 @@ class TestModels(TestCase):
             phone='0501231231',
             info='',
             email='asso1@associations.com'
+        )
+        
+        #create volunteer Request
+        self.vol_request = volunteeringRequest.objects.create(
+            association=self.assoObj,
+            user=self.HelpoUserObj,
+            info="i want to volunteer!"
         )
     
     
@@ -51,6 +65,20 @@ class TestModels(TestCase):
         self.assertEqual(self.assoObj.email,'asso1@associations.com')
         self.assertEqual(self.assoObj.manager.user.username,self.associationManagerObj.user.username)
         self.assertEqual(self.assoObj.__str__(),self.assoObj.name)
+        
+    
+    def test_volunteeringRequest(self):
+        self.assertEqual(self.vol_request.info,"i want to volunteer!")
+        self.assertEqual(self.vol_request.association.id,"123123123")
+        self.assertTrue(self.vol_request.user.user.is_helpo_user)
+        self.assertEqual(self.vol_request.user.user.username,"jimb2")
+
+        
+        
+        
+        
+        
+
         
         
         

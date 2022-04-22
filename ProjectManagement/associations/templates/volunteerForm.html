@@ -11,7 +11,7 @@
         <div class="section-title"> 
             <h3>{{asso_obj.name}}<br/><span> Submit your volunteer Request </span></h3>
         </div>
-        {%if asso_obj.manager%}
+        {%if asso_obj.manager and user_obj.is_helpo_user%}
         <div class="row content" style="display: flex;align-items: center;justify-content: center;" >
                 {% load crispy_forms_tags %}
                 <form method = "POST" style="width: 350px; height: 500px;">

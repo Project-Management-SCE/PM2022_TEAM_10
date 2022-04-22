@@ -19,15 +19,16 @@ def All(response):
 def submitVolunteeringRequest(request,pk):
     form = volunteeringRequestform()
     asso_obj=Association.objects.get(id=pk)
+    user_obj=request.user
     if request.method=='POST':
         form = volunteeringRequestform(request.POST)
         
         if form.is_valid():
             instance = form.save(commit=False)
-            instance.user = request.user.helpouser
+            instance.user = user_obj
             instance.association = asso_obj
             instance.save()
         return redirect('index')
 
-    context={'form':form, 'asso_obj':asso_obj}
+    context={'form':form, 'asso_obj':asso_obj,'user':user_obj}
     return render(request, 'volunteerForm.html', context)
