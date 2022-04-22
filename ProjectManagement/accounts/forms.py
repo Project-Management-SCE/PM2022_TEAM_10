@@ -53,6 +53,7 @@ class HelpoUserSignUpform(UserCreationForm):
     def save(self):
         user = super().save(commit=False)
         user.is_association_manager = False
+        user.is_helpo_user=True
         user.is_active = True
         user.username = self.cleaned_data.get('username')
         user.first_name = self.cleaned_data.get('first_name')
@@ -61,10 +62,10 @@ class HelpoUserSignUpform(UserCreationForm):
         user.phone_number = self.cleaned_data.get('phone_number')
         user.save()
 
-        assoManager = HelpoUser.objects.create(user=user)
-        assoManager.city = self.cleaned_data.get('city')
+        helpoUser = HelpoUser.objects.create(user=user)
+        helpoUser.city = self.cleaned_data.get('city')
 
-        assoManager.save()
+        helpoUser.save()
         return user
     
     
