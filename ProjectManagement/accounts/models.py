@@ -17,6 +17,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=10, validators=[MinLengthValidator(10)])
     is_association_manager = models.BooleanField(default=False)
+    is_helpo_user = models.BooleanField(default=False)
     high_privacy = models.BooleanField(default=False)
     # is_volenteer = models.BooleanField('volenteer status', default=False)
 
