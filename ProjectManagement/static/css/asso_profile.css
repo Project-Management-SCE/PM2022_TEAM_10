@@ -1,6 +1,9 @@
 body{
-    background: -webkit-linear-gradient(left, #000000, #681434);
+    /* background: -webkit-linear-gradient(left, #000000, #681434); */
     /* background: #585b8e; */
+    background-image: url(https://images.pexels.com/photos/9263901/pexels-photo-9263901.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .emp-profile{
     padding: 3%;

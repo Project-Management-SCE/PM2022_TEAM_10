@@ -29,7 +29,8 @@
   <link href="{% static 'css/style.css' %}?{%now 'U'%}" rel="stylesheet">
 
   <!-- Datatables Files -->
-
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.css"/>
+  
   <!--Asso profile + FA css file-->
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
@@ -62,10 +63,11 @@
           <li><a class="nav-link scrollto" href="#about">About</a></li>
           <li><a class="nav-link scrollto" href="#services">Services</a></li>
           <li><a class="nav-link scrollto " href="#portfolio">Portfolio</a></li>
-          <li><a class="nav-link scrollto" href="#team">Team</a></li>
+          {% comment %} <li><a class="nav-link scrollto" href="#team">Team</a></li> {% endcomment %}
+          <li><a class="nav-link scrollto " href="associations/All">Associations</a></li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
 
-          <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
+          {% comment %} <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Drop Down 1</a></li>
               <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
@@ -81,7 +83,7 @@
               <li><a href="#">Drop Down 3</a></li>
               <li><a href="#">Drop Down 4</a></li>
             </ul>
-          </li>
+          </li> {% endcomment %}
 
           {% if not user.is_authenticated%}
           <li><a class="nav-link scrollto" href="/accounts/pickType">Sign Up</a></li>
@@ -207,6 +209,13 @@
   <script src="{% static 'js/main.js' %}"></script>
 
   <!--DataTable + Jquary-->
-
+  <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
+  <script>
+      $(document).ready(function(){
+          $('#dtBasicExample').DataTable({
+          });
+      });
+  </script>
 
   </html>
