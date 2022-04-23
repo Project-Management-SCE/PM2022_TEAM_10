@@ -1,4 +1,3 @@
-from importlib.metadata import requires
 from django.db import models
 from accounts.models import associationManager,HelpoUser
 # Create your models here.

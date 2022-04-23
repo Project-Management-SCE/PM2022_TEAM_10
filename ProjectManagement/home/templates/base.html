@@ -53,18 +53,18 @@
     <div class="container d-flex align-items-center justify-content-between"> <!-- justify-content-between => Class to right side -->
       
 
-      <h1 class="logo"><a href="">Helpo</a></h1>
+      <h1 class="logo"><a href="{% url 'index' %}">Helpo</a></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
       <!-- <a href="index.html" class="logo"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="/">Home</a></li>
+          <li><a class="nav-link scrollto active" href="{% url 'index' %}">Home</a></li>
           <li><a class="nav-link scrollto" href="#about">About</a></li>
           <li><a class="nav-link scrollto" href="#services">Services</a></li>
-          <li><a class="nav-link scrollto " href="#portfolio">Portfolio</a></li>
+          {% comment %} <li><a class="nav-link scrollto " href="#portfolio">Portfolio</a></li> {% endcomment %}
           {% comment %} <li><a class="nav-link scrollto" href="#team">Team</a></li> {% endcomment %}
-          <li><a class="nav-link scrollto " href="associations/All">Associations</a></li>
+          <li><a class="nav-link scrollto " href="{% url 'All' %}">Associations</a></li>
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
 
           {% comment %} <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
@@ -86,7 +86,7 @@
           </li> {% endcomment %}
 
           {% if not user.is_authenticated%}
-          <li><a class="nav-link scrollto" href="/accounts/pickType">Sign Up</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'pickType' %}">Sign Up</a></li>
           {%endif%}
 
           {% if user.is_authenticated %}
@@ -94,19 +94,19 @@
           
             <li style="color: aliceblue;">Hello {{user.username}}!</li>
             {% if user.is_superuser %}
-              <li><a class="nav-link scrollto " href="/admin">Admin panel</a></li>
+              <li><a class="nav-link scrollto " href="../admin">Admin panel</a></li>
             {%endif%}
-              <li><a class="nav-link scrollto" href="/accounts/logout">Logout</a></li>
+              <li><a class="nav-link scrollto" href="{% url 'logout' %}">Logout</a></li>
             {%if user.is_association_manager%}
-              <li><a class="nav-link scrollto" href="/accounts/updateAssociationManager/{{user.id}}">Edit Account</a></li>
+              <li><a class="nav-link scrollto" href="{% url 'updateAssociationManager' user.id %}">Edit Account</a></li>
             {%else%}
               {%if not user.is_superuser%}
-               <li><a class="nav-link scrollto" href="/accounts/updateHelpoUser/{{user.id}}">Edit Account</a></li>
+               <li><a class="nav-link scrollto" href="{% url 'updateHelpoUser' user.id %}">Edit Account</a></li>
               {%endif%}
             {%endif%}
 
           {%else%}
-          <li><a class="nav-link scrollto " href="/login">Login</a></li>
+          <li><a class="nav-link scrollto " href="{% url 'login' %}">Login</a></li>
           {%endif%}
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>

@@ -30,5 +30,5 @@ def submitVolunteeringRequest(request,pk):
             instance.save()
         return redirect('index')
 
-    context={'form':form, 'asso_obj':asso_obj,'user':user_obj}
+    context={'form':form, 'asso_obj':asso_obj,'user_obj':user_obj}
     return render(request, 'volunteerForm.html', context)
