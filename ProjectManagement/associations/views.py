@@ -1,9 +1,9 @@
 from multiprocessing import context
-from django.shortcuts import render
 from .models import Association
 from django.contrib.auth.decorators import login_required
 from .forms import volunteeringRequestform
 from django.shortcuts import redirect, render
+from home.models import Category
 
 # Create your views here.
 

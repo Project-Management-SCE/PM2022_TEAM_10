@@ -2,7 +2,6 @@
 from django.test import TestCase
 from associations.models import Association,volunteeringRequest
 from accounts.models import User, associationManager,HelpoUser
-from associations.utils import getAsso
 
 class TestModels(TestCase):
     def setUp(self):
