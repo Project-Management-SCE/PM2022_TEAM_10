@@ -1,7 +1,12 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+
+from associations.models import Association
 from .models import User , associationManager, HelpoUser
 from django.db import transaction
+
+from django.core.exceptions import ObjectDoesNotExist
+
 
 class AssociationManagerSignUpform(UserCreationForm):
     first_name = forms.CharField(required=True)
@@ -33,8 +38,17 @@ class AssociationManagerSignUpform(UserCreationForm):
 
         assoManager.save()
         return user
-    
-    
+
+    def clean_association_number(self):
+        data = self.cleaned_data['association_number']
+        try:
+            assos = Association.objects.get(id=data)
+            if assos.manager:
+                raise forms.ValidationError("This association allready got a manager")
+        except ObjectDoesNotExist as e:
+            raise forms.ValidationError("Unknown association number. Enter a valid number")
+        return data
+
     
     
     

@@ -4,6 +4,8 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import auth
 from django.contrib.auth import login
 from django.views.generic import CreateView
+
+from  associations.models import Association
 from .models import User, HelpoUser, associationManager
 from .forms import AssociationManagerUpdateform,UserUpdateform, AssociationManagerSignUpform, HelpoUserSignUpform, HelpoUserUpdateform
 from django.contrib import messages
@@ -28,7 +30,11 @@ class AssociationManagerSignUp(CreateView):
     template_name = 'registration/ManagerSignup.html'
 
     def form_valid(self, form):  
+        asso_num = form.cleaned_data['association_number']
+        asso = Association.objects.get(id=asso_num)
         user = form.save()
+        asso.manager = user.associationmanager
+        asso.save()
         # login(self.request, user)
         return redirect('login')
 
