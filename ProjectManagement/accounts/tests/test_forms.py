@@ -1,5 +1,6 @@
 from django.test import TestCase
 from accounts.forms import AssociationManagerSignUpform, AssociationManagerUpdateform, UserUpdateform, HelpoUserUpdateform, HelpoUserSignUpform
+from associations.models import Association
 
 class TestForms(TestCase):
     #Unit test for forms without data, to check the form is getting the all the needed erros
@@ -51,7 +52,20 @@ class TestForms(TestCase):
         self.assertEqual(len(form.errors),0)
 
     def test_create_AssociationManagerSignUpform_with_data(self):
+        self.assoObj = Association.objects.create(
+            id = '123123',
+            manager= None,
+            name='asso1',
+            category='category1',
+            vol_num='10',
+            city = 'Tel Aviv',
+            street= 'Dizengoff',
+            apartment='54',
+            phone='0501231231',
+            info='',
+            email='asso1@associations.com'
+        )
         form = AssociationManagerSignUpform(data={'username':'abc','first_name':'JIM', 'last_name':'Botten', 'email':'J@b.com'
-                                    ,'phone_number':'0500500501','password1':'JjBotten1280','password2':'JjBotten1280', 'association_number':'12345'})
+                                    ,'phone_number':'0500500501','password1':'JjBotten1280','password2':'JjBotten1280', 'association_number':'123123'})
         self.assertTrue(form.is_valid())
         self.assertEqual(len(form.errors),0)

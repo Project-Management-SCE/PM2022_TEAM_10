@@ -9,3 +9,4 @@ class TestUrls(SimpleTestCase):
         self.assertEqual(resolve(url).func, All)
     
 #add test for the dynamic url
+
