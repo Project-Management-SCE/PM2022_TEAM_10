@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'associations.apps.AssociationsConfig',
     'adminPanel.apps.AdminpanelConfig',
-
+    'posts.apps.PostsConfig',
 
 ]
 
