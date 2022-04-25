@@ -1,9 +1,10 @@
 from multiprocessing import context
-from .models import Association
+from .models import Association,volunteeringRequest
 from django.contrib.auth.decorators import login_required
 from .forms import volunteeringRequestform
 from django.shortcuts import redirect, render
 from home.models import Category
+from accounts.models import HelpoUser
 
 # Create your views here.
 
@@ -19,7 +20,7 @@ def All(response):
 def submitVolunteeringRequest(request,pk):
     form = volunteeringRequestform()
     asso_obj=Association.objects.get(id=pk)
-    user_obj=request.user
+    user_obj=request.user.helpouser
     if request.method=='POST':
         form = volunteeringRequestform(request.POST)
         
@@ -30,5 +31,27 @@ def submitVolunteeringRequest(request,pk):
             instance.save()
         return redirect('index')
 
-    context={'form':form, 'asso_obj':asso_obj,'user_obj':user_obj}
+    context={
+        'form':form,
+        'asso_obj':asso_obj,
+        'user_obj':user_obj
+        }
     return render(request, 'volunteerForm.html', context)
+
+def volunteersRequests(request,pk):
+    reqs_lst = createReqsUsersTuplesList(pk)
+    asso_obj=Association.objects.get(id=pk)
+    context ={
+        'requests':reqs_lst,
+        'asso_obj':asso_obj,
+    }
+    return render(request,"volunteerRequests.html",context)
+
+
+def createReqsUsersTuplesList(pk):
+    reqs = volunteeringRequest.objects.filter(association_id = pk)
+    lst = []
+    for x in reqs:  #for every request bring the user
+        h_u = HelpoUser.objects.get(user_id = x.user_id)
+        lst.append((x,h_u))
+    return lst

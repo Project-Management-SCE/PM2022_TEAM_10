@@ -94,7 +94,7 @@
           
             <li style="color: aliceblue;">Hello {{user.username}}!</li>
             {% if user.is_superuser %}
-              <li><a class="nav-link scrollto " href="../admin">Admin panel</a></li>
+              <li><a class="nav-link scrollto " href="{% url 'adminPanel' %}">Admin panel</a></li>
             {%endif%}
               <li><a class="nav-link scrollto" href="{% url 'logout' %}">Logout</a></li>
             {%if user.is_association_manager%}

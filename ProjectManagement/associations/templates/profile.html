@@ -42,6 +42,10 @@
                                 {%if user.is_authenticated%}
                                 {%if user == obj.manager.user%}
                                     <input type="submit" class="btn btn-danger" value="Edit Details" style="margin-left:22%; width:56%;"/>
+                                    <a href="{% url 'volunteersRequests' obj.id %}">
+                                        <button type="submit" class="btn btn-danger" style="margin-left:15%; margin-top:20px; ">
+                                            Volunteer Requests</button>
+                                    </a>
                                 {%endif%}
                                     {%if obj.manager and user.is_helpo_user%}
                                         <a href="{% url 'submitVolunteeringRequest' obj.id %}">
