@@ -9,22 +9,27 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 # Create your views here.
 def adminPanel(response):
-    if not response.user.is_superuser:  #restrict the accses only for admins
+    if not response.user.is_superuser:  # Restrict the accses only for admins
         return render(response,"admin_error.html",{})
     return render(response,"admin_index.html",{})
 
+
 def helpo_users(response):
-    if not response.user.is_superuser:  #restrict the accses only for admins
+    if not response.user.is_superuser:  # Restrict the accses only for admins
         return render(response,"admin_error.html",{})
-    return render(response,"admin_helpo_users.html",{'users':HelpoUser.objects.all()})
+    helpo_users = HelpoUser.objects.all()
+    return render(response,"admin_helpo_users.html",{'users':helpo_users})
+
 
 def manager_users(response):
-    if not response.user.is_superuser:  #restrict the accses only for admins
+    if not response.user.is_superuser:  # Restrict the accses only for admins
         return render(response,"admin_error.html",{})
-    return render(response,"admin_manager_users.html",{'users':associationManager.objects.all()})
+    association_users = associationManager.objects.all()
+    return render(response,"admin_manager_users.html",{'users':association_users})
 
-def AdminUpdateHelpoUser(request, pk): # pk - primary key
-    if not request.user.is_superuser:   #restrict the accses only for admins
+
+def AdminUpdateHelpoUser(request, pk):  # pk - primary key
+    if not request.user.is_superuser:   # Restrict the accses only for admins
         return render(request,"admin_error.html",{})
     u_id = int(pk)
     user = HelpoUser.objects.get(user_id=u_id)

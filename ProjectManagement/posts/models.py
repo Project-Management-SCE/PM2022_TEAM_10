@@ -18,7 +18,7 @@ class Post(models.Model):
     info = models.TextField(max_length=500)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, default=None,null=True,blank=True)
     city = models.CharField(max_length=100,blank=True)
-    is_asking=models.BooleanField(default=False) #false = offering help
+    is_asking=models.BooleanField(default=False)    # False = offering help
     date = models.DateField()
     
 
