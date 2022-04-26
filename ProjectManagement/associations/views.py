@@ -5,6 +5,7 @@ from .forms import volunteeringRequestform
 from django.shortcuts import redirect, render
 from home.models import Category
 from accounts.models import HelpoUser
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 
@@ -41,6 +42,10 @@ def submitVolunteeringRequest(request,pk):
 def volunteersRequests(request,pk):
     reqs_lst = createReqsUsersTuplesList(pk)
     asso_obj=Association.objects.get(id=pk)
+
+    if isTheManager(request,asso_obj):
+        return render(request,"error_page.html",{})
+
     context ={
         'requests':reqs_lst,
         'asso_obj':asso_obj,
@@ -55,3 +60,32 @@ def createReqsUsersTuplesList(pk):
         h_u = HelpoUser.objects.get(user_id = x.user_id)
         lst.append((x,h_u))
     return lst
+
+def showRequest(request,pk,r_pk):
+    try:
+        req = volunteeringRequest.objects.get(id=r_pk)
+        asso_obj=Association.objects.get(id=pk)
+    except ObjectDoesNotExist as e:
+        return render(request,"error_page.html",{})
+
+    if isTheManager(request,asso_obj) or req.association_id != pk:
+        return render(request,"error_page.html",{})
+
+    helpo_user=HelpoUser.objects.get(user_id=req.user_id)
+    context ={
+        'request':req,
+        'asso_obj':asso_obj,
+        'helpo_user':helpo_user
+    }
+    return render(request,"showRequest.html",context)
+
+def isTheManager(request,asso):
+    return asso.manager_id != request.user.id
+
+def deleteVolRequest(request,pk):
+    req = volunteeringRequest.objects.get(id=pk)
+    asso_pk = req.association_id
+    if request.user.id != Association.objects.get(id=asso_pk).manager_id:
+        return render(request,"error_page.html",{})
+    req.delete()
+    return redirect('volunteersRequests',pk=asso_pk)
