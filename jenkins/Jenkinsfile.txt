@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'Unit test + Integration + Covverage'
+                sh 'echo "Unit test + Integration + Covverage"'
                 withEnv(["HOME=${env.WORKSPACE}"]){
                     // sh 'python ProjectManagement/manage.py test ./ProjectManagement'
                     sh 'python -m coverage run ProjectManagement/manage.py test -v 2'
