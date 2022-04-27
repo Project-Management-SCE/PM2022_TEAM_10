@@ -100,6 +100,7 @@
               <li><a class="nav-link scrollto" href="{% url 'logout' %}">Logout</a></li>
             {%if user.is_association_manager%}
               <li><a class="nav-link scrollto" href="{% url 'updateAssociationManager' user.id %}">Edit Account</a></li>
+              <li><a class="nav-link scrollto" href="{% url 'profile' user.associationmanager.association_number %}">My Association</a></li>
             {%else%}
               {%if not user.is_superuser%}
                <li><a class="nav-link scrollto" href="{% url 'updateHelpoUser' user.id %}">Edit Account</a></li>
