@@ -25,7 +25,7 @@ pipeline {
                 withEnv(["HOME=${env.WORKSPACE}"]){
                     sh 'python ProjectManagement/manage.py test ./ProjectManagement'
                     sh 'python -m coverage'
-                    sh 'python -m coverage run ProjectManagement/manage.py test ./ProjectManagement'
+                    sh 'python -m coverage run ProjectManagement/manage.py test home ./ProjectManagement'
                     // sh 'cd ProjectManagement; python -m coverage report'
                 }
             }
