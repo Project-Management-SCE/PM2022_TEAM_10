@@ -23,9 +23,10 @@ pipeline {
             steps {
                 sh 'echo "Unit test + Integration + Covverage"'
                 withEnv(["HOME=${env.WORKSPACE}"]){
-                    sh 'python ProjectManagement/manage.py test ./ProjectManagement'
-                    sh 'python3 -m coverage run ProjectManagement/manage.py test home'
-                    // sh 'cd ProjectManagement; python -m coverage report'
+                    dir("ProjectManagement"){
+                        sh 'python -m coverage run manage.py test'
+                        sh 'python -m coverage report'
+                    }
                 }
             }
         }
