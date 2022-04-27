@@ -3,7 +3,7 @@ from urllib import response
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import auth
-from django.contrib.auth import login
+from django.contrib.auth import login as login
 from django.views.generic import CreateView
 
 from  associations.models import Association
@@ -17,9 +17,9 @@ def logout(request):
     auth.logout(request)
     return redirect("index")
 
-def login(request):
-    login(request)
-    return("index")
+# def login_view(request):
+#     login(request)
+#     return("index")
 
 def pickType(response):
     return render(response,"registration/PickType.html",{})

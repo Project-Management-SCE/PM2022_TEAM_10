@@ -19,7 +19,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include("home.urls")) ,#Connect urls in home app
-    path('',include("django.contrib.auth.urls")),
+    path('accounts/',include("django.contrib.auth.urls")),
     path('accounts/', include('accounts.urls')),
     path('associations/', include('associations.urls')),
     path('adminPanel/', include('adminPanel.urls')),
