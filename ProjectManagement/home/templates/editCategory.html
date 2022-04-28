@@ -1,16 +1,21 @@
-{% extends 'base.html' %}
+{% extends 'admin_base.html' %}
 
 
 {% block content %}
 <!-- <section id="hero">
 </section> -->
-<section id="contact" class="contact">
+<div class="card mb-4">
     
-    <div class="container" style="margin-top: 70px; align-items: center; justify-content: center;">
+    <div class="card-header">
+        <div class="row content" style="display: flex;align-items: center;justify-content: center; margin-top:10px" >
 
-        <div class="section-title"> 
-            <h3>:עריכת הקטגוריה<br/><span> {{obj.name}}</span></h3>
+            <i class="fas fa-table me-1"></i>
+            
+            עריכת:  {{obj.name}}    
         </div>
+    </div>   
+
+    <div class="card-body">
         <div class="row content" style="display: flex;align-items: center;justify-content: center;" >
                 {% load crispy_forms_tags %}
                 <form method = "POST" style="width: 350px; height: 500px;">
@@ -21,11 +26,11 @@
                 <button type="submit" class="btn btn-outline-danger" style="margin-top:10px;">Submit</button>
                 </form>
         </div>
+
     </div>
-</section><!-- End About Section -->
 
 
-
+</div>
 
 
 {%endblock%}
