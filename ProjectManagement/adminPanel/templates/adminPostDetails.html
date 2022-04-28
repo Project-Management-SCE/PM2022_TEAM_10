@@ -1,0 +1,103 @@
+{% extends 'admin_base.html' %}
+
+
+{% block content %}
+<!-- <section id="hero">
+</section> -->
+
+<div class="card mb-4">
+        <div class="card-header" style="text-align:right;" >
+            <i class="fas fa-table me-1"></i>
+            פרטי פוסט  {{obj.id}}
+        </div>
+        
+        <div class="card-body"  style="text-align:right;">
+            <table id="datatablesSimple">
+                <tbody >
+                    <tr>
+                        <td>
+                            {{obj.date }}
+                        </td>
+                        <td>
+                                תאריך
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{obj.category }}
+                        </td>
+                        <td>
+                                קטגוריה
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{obj.city }}
+                        </td>
+                        <td>
+                                עיר
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            {%if obj.is_asking%}
+                                בקשת סיוע
+                            
+                            {%else%}
+                                הצעת עזרה
+                            {%endif%}
+                        </td>
+                        <td>
+                                סוג
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            {{obj.user.user.username }}
+                        </td>
+                        <td>
+                                שם משתמש
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{obj.user.user.first_name }} {{obj.user.user.last_name }}
+                        </td>
+                        <td>
+                            שם מלא
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{obj.user.user.email }}
+                        </td>
+                        <td>
+                            אימייל
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{obj.info }}
+                        </td>
+                        <td>
+                                תוכן
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <hr class="my-4">
+            <p class="lead">
+              <a class="btn btn-danger" href="{% url 'AdminDeletePost' obj.id %}" role="button">מחק פוסט</a>
+            </p>
+
+
+        </div>
+
+</div>
+
+
+
+{%endblock%}
