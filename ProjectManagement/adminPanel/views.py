@@ -3,8 +3,9 @@ from django.http import HttpResponse
 from django.contrib.auth.models import auth
 from accounts.models import HelpoUser,User,associationManager
 from accounts.forms import UserUpdateform, HelpoUserUpdateform
+from posts.models import Post
 from django.contrib.admin.views.decorators import staff_member_required
-
+from django.core.exceptions import ObjectDoesNotExist
 
 
 # Create your views here.
@@ -56,3 +57,36 @@ def AdminUpdateHelpoUser(request, pk):  # pk - primary key
     return render(request, 'registration/updateHelpoUser.html', context)
 
     #need to add update for asso manager
+    
+    
+    
+def adminPosts(response):
+    if not response.user.is_superuser:   # Restrict the accses only for admins
+        return render(response,"admin_error.html",{})
+    posts = Post.objects.all()
+    context={'posts':posts,'asd':True}
+    return render(response,"admin_posts.html",context)
+
+def AdminPostDetails(request,pk):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+  
+    try:
+        req = Post.objects.get(id=pk)
+    except ObjectDoesNotExist as e:
+        return render(request,"admin_error.html",{})
+    
+    return render(request,"adminPostDetails.html",{'obj':req})
+
+
+def AdminDeletePost(request,pk):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+  
+    try:
+        req = Post.objects.get(id=pk)
+    except ObjectDoesNotExist as e:
+        return render(request,"admin_error.html",{})
+    
+    req.delete()
+    return redirect('posts')
