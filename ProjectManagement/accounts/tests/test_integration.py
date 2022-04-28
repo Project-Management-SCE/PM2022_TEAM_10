@@ -10,7 +10,7 @@ class TestViews(TestCase):
     
 
     #registration -> login integration
-    def test_pick_type(self):   
+    def test_registration_login(self):   
         self.assertFalse(self.client.login(username='username', password='password')) #before creation
         user1 = User.objects.create_user(username='username', password='password')     
         self.assertTrue(self.client.login(username='username', password='password')) #after Creation creation

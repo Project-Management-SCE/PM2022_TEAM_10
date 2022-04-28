@@ -41,7 +41,11 @@
                             <div class="profile-work">
                                 {%if user.is_authenticated%}
                                 {%if user == obj.manager.user%}
-                                    <input type="submit" class="btn btn-danger" value="Edit Details" style="margin-left:22%; width:56%;"/>
+                                    {% comment %} <input type="submit" class="btn btn-danger" value="Edit Details" style="margin-left:22%; width:56%;"/> {% endcomment %}
+                                    <a href="{% url 'editAssociation' obj.id %}">
+                                        <button type="submit" class="btn btn-danger" style="margin-left:15%; margin-top:20px; ">
+                                            Edit profile</button>
+                                    </a>
                                     <a href="{% url 'volunteersRequests' obj.id %}">
                                         <button type="submit" class="btn btn-danger" style="margin-left:15%; margin-top:20px; ">
                                             Volunteer Requests</button>
