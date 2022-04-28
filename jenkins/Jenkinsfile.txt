@@ -21,9 +21,12 @@ pipeline {
         }
         stage('Test') {
             steps {
-                sh 'echo TODO1'
+                sh 'echo "Unit test + Integration + Covverage"'
                 withEnv(["HOME=${env.WORKSPACE}"]){
-                    sh 'python ProjectManagement/manage.py test ./ProjectManagement'
+                    dir("ProjectManagement"){
+                        sh 'python -m coverage run manage.py test'
+                        sh 'python -m coverage report'
+                    }
                 }
             }
         }
@@ -31,27 +34,4 @@ pipeline {
 }
 
 
-    // pipeline {
-    //     agent {
-    //         docker {
-    //             image 'python:3.9' 
-    //             }
-    //     }
-
-    //     stages {
-    //         stage('Build') {
-    //             steps {
-    //                 sh 'python3 -m venv env'
-    //                 sh 'source ./env/bin/activate'
-    //                 sh 'source Scripts/activate'
-    //                 sh 'pip install --user -r requirements.txt'
-    //             }
-    //         }
-
-    //         stage('Test') {
-    //             steps {
-    //                 sh 'python ProjectManagement/manage.py test'
-    //             }
-    //         }
-    //     }
-    // }
+   
