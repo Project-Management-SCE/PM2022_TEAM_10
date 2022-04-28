@@ -1,0 +1,71 @@
+{% extends 'admin_base.html' %}
+
+
+{% block content %}
+<!-- <section id="hero">
+</section> -->
+
+<div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            כל הפוסטים
+        </div>
+        
+        <div class="card-body" >
+            <table id="datatablesSimple" style="text-align:right;" >
+                <thead>
+                    <tr>
+
+                        <th>
+                        
+                        </th>
+                        <th >
+                            שם משתמש
+                        </th>
+                        <th>
+                            עיר
+                        </th>
+                        <th>
+                            קטגוריה
+                        </th>
+                        <th>
+                            מספר
+                        </th>
+                        <th>
+                            תאריך
+                        </th>
+                    </tr>
+                </thead>
+                <tbody >
+                {%for item in posts%}     <!--Every req is a tuple (req,user)-->
+                <tr>
+                        <td>
+                            <input type="submit" class="btn btn-outline-danger" value="פרטים"  onclick="location.href='{% url 'AdminPostDetails' item.id %}';" >
+                        </td>
+                        <td>
+                            {{item.user.user.username }}
+                        </td>
+                        <td>
+                            {{item.city }}
+                        </td>
+                        <td>
+                            {{item.category }}
+                        </td>
+                        <td>
+                            {{item.id }}
+                        </td>
+                        <td>
+                            {{ item.date }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        
+        </div>
+
+</div>
+
+
+
+{%endblock%}
