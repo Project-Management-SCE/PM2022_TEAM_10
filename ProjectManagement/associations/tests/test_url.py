@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase,TestCase
 from django.urls import reverse, resolve
-from associations.views import All,profile,showRequest,volunteersRequests
+from associations.views import All,profile,showRequest,volunteersRequests,editAssociation,submitVolunteeringRequest,deleteVolRequest
 from accounts.models import User,HelpoUser,associationManager
 from associations.models import Association,volunteeringRequest
 
@@ -49,15 +49,23 @@ class TestUrls(TestCase):
         )
 
 
+
     
     def test_all_associations_page_url_is_resolved(self):
         url = reverse('All')
         self.assertEqual(resolve(url).func, All)
 
-
     def test_all_profile_url_is_resolved(self):
         url = reverse('profile', kwargs={'pk':self.assoObj.id})
         self.assertEqual(resolve(url).func, profile)
+    
+    def test_all_editAssociation_url_is_resolved(self):
+        url = reverse('editAssociation', kwargs={'pk':self.assoObj.id})
+        self.assertEqual(resolve(url).func, editAssociation)
+    
+    def test_all_volunteersRequest_url_is_resolved(self):
+        url = reverse('submitVolunteeringRequest', kwargs={'pk':self.assoObj.id})
+        self.assertEqual(resolve(url).func, submitVolunteeringRequest)
 
     def test_all_volunteersRequests_url_is_resolved(self):
         url = reverse('volunteersRequests', kwargs={'pk':self.assoObj.id})
@@ -66,3 +74,7 @@ class TestUrls(TestCase):
     def test_all_showRequest_url_is_resolved(self):
         url = reverse('showRequest', kwargs={'pk':self.assoObj.id, 'r_pk':self.reqObj.id})
         self.assertEqual(resolve(url).func, showRequest)
+
+    def test_all_deleteVolRequest_url_is_resolved(self):
+        url = reverse('deleteVolRequest', kwargs={'pk':self.reqObj.id})
+        self.assertEqual(resolve(url).func, deleteVolRequest)
