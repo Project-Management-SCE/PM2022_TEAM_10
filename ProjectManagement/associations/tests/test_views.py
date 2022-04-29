@@ -22,6 +22,7 @@ class TestViews(TestCase):
             info='',
             email='asso1@associations.com'
         )
+        user1 = User.objects.create_user(username='username', password='password')     
 
         self.UserObj = User.objects.create(
             username = 'jimb',
@@ -32,15 +33,28 @@ class TestViews(TestCase):
         )
 
         self.associationManagerObj = associationManager.objects.create(
-            user = self.UserObj,
+            user = user1,
             association_number = '123456'
         )
 
-        # user1 = User.objects.create_user(username='username', password='password')     
 
         self.HelpoUserObj = HelpoUser.objects.create(
             user = self.UserObj,
             city = "BS"
+        )
+
+        self.assoObj2 = Association.objects.create(
+            id = '123456',
+            manager= self.associationManagerObj,
+            name='asso1',
+            category='category1',
+            vol_num='10',
+            city = 'Tel Aviv',
+            street= 'Dizengoff',
+            apartment='54',
+            phone='0501231231',
+            info='',
+            email='asso1@associations.com'
         )
         
         self.reqObj = volunteeringRequest.objects.create(
@@ -50,7 +64,7 @@ class TestViews(TestCase):
             info ="sdfsdfs"
         )
 
-
+        
         self.client = Client() # Create cliend
 
         self.profile_url=reverse('profile', kwargs={'pk':self.assoObj.id})
@@ -60,6 +74,8 @@ class TestViews(TestCase):
         self.show_request_url = reverse('showRequest',kwargs={'pk':self.assoObj.id, 'r_pk':self.reqObj.id})
         # self.submit_request_url = reverse('submitVolunteeringRequest',kwargs={'pk':self.assoObj.id})
         self.deleteVolRequest_url = reverse('deleteVolRequest',kwargs={'pk':self.reqObj.id})
+        self.edit_association_url = reverse('editAssociation',kwargs={'pk':self.assoObj2.id})
+
 
 
     def test_index(self):
@@ -87,6 +103,18 @@ class TestViews(TestCase):
         self.assertEqual(self.assoObj,response.context['asso_obj'])
         self.assertEqual(self.reqObj,response.context['request'])
         self.assertTemplateUsed("showRequest.html")
+
+    def test_edit_association(self):
+        self.client.login(username="username",password="password")
+        response = self.client.get(self.edit_association_url,follow=True)  
+        self.assertEqual(200,response.status_code)
+        self.assertEqual(self.assoObj2,response.context['obj'])
+        self.assertTemplateUsed("updateAssoDetails.html")
+
+    def test_edit_association_error(self):
+        response = self.client.get(self.edit_association_url,follow=True)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("error_page.html")
     
     # def test_deleteVolRequest_url(self):
     #     response = self.client.get(self.deleteVolRequest_url)  

@@ -5,6 +5,3 @@ omit=
     */assets/*
     */migrations/*
     */__init__.py
-    */ProjectManagement/settings.py
-    */ProjectManagement/urls.py
-    */manage.py

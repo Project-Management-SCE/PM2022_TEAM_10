@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render
 from home.models import Category
 from accounts.models import HelpoUser
 from django.core.exceptions import ObjectDoesNotExist
+from .forms import associationUpdateForm
 
 # Create your views here.
 
@@ -89,3 +90,25 @@ def deleteVolRequest(request,pk):
         return render(request,"error_page.html",{})
     req.delete()
     return redirect('volunteersRequests',pk=asso_pk)
+
+def editAssociation(request,pk):
+    asso_obj = Association.objects.get(id=pk)
+    if request.user != asso_obj.manager.user:   # Restrict the accses only for admins
+        return render(request,"error_page.html",{})
+
+    if request.method == 'POST':
+        form = associationUpdateForm(request.POST, instance=asso_obj)
+
+        if form.is_valid():
+            form.save()
+            return redirect('profile',pk=asso_obj.id)
+    
+    else:
+        form=associationUpdateForm(instance=asso_obj)
+
+    context = {
+                'form' : form,
+                'obj':asso_obj,
+            }
+
+    return render(request,"updateAssoDetails.html",context)
