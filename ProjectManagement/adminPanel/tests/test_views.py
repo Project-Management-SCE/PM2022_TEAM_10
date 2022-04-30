@@ -4,7 +4,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from posts.models import Post
 from accounts.models import User,HelpoUser
-from home.models import Category
+#from home.models import Category
 from django.test.client import RequestFactory
 import datetime 
 
@@ -37,16 +37,16 @@ class TestViews(TestCase):
         user1.save()
         
         #create Category
-        self.category=Category.objects.create(
-            name="my new category"
-        )
+        # self.category=Category.objects.create(
+        #     name="my new category"
+        # )
         
         #create post object
         self.post=Post.objects.create(
             user=self.HelpoUserObj,
             city= "Tel-Aviv",
             info="i am writing a new post!",
-            category=self.category,
+           # category=self.category,
             date=datetime.date.today()
         )
         

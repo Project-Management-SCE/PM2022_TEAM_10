@@ -1,5 +1,4 @@
-from multiprocessing import context
-from home.models import Category
+from posts.models import Category
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from .forms import createPostForm
@@ -18,7 +17,8 @@ def createPost(request):
             instance = form.save(commit=False)
             instance.user = user_obj.helpouser
             category_id=form.cleaned_data['category']
-            if category_id!='0':
+            print(category_id)
+            if category_id!=None:
                 instance.category = Category.objects.get(id=category_id)
             instance.date = datetime.date.today()
             instance.save()

@@ -1,11 +1,10 @@
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
-from django.contrib.auth.models import auth
 from accounts.models import HelpoUser,User,associationManager
 from accounts.forms import UserUpdateform, HelpoUserUpdateform
-from posts.models import Post
+from posts.models import Post,Category
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ObjectDoesNotExist
+from .forms import Categoryform
 
 
 # Create your views here.
@@ -90,3 +89,59 @@ def AdminDeletePost(request,pk):
     
     req.delete()
     return redirect('posts')
+
+
+##################### Categories ###############################
+
+def categories(request):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+    form = Categoryform()
+    if request.method=='POST':
+        form = Categoryform(request.POST)
+        
+        if form.is_valid():
+            instance = form.save()    
+            form = Categoryform()
+            return redirect('categories')
+            
+    context={
+        'form':form,
+        'objects':Category.objects.all()
+    }
+    return render(request, 'categoryFormPage.html',context)
+
+def editCategory(request,pk):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+    
+    c = Category.objects.get(id=pk)
+    if request.method == 'POST':
+        form = Categoryform(request.POST, instance=c)
+
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+    
+    else:
+        form=Categoryform(instance=c)
+
+    context = {
+                'form' : form,
+                'obj':c,
+            }
+
+    return render(request, 'editCategory.html', context)
+
+ 
+def deleteCategory(request,pk):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+  
+    try:
+        req = Category.objects.get(id=pk)
+    except ObjectDoesNotExist as e:
+            return redirect('/categories')
+    
+    req.delete()
+    return redirect('categories')
