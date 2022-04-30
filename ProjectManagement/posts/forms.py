@@ -1,13 +1,10 @@
-from unicodedata import category
 from django import forms
-from .models import Post
-from home.models import Category
-from .models import create_choices
+from .models import Post,Category
 
 
 class createPostForm(forms.ModelForm):
-    category=forms.ChoiceField(choices=create_choices())
     class Meta():
         model = Post
-        fields = ['info','city','is_asking']
+        fields = ['info','city','is_asking','category']
   
+

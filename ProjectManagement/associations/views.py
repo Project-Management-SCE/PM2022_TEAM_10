@@ -3,7 +3,7 @@ from .models import Association,volunteeringRequest
 from django.contrib.auth.decorators import login_required
 from .forms import volunteeringRequestform
 from django.shortcuts import redirect, render
-from home.models import Category
+#from home.models import Category
 from accounts.models import HelpoUser
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import associationUpdateForm

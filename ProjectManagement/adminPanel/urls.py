@@ -10,5 +10,7 @@ urlpatterns = [
     path("AdminPostDetails/<str:pk>/", views.AdminPostDetails, name="AdminPostDetails"), 
     path("AdminDeletePost/<str:pk>/", views.AdminDeletePost, name="AdminDeletePost"), 
     path("AdminUpdateHelpoUser/<str:pk>/", views.AdminUpdateHelpoUser, name="AdminUpdateHelpoUser"), 
-
+    path("categories", views.categories, name="categories"),
+    path("editCategory/<str:pk>/", views.editCategory, name="editCategory"), 
+    path("deleteCategory/<str:pk>", views.deleteCategory, name="deleteCategory"),
 ]
