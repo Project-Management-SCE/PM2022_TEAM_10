@@ -5,13 +5,20 @@ from . import views
 urlpatterns = [
     path("", views.adminPanel, name="adminPanel"), # View 1 
     path("helpo_users", views.helpo_users, name="helpo_users"), # View 2
+    path("AdminUpdateHelpoUser/<str:pk>/", views.AdminUpdateHelpoUser, name="AdminUpdateHelpoUser"), 
     path("manager_users", views.manager_users, name="manager_users"), # View 3
+    path("waiting_manager_users", views.waiting_manager_users, name="waiting_manager_users"),
+    path("ApproveManager/<str:pk>/", views.ApproveManager, name="ApproveManager"), 
+    path("delete_approve_request/<str:pk>/", views.delete_approve_request, name="delete_approve_request"), 
+        
     path("posts", views.adminPosts, name="posts"), # View 3
     path("AdminPostDetails/<str:pk>/", views.AdminPostDetails, name="AdminPostDetails"), 
     path("AdminDeletePost/<str:pk>/", views.AdminDeletePost, name="AdminDeletePost"), 
-    path("AdminUpdateHelpoUser/<str:pk>/", views.AdminUpdateHelpoUser, name="AdminUpdateHelpoUser"), 
+    
     path("categories", views.categories, name="categories"),
     path("editCategory/<str:pk>/", views.editCategory, name="editCategory"), 
     path("deleteCategory/<str:pk>", views.deleteCategory, name="deleteCategory"),
     path("searchAssociation", views.searchAsso, name="searchAsso"),
 ]
+
+
