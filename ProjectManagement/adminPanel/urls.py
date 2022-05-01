@@ -13,4 +13,5 @@ urlpatterns = [
     path("categories", views.categories, name="categories"),
     path("editCategory/<str:pk>/", views.editCategory, name="editCategory"), 
     path("deleteCategory/<str:pk>", views.deleteCategory, name="deleteCategory"),
+    path("searchAssociation", views.searchAsso, name="searchAsso"),
 ]
