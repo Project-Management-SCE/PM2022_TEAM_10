@@ -14,19 +14,13 @@ def adminPanel(response):
     return render(response,"admin_index.html",{})
 
 
+#############################helpo users###########################3
+
 def helpo_users(response):
     if not response.user.is_superuser:  # Restrict the accses only for admins
         return render(response,"admin_error.html",{})
     helpo_users = HelpoUser.objects.all()
     return render(response,"admin_helpo_users.html",{'users':helpo_users})
-
-
-def manager_users(response):
-    if not response.user.is_superuser:  # Restrict the accses only for admins
-        return render(response,"admin_error.html",{})
-    association_users = associationManager.objects.all()
-    return render(response,"admin_manager_users.html",{'users':association_users})
-
 
 def AdminUpdateHelpoUser(request, pk):  # pk - primary key
     if not request.user.is_superuser:   # Restrict the accses only for admins
@@ -55,9 +49,51 @@ def AdminUpdateHelpoUser(request, pk):  # pk - primary key
 
     return render(request, 'registration/updateHelpoUser.html', context)
 
-    #need to add update for asso manager
+
+#################manager user##############################
+
+def manager_users(response):
+    if not response.user.is_superuser:  # Restrict the accses only for admins
+        return render(response,"admin_error.html",{})
+    association_users = associationManager.objects.all()
+    return render(response,"admin_manager_users.html",{'users':association_users})
+
+#need to add update for asso manager
+    
+def waiting_manager_users(response):
+    if not response.user.is_superuser:  # Restrict the accses only for admins
+        return render(response,"admin_error.html",{})
+    users = User.objects.filter(is_active__in=[False],is_association_manager__in=[True])
+    asso_users= associationManager.objects.filter(user__in=users)
+    return render(response,"waiting_manager_users.html",{'users':asso_users})
+
+def ApproveManager(request,pk):
+    if not request.user.is_superuser:  # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+    
+    try:
+        req = User.objects.get(id=pk)
+    except ObjectDoesNotExist as e:
+            return redirect('waiting_manager_users')
+    
+    req.is_active=True
+    req.save()
+    return redirect('waiting_manager_users')
+    
+def delete_approve_request(request,pk):
+    if not request.user.is_superuser:  # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+    
+    try:
+        req = User.objects.get(id=pk)
+    except ObjectDoesNotExist as e:
+            return redirect('waiting_manager_users')
+    
+    req.delete()
+    return redirect('waiting_manager_users')
     
     
+##############################posts###########################    
     
 def adminPosts(response):
     if not response.user.is_superuser:   # Restrict the accses only for admins
@@ -111,6 +147,7 @@ def categories(request):
     }
     return render(request, 'categoryFormPage.html',context)
 
+
 def editCategory(request,pk):
     if not request.user.is_superuser:   # Restrict the accses only for admins
         return render(request,"admin_error.html",{})
@@ -141,7 +178,7 @@ def deleteCategory(request,pk):
     try:
         req = Category.objects.get(id=pk)
     except ObjectDoesNotExist as e:
-            return redirect('/categories')
+            return redirect('categories')
     
     req.delete()
     return redirect('categories')
