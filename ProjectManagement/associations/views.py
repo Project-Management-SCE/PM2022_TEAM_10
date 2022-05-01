@@ -93,7 +93,7 @@ def deleteVolRequest(request,pk):
 
 def editAssociation(request,pk):
     asso_obj = Association.objects.get(id=pk)
-    if request.user != asso_obj.manager.user:   # Restrict the accses only for admins
+    if request.user != asso_obj.manager.user and not request.user.is_superuser:   # Restrict the accses only for admins
         return render(request,"error_page.html",{})
 
     if request.method == 'POST':

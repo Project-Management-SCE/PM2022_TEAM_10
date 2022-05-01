@@ -5,6 +5,7 @@ from posts.models import Post,Category
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import Categoryform
+from associations.models import Association
 
 
 # Create your views here.
@@ -182,3 +183,20 @@ def deleteCategory(request,pk):
     
     req.delete()
     return redirect('categories')
+
+    ######## Association ##############
+
+def searchAsso(request):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+        
+    if request.method == 'POST':
+        input_val = request.POST.get('associationId')
+        try:
+            obj = Association.objects.get(id=input_val)
+        except ObjectDoesNotExist as e:
+            return render(request, 'admin_editAsso.html',{})
+
+        return  render(request, 'admin_editAsso.html',{'obj':obj})
+        
+    return render(request, 'admin_editAsso.html',{})
