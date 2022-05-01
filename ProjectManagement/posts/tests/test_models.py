@@ -1,7 +1,5 @@
-from unicodedata import category
 from django.test import TestCase
-from posts.models import Post
-from home.models import Category
+from posts.models import Post,Category
 from accounts.models import User,HelpoUser
 import datetime
 
@@ -37,6 +35,10 @@ class TestModels(TestCase):
             date=datetime.date.today()
         )
     
+        #test method:
+    def test_catagory(self):
+        self.assertEqual(self.category.name, "my new category")
+        self.assertEqual(self.category.__str__(),self.category.name)
     #test method:
     def test_post(self):
         self.assertFalse(self.post.is_asking)
@@ -46,3 +48,4 @@ class TestModels(TestCase):
         self.assertEqual(self.post.info,"i am writing a new post!")
         self.assertEqual(self.post.city,"Tel-Aviv")
           
+    

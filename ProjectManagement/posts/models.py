@@ -1,17 +1,13 @@
-from random import choices
-from unicodedata import category
 from django.db import models
 from accounts.models import HelpoUser
-from home.models import Category
 
 # Create your models here.
 
-def create_choices():
-    choices=[("0","choose category")]
-    for obj in Category.objects.all():
-        choices.append((obj.id,obj.name))
-    return choices
+class Category(models.Model):
+    name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
 
 class Post(models.Model):
     user = models.ForeignKey(HelpoUser, on_delete=models.CASCADE, default=None,null=True)

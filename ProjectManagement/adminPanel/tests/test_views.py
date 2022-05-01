@@ -4,7 +4,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from posts.models import Post
 from accounts.models import User,HelpoUser
-from home.models import Category
+#from home.models import Category
 from django.test.client import RequestFactory
 import datetime 
 
@@ -37,16 +37,16 @@ class TestViews(TestCase):
         user1.save()
         
         #create Category
-        self.category=Category.objects.create(
-            name="my new category"
-        )
+        # self.category=Category.objects.create(
+        #     name="my new category"
+        # )
         
         #create post object
         self.post=Post.objects.create(
             user=self.HelpoUserObj,
             city= "Tel-Aviv",
             info="i am writing a new post!",
-            category=self.category,
+           # category=self.category,
             date=datetime.date.today()
         )
         
@@ -59,6 +59,7 @@ class TestViews(TestCase):
         self.PostDetails_url=reverse("AdminPostDetails", kwargs={'pk':self.post.id})
         self.FakePostDetails_url=reverse("AdminPostDetails", kwargs={'pk':-1})
         self.deletePost_url = reverse('AdminDeletePost',kwargs={'pk':self.post.id})
+        self.edit_asso_url = reverse('searchAsso')
      
     def test_adminPosts_with_loogin(self):
         response = self.adminclient.get(self.AllPosts_url)  
@@ -66,7 +67,7 @@ class TestViews(TestCase):
         self.assertEqual(Post.objects.get(id=self.post.id),response.context['posts'].get(id=self.post.id))
         self.assertTemplateUsed("admin_posts.html")
     
-    def test_adminPosts(self):
+    def test_adminPosts_without_login(self):
         response = self.client.get(self.AllPosts_url)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_error.html")
@@ -92,8 +93,17 @@ class TestViews(TestCase):
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_error.html")
     
-    
-    def test_AdminDeletePost_without_login(self):
+    def test_AdminDeletePost_with_login(self):
         response = self.adminclient.get(self.deletePost_url,follow=True)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_posts.html")
+    
+    def test_AdminEditAsso_without_login(self):
+        response = self.client.get(self.edit_asso_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+    
+    def test_AdminEditAsso_with_login(self):
+        response = self.adminclient.get(self.edit_asso_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_editAsso.html")

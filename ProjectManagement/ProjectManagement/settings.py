@@ -82,13 +82,41 @@ WSGI_APPLICATION = 'ProjectManagement.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     # 'default': {
+#     #     'ENGINE': 'django.db.backends.sqlite3',
+#     #     'NAME': BASE_DIR / 'db.sqlite3',
+#     # }
+#         'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME':'vpiiqdsu',
+#         'USER':'vpiiqdsu',
+#         'PASSWORD':'aThWHKALVcOKlnkNQGJpYIdJLfhDWTv2',
+#         'HOST':'abul.db.elephantsql.com',
+#         'PORT':'5432'
+        
+#     }
+# }
 
+DATABASES = {
+        # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
+    'default': {
+        'ENGINE': 'djongo',
+        "CLIENT": {
+           "name": 'testHelpo1',
+           "host": 'mongodb+srv://Helpo1PM10:Pass0805@cluster0.wo2se.mongodb.net/testHelpo1?ssl=true&ssl_cert_reqs=CERT_NONE',
+           "username": 'Helpo1PM10',
+           "password": 'Pass0805',
+           "authMechanism": "SCRAM-SHA-1",
+        }
+    },
+}
+import sys
+if 'test' in sys.argv or 'test_coverage' in sys.argv: #Covers regular testing and django-coverage
+    DATABASES['default']['ENGINE'] = 'django.db.backends.sqlite3'
 
 # DATABASES = {
 #     'default': {

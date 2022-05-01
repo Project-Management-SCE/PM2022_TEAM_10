@@ -3,7 +3,7 @@ from .models import Association,volunteeringRequest
 from django.contrib.auth.decorators import login_required
 from .forms import volunteeringRequestform
 from django.shortcuts import redirect, render
-from home.models import Category
+#from home.models import Category
 from accounts.models import HelpoUser
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import associationUpdateForm
@@ -93,7 +93,7 @@ def deleteVolRequest(request,pk):
 
 def editAssociation(request,pk):
     asso_obj = Association.objects.get(id=pk)
-    if request.user != asso_obj.manager.user:   # Restrict the accses only for admins
+    if request.user != asso_obj.manager.user and not request.user.is_superuser:   # Restrict the accses only for admins
         return render(request,"error_page.html",{})
 
     if request.method == 'POST':
