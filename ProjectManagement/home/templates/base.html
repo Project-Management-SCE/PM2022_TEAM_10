@@ -60,17 +60,17 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="{% url 'index' %}">Home</a></li>
-          <li><a class="nav-link scrollto" href="#about">About</a></li>
+          <li><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+          <li><a class="nav-link" href="#about">About</a></li>
           
           {% if user.is_authenticated and user.is_helpo_user %}
-          <li><a class="nav-link scrollto" href="{% url 'showMyPosts' user.id %}">My Posts</a></li>
+          <li><a class="nav-link" href="{% url 'showMyPosts' user.id %}">My Posts</a></li>
           {% endif %}
 
-          {% comment %} <li><a class="nav-link scrollto " href="#portfolio">Portfolio</a></li> {% endcomment %}
-          {% comment %} <li><a class="nav-link scrollto" href="#team">Team</a></li> {% endcomment %}
-          <li><a class="nav-link scrollto " href="{% url 'All' %}">Associations</a></li>
-          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+          {% comment %} <li><a class="nav-link" href="#portfolio">Portfolio</a></li> {% endcomment %}
+          {% comment %} <li><a class="nav-link" href="#team">Team</a></li> {% endcomment %}
+          <li><a class="nav-link" href="{% url 'All' %}">Associations</a></li>
+          <li><a class="nav-link" href="#contact">Contact</a></li>
 
           {% comment %} <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
             <ul>

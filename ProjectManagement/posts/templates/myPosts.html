@@ -21,12 +21,24 @@
                     <p class="card-text">{{ item.info }}</p>
                     <a href="{% url 'editPost' item.id %}" class="btn btn-outline-danger">edit</a>
                 </div>
-
+                <div class="card-footer" style="text-align:right;">
+                    
+                    {% if item.is_asking %}
+                        פוסט בקשת עזרה
+                    {% else %}
+                        פוסט הצעת עזרה
+                    {% endif %}
+                    
+                    <span style="float:left;">
+                        {{ item.city }}
+                    </span>
+                </div>
+                
             </div>
             <br>
             {% endfor %}
         </div>
-      </div>
+    </div>
 </section><!-- End About Section -->
 
 

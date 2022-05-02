@@ -35,7 +35,7 @@ def showMyPosts(request, pk):
     if request.user != user.user:
         return render(request,"error_page.html",{})
 
-    posts = Post.objects.all().filter(user = user).order_by('date')
+    posts = Post.objects.all().filter(user = user).order_by('-date') # '-' means reverse order 
 
     context = {
         'posts':posts,
@@ -56,6 +56,8 @@ def editPost(request, pk):
         form = editPostForm(request.POST, instance=post)
 
         if form.is_valid():
+            updatePostDate(post)
+            
             form.save()
             return redirect('showMyPosts',pk = user_obj.user_id)
 
@@ -67,3 +69,9 @@ def editPost(request, pk):
                 'obj':user_obj,
             }
     return render(request,"editPost.html",context)
+
+
+
+def updatePostDate(post):
+    post.date = datetime.date.today()
+    post.save()
