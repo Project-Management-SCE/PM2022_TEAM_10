@@ -18,10 +18,10 @@ def createPost(request):
         if form.is_valid():
             instance = form.save(commit=False)
             instance.user = user_obj.helpouser
-            category_id=form.cleaned_data['category']
-            print(category_id)
-            if category_id!=None:
-                instance.category = Category.objects.get(id=category_id)
+            # category_id=form.cleaned_data['category']
+            # print(category_id)
+            # if category_id!=None:
+            #     instance.category = Category.objects.get(id=category_id)
             instance.date = datetime.date.today()
             instance.save()
         return redirect('index')
