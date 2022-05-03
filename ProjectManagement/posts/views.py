@@ -1,12 +1,70 @@
+from unicodedata import category
 from posts.models import Category,Post
 from accounts.models import HelpoUser
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from .forms import createPostForm, editPostForm
-
+from .forms import createPostForm,filterPostForm
+from django.core.paginator import Paginator
 import datetime
 # Create your views here.
+POSTS_PER_PAGE = 3
+Cat_Filter = None
+City_Filter = None
+Asking_Filter = None
 
+def resetFilters(request):
+    global Cat_Filter,City_Filter,Asking_Filter
+    Cat_Filter = None
+    City_Filter = None
+    Asking_Filter = None
+    return redirect('showAllPosts')
+
+def updateFilters(cat,city,ask):
+    global Cat_Filter,City_Filter,Asking_Filter
+    Cat_Filter=cat
+    City_Filter=city
+    Asking_Filter=ask
+
+
+def getFilterdPosts():
+    posts = Post.objects.all()
+    if Cat_Filter:
+        posts=posts.filter(category=Cat_Filter)
+    if City_Filter:
+        posts=posts.filter(city=City_Filter)
+    if Asking_Filter:
+        posts=posts.filter(is_asking__in=[Asking_Filter])
+    return posts.order_by('-date')
+
+
+def showAllPosts(request):
+    ##filter section
+    form = filterPostForm()
+    if request.method=='POST':
+        form = filterPostForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            updateFilters(
+                instance.category,
+                instance.city,
+                instance.is_asking
+            )
+            posts = getFilterdPosts()
+    else:
+        posts = getFilterdPosts()
+
+    posts_paginator = Paginator(posts,POSTS_PER_PAGE)
+    page_num = request.GET.get('page')
+    page = posts_paginator.get_page(page_num)
+    context ={
+        'posts':posts,
+        'page':page,
+        'form':form,
+        'cat':Cat_Filter,
+        'city':City_Filter,
+        'asl':Asking_Filter
+    }
+    return render(request,'allPosts.html',context)
 
 @login_required
 def createPost(request):
@@ -18,10 +76,6 @@ def createPost(request):
         if form.is_valid():
             instance = form.save(commit=False)
             instance.user = user_obj.helpouser
-            # category_id=form.cleaned_data['category']
-            # print(category_id)
-            # if category_id!=None:
-            #     instance.category = Category.objects.get(id=category_id)
             instance.date = datetime.date.today()
             instance.save()
         return redirect('index')
@@ -53,7 +107,7 @@ def editPost(request, pk):
         return render(request,"error_page.html",{})
 
     if request.method == 'POST':
-        form = editPostForm(request.POST, instance=post)
+        form = createPostForm(request.POST, instance=post)
 
         if form.is_valid():
             updatePostDate(post)
@@ -62,7 +116,7 @@ def editPost(request, pk):
             return redirect('showMyPosts',pk = user_obj.user_id)
 
     else:
-        form = editPostForm(instance=post)
+        form = createPostForm(instance=post)
     
     context = {
                 'form' : form,
@@ -75,3 +129,6 @@ def editPost(request, pk):
 def updatePostDate(post):
     post.date = datetime.date.today()
     post.save()
+
+
+
