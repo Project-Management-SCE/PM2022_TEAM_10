@@ -43,6 +43,7 @@ class TestViews(TestCase):
         self.createPost_url = reverse('createPost')
         self.showMyPosts_url = reverse('showMyPosts', kwargs={'pk':self.HelpoUserObj.user.id})
         self.editPost_url = reverse('editPost', kwargs={'pk':self.post.id})
+        self.showAllPost_url = reverse('showAllPosts')
 
 
     def test_createPost(self):
@@ -75,3 +76,7 @@ class TestViews(TestCase):
         self.client.login(username="username",password="password")
         self.assertTemplateUsed("error_page.html")
     
+    def test_showAllPosts(self):
+        response = self.client.get(self.showAllPost_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("allPosts.html")

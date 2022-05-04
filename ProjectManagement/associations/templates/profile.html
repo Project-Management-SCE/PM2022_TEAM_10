@@ -6,6 +6,13 @@
 {% endblock %}
 
 {% block content %}
+<style>
+    .btn_prf
+    {
+        width:180px;
+        margin-top:3px;
+    }
+</style>
 <section id="contact" class="contact">
     <div class="container emp-profile">
                     <div class="row">
@@ -39,28 +46,29 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="profile-work">
-                                {%if user.is_authenticated%}
-                                {%if user == obj.manager.user or user.is_superuser%}
-                                    {% comment %} <input type="submit" class="btn btn-danger" value="Edit Details" style="margin-left:22%; width:56%;"/> {% endcomment %}
-                                    <a href="{% url 'editAssociation' obj.id %}">
-                                        <button type="submit" class="btn btn-danger" style="margin-left:15%; margin-top:20px; ">
-                                            Edit profile</button>
-                                    </a>
-                                {%endif%}
-                                {%if user == obj.manager.user%}
-                                    <a href="{% url 'volunteersRequests' obj.id %}">
-                                        <button type="submit" class="btn btn-danger" style="margin-left:15%; margin-top:20px; ">
-                                            Volunteer Requests</button>
-                                    </a>
-                                {%endif%}
-                                    {%if obj.manager and user.is_helpo_user%}
-                                        <a href="{% url 'submitVolunteeringRequest' obj.id %}">
-                                            <button type="submit" class="btn btn-danger" style="margin-left:22%; margin-top:10px; width:56%;">
-                                                volunteer Request</button>
+                                <div class="btn-group-vertical" role="group" aria-label="Basic example" style="padding-left:17%;">
+                                    {%if user.is_authenticated%}
+                                    {%if user == obj.manager.user or user.is_superuser%}
+                                        {% comment %} <input type="submit" class="btn btn-danger " value="Edit Details" style="margin-left:22%; width:56%;"/> {% endcomment %}
+                                        <a href="{% url 'editAssociation' obj.id %}">
+                                            <button type="submit" class="btn btn-danger btn_prf" >
+                                                Edit profile</button>
                                         </a>
                                     {%endif%}
-                                {%endif%}
-
+                                    {%if user == obj.manager.user%}
+                                        <a href="{% url 'volunteersRequests' obj.id %}">
+                                            <button type="submit" class="btn btn-danger btn_prf" >
+                                                Volunteer Requests</button>
+                                        </a>
+                                    {%endif%}
+                                        {%if obj.manager and user.is_helpo_user%}
+                                            <a href="{% url 'submitVolunteeringRequest' obj.id %}">
+                                                <button type="submit" class="btn btn-danger btn_prf">
+                                                    volunteer Request</button>
+                                            </a>
+                                        {%endif%}
+                                    {%endif%}
+                                </div>
 
                                 <!--אם נרצה לרשום משהו בצד-->
                                 {% comment %} <p>WORK LINK</p>
