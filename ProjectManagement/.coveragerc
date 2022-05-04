@@ -5,3 +5,4 @@ omit=
     */assets/*
     */migrations/*
     */__init__.py
+    */site-packages/*

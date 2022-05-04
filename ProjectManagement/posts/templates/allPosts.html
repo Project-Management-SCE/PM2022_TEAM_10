@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .td_spc{
+        width:5%;
+    }
+    .td_sep{
+        width:15%;
+    }
+</style>
+<section id="contact" class="contact" >
+    <div class="container" style="margin-top: 70px; align-items: center; justify-content: center;">
+        <div class="section-title"> 
+            <h3>
+                <span><b>דף הפוסטים</b></span>
+            </h3>
+
+        </div>
+        <div class="row">
+
+            <div class="col-md-2" >
+                <br>
+                <br>
+                <h4><b>:סינון פוסטים</b></h4>
+                {% load crispy_forms_tags %}
+                <form method = "POST" >
+                    {%csrf_token%}
+                    <div class="row"style="display: flex;align-items: center;justify-content: center;">
+                        <fieldset class="form-group">
+                            {{form|crispy}}
+                            <button type="submit" class="btn btn-outline-danger" style="margin-top:10px;">סנן</button>
+                        </fieldset>
+                    </div>
+                </form>
+                <hr>
+                <div style ="text-align:right;">
+                    <b>
+                        {%if cat or city or ask%}
+                            :מסונן לפי
+                        {%endif%}
+                    </b>
+                    <br>
+                    {%if cat%}
+                        {{cat}}
+                        <br>
+                    {%endif%}
+                    {%if city%}
+                        {{city}}
+                    <br>
+                    {%endif%}
+                    {%if cat or city or ask%}
+                        {%if ask%}
+                            מבקשי סיוע
+                        {%else%}
+                            נותני סיוע
+                        {%endif%}
+                    {%endif%}
+                </div>
+            </div>
+            <div class="col-md-8" style="text-align:center;">
+                <a href="{% url 'createPost'%}" class="btn btn-danger" >צור פוסט</a>
+                <br>
+                <br>
+
+                {% for item in page.object_list %}
+                <div class="card">
+                    <div class="card-header">
+                        <span style="float:left;">
+                            <b>{{ item.category.name }}</b>
+                        </span>
+
+                        <b><span style="float:right;">
+                            {% if item.is_asking %}
+                                בקשת עזרה
+                            {% else %}
+                                הצעת עזרה
+                            {% endif %}
+                        </span></b>
+                    </div>
+                    <div class="card-body" style="text-align:right;">
+                        <h4 class="card-title"></h4>
+                        <table style="float:right;">
+                            <thead>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{item.city}}</td>
+                                <td class="td_spc"></td>
+                                <td><b>:עיר<b></td>
+                                <td class="td_sep"></td>
+                                <td>{{item.user.user.first_name}} {{item.user.user.last_name}}</td>
+                                <td class="td_spc"></td>
+                                <td><b>
+                                    {% if item.is_asking %}
+                                        :שם המבקש
+                                    {% else %}
+                                        :שם המציע
+                                    {% endif %}
+                                    <b></td>
+                            </tr>
+                            <tr>
+                                <td>{{item.user.user.phone_number}}</td>
+                                <td class="td_spc"></td>
+                                <td><b>:פלאפון<b></td>
+                                <td class="td_sep"></td>
+                                <td>{{item.user.user.email}}</td>
+                                <td class="td_spc"></td>
+                                <td><b>:אימייל<b></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <hr/>
+                    <div class="card-body" style="text-align:right;">
+                        <p class="card-text">{{ item.info }}</p>
+                    </div>
+                    <div class="card-footer" style="text-align:right;">
+                        {%if request.user.id == item.user_id%}
+                        <a href="{% url 'editPost' item.id %}" class="btn btn-outline-danger btn-sm">עריכה</a>
+                        {%endif%}
+                        <span style="float:left;">
+                            <b>{{ item.date }}</b>
+                        </span>
+                    </div>
+                </div>
+                <br>
+                {% endfor %}
+                <h5 style="text-align:center;">{{page.number}} עמוד</h5>
+                <div style="text-align:center;">
+                    {%if page.has_next%}
+                    <a href="{% url 'showAllPosts'%}?page={{page.next_page_number}}" class="btn btn-outline-dark" style="width:80px;">הבא</a>
+                    {%endif%}
+                    {%if page.has_previous%}
+                    <a href="{% url 'showAllPosts'%}?page={{page.previous_page_number}}" class="btn btn-outline-dark" style="width:80px;">הקודם</a>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+</section><!-- End About Section -->
+
+
+
+{%endblock%}

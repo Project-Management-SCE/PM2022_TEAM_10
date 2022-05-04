@@ -4,36 +4,37 @@
 <section id="contact" class="contact" >
     <div class="container" style="margin-top: 70px; align-items: center; justify-content: center;">
         <div class="section-title"> 
-            <h3>Hello {{user_obj.username}}!
-                <br/>
-                <span>Here are your posts: </span>
+            <h3>
+                <span>הפוסטים שלי</span>
             </h3>
         </div>
 
-        <div class="container" style="margin-top: 70px; align-items: center; justify-content: center;">
+        <div class="container" style="margin-top: 70px; align-items: center; justify-content: center;width:50%;">
             {% for item in posts %}
             <div class="card">
                 <div class="card-header"  style="float: right;">
-                    {{ item.date }}
+                    <b>{{ item.date }}</b>
+
+                    <b><span style="float:right;">
+                        {% if item.is_asking %}
+                            בקשת עזרה
+                        {% else %}
+                            הצעת עזרה
+                        {% endif %}
+                    </span></b>
                 </div>
                 <div class="card-body" style="text-align:right;">
-                    <h4 class="card-title"><b>{{ item.category.name }}</b></h4>
+                    <h4 class="card-title"></h4>
                     <p class="card-text">{{ item.info }}</p>
                     <a href="{% url 'editPost' item.id %}" class="btn btn-outline-danger">edit</a>
                 </div>
                 <div class="card-footer" style="text-align:right;">
-                    
-                    {% if item.is_asking %}
-                        פוסט בקשת עזרה
-                    {% else %}
-                        פוסט הצעת עזרה
-                    {% endif %}
-                    
+                    <b>{{ item.category.name }}</b>
+
                     <span style="float:left;">
-                        {{ item.city }}
+                        <b>{{ item.city }}</b>
                     </span>
                 </div>
-                
             </div>
             <br>
             {% endfor %}
