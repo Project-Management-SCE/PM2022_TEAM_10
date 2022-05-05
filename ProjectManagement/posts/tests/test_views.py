@@ -2,8 +2,10 @@
 from urllib import response
 from django.test import TestCase, Client
 from django.urls import reverse
+from posts.views import updateFilters
 from accounts.models import User,HelpoUser
 from posts.models import Post,Category
+import posts.views as p
 import datetime
 
 
@@ -18,7 +20,6 @@ class TestViews(TestCase):
             phone_number = '0524619773',
             is_active = False
         )
-
 
         self.HelpoUserObj = HelpoUser.objects.create(
             user = self.user1,
@@ -44,6 +45,7 @@ class TestViews(TestCase):
         self.showMyPosts_url = reverse('showMyPosts', kwargs={'pk':self.HelpoUserObj.user.id})
         self.editPost_url = reverse('editPost', kwargs={'pk':self.post.id})
         self.showAllPost_url = reverse('showAllPosts')
+        self.resertFilters_url = reverse('resetFilters')
 
 
     def test_createPost(self):
@@ -80,3 +82,24 @@ class TestViews(TestCase):
         response = self.client.get(self.showAllPost_url)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("allPosts.html")
+
+    def test_showAllPostsWithData(self):
+        response = self.client.post(reverse('showAllPosts'), data ={})
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("allPosts.html")
+
+    def test_updateFilters(self):
+        p.updateFilters(self.category,"ofaqim",True)
+        self.assertEqual(self.category,p.Cat_Filter)
+        self.assertEqual("ofaqim",p.City_Filter)
+        self.assertTrue(p.Asking_Filter)
+
+    def test_resetFilters(self):
+        response = self.client.get(self.resertFilters_url,follow=True)  
+        self.assertEqual(200,response.status_code)
+        self.assertIsNone(p.Cat_Filter)
+        self.assertIsNone(p.City_Filter)
+        self.assertIsNone(p.Asking_Filter)
+        self.assertTemplateUsed("allPosts.html")
+    
+    

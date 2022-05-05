@@ -11,49 +11,49 @@
 <section id="contact" class="contact" >
     <div class="container" style="margin-top: 70px; align-items: center; justify-content: center;">
         <div class="section-title"> 
-            <h3>
+            <h2 style="font-size:24px;">
                 <span><b>דף הפוסטים</b></span>
-            </h3>
-
-        </div>
+            </h2>
+            </div>
         <div class="row">
 
-            <div class="col-md-2" >
+            <div class="col-md-2" style="text-align:right;">
                 <br>
                 <br>
-                <h4><b>:סינון פוסטים</b></h4>
+                <h5><b>:סינון פוסטים</b></h5>
                 {% load crispy_forms_tags %}
                 <form method = "POST" >
                     {%csrf_token%}
                     <div class="row"style="display: flex;align-items: center;justify-content: center;">
                         <fieldset class="form-group">
                             {{form|crispy}}
-                            <button type="submit" class="btn btn-outline-danger" style="margin-top:10px;">סנן</button>
+                            <button type="submit" class="btn btn-outline-dark" style="margin-top:10px;">סנן</button>
                         </fieldset>
                     </div>
                 </form>
                 <hr>
                 <div style ="text-align:right;">
-                    <b>
-                        {%if cat or city or ask%}
-                            :מסונן לפי
-                        {%endif%}
-                    </b>
-                    <br>
-                    {%if cat%}
-                        {{cat}}
-                        <br>
-                    {%endif%}
-                    {%if city%}
-                        {{city}}
-                    <br>
-                    {%endif%}
                     {%if cat or city or ask%}
+                        <b>
+                                :מסונן לפי
+                        </b>
+                        <br>
+                        {%if cat%}
+                            {{cat}}
+                            <br>
+                        {%endif%}
+                        {%if city%}
+                            {{city}}
+                        <br>
+                        {%endif%}
                         {%if ask%}
                             מבקשי סיוע
+                            <br>
                         {%else%}
                             נותני סיוע
+                            <br>
                         {%endif%}
+                        <a href="{% url 'resetFilters'%}" class="btn btn-outline-danger btn-sm" >אפס  סינון</a>
                     {%endif%}
                 </div>
             </div>

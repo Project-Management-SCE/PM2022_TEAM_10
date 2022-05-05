@@ -71,60 +71,41 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link" href="{% url 'index' %}">Home</a></li>
+          <li><a class="nav-link" href="{% url 'index' %}">דף הבית</a></li>
           <li><a class="nav-link" href="{% url 'resetFilters' %}">פוסטים</a></li>
-          
-          {% if user.is_authenticated and user.is_helpo_user %}
-          <li><a class="nav-link" href="{% url 'showMyPosts' user.id %}">My Posts</a></li>
-          {% endif %}
+
 
           {% comment %} <li><a class="nav-link" href="#portfolio">Portfolio</a></li> {% endcomment %}
           {% comment %} <li><a class="nav-link" href="#team">Team</a></li> {% endcomment %}
-          <li><a class="nav-link" href="{% url 'All' %}">Associations</a></li>
-          <li><a class="nav-link" href="#contact">Contact</a></li>
-
-          {% comment %} <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
-            <ul>
-              <li><a href="#">Drop Down 1</a></li>
-              <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
-                <ul>
-                  <li><a href="#">Deep Drop Down 1</a></li>
-                  <li><a href="#">Deep Drop Down 2</a></li>
-                  <li><a href="#">Deep Drop Down 3</a></li>
-                  <li><a href="#">Deep Drop Down 4</a></li>
-                  <li><a href="#">Deep Drop Down 5</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Drop Down 2</a></li>
-              <li><a href="#">Drop Down 3</a></li>
-              <li><a href="#">Drop Down 4</a></li>
-            </ul>
-          </li> {% endcomment %}
+          <li><a class="nav-link" href="{% url 'All' %}">עמותות</a></li>
+          <li><a class="nav-link" href="#contact">צור קשר</a></li>
 
           {% if not user.is_authenticated%}
-          <li><a class="nav-link scrollto" href="{% url 'pickType' %}">Sign Up</a></li>
+          <li><a class="nav-link scrollto" href="{% url 'pickType' %}">הרשמה</a></li>
           {%endif%}
 
           {% if user.is_authenticated %}
-          {% comment %} <li><a class="nav-link scrollto">Hello, {{user.username}}</a></li> {% endcomment %}
-          
-            <li style="color: aliceblue;">Hello {{user.username}}!</li>
-            {% if user.is_superuser %}
-              <li><a class="nav-link scrollto " href="{% url 'adminPanel' %}">Admin panel</a></li>
-            {%endif%}
-              <li><a class="nav-link scrollto" href="{% url 'logout' %}">Logout</a></li>
-            {%if user.is_association_manager%}
-              <li><a class="nav-link scrollto" href="{% url 'updateAssociationManager' user.id %}">Edit Account</a></li>
-              <li><a class="nav-link scrollto" href="{% url 'profile' user.associationmanager.association_number %}">My Association</a></li>
-            {%else%}
-              {%if not user.is_superuser%}
-               <li><a class="nav-link scrollto" href="{% url 'updateHelpoUser' user.id %}">Edit Account</a></li>
-              {%endif%}
-            {%endif%}
-
+            <li class="dropdown" ><a href="#"><span>אפשרויות</span> <i class="bi bi-chevron-down"></i></a>
+              <ul style="width:115px;">
+                {% if user.is_superuser %}
+                <li><a  href="{% url 'adminPanel' %}">דף האדמין</a></li>
+                {%endif%}
+                {%if user.is_association_manager%}
+                <li><a href="{% url 'updateAssociationManager' user.id %}">עריכת פרטים</a></li>
+                <li><a  href="{% url 'profile' user.associationmanager.association_number %}">העמותה שלי</a></li>
+                {%endif%}
+                {%if user.is_helpo_user %}
+                  <li><a href="{% url 'updateHelpoUser' user.id %}">עריכת פרטים</a></li>
+                  <li><a class="nav-link" href="{% url 'showMyPosts' user.id %}">הפוסטים שלי</a></li>
+                {%endif%}
+                <li ><a href="{% url 'logout' %}">התנתק</a></li>
+              </ul>
+            </li>
+          <li style="color: aliceblue;">!{{user.username}} ,שלום</li>
           {%else%}
-          <li><a class="nav-link scrollto " href="{% url 'login' %}">Login</a></li>
+          <li><a class="nav-link scrollto " href="{% url 'login' %}">התחבר</a></li>
           {%endif%}
+           
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->

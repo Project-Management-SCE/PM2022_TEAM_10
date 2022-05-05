@@ -155,9 +155,9 @@ AUTH_USER_MODEL = "accounts.User"
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'he'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Israel'
 
 USE_I18N = True
 
