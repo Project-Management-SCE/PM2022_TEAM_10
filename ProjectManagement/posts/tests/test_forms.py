@@ -40,3 +40,8 @@ class TestForms(TestCase):
         form = filterPostForm(data={'city':'ofaqim'})
         self.assertTrue(form.is_valid())
         self.assertEqual(len(form.errors),0)
+
+    def test_create_filterPostsform_without_data(self):
+        form = filterPostForm(data={})
+        self.assertTrue(form.is_valid())
+        self.assertEqual(len(form.errors),0)

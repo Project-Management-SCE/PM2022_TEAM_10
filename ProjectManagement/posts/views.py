@@ -12,60 +12,6 @@ Cat_Filter = None
 City_Filter = None
 Asking_Filter = None
 
-def resetFilters(request):
-    global Cat_Filter,City_Filter,Asking_Filter
-    Cat_Filter = None
-    City_Filter = None
-    Asking_Filter = None
-    return redirect('showAllPosts')
-
-def updateFilters(cat,city,ask):
-    global Cat_Filter,City_Filter,Asking_Filter
-    Cat_Filter=cat
-    City_Filter=city
-    Asking_Filter=ask
-
-
-def getFilterdPosts():
-    posts = Post.objects.all()
-    if Cat_Filter:
-        posts=posts.filter(category=Cat_Filter)
-    if City_Filter:
-        posts=posts.filter(city=City_Filter)
-    if Asking_Filter:
-        posts=posts.filter(is_asking__in=[Asking_Filter])
-    return posts.order_by('-date')
-
-
-def showAllPosts(request):
-    ##filter section
-    form = filterPostForm()
-    if request.method=='POST':
-        form = filterPostForm(request.POST)
-        if form.is_valid():
-            instance = form.save(commit=False)
-            updateFilters(
-                instance.category,
-                instance.city,
-                instance.is_asking
-            )
-            posts = getFilterdPosts()
-    else:
-        posts = getFilterdPosts()
-
-    posts_paginator = Paginator(posts,POSTS_PER_PAGE)
-    page_num = request.GET.get('page')
-    page = posts_paginator.get_page(page_num)
-    context ={
-        'posts':posts,
-        'page':page,
-        'form':form,
-        'cat':Cat_Filter,
-        'city':City_Filter,
-        'asl':Asking_Filter
-    }
-    return render(request,'allPosts.html',context)
-
 @login_required
 def createPost(request):
     form = createPostForm()
@@ -76,7 +22,7 @@ def createPost(request):
         if form.is_valid():
             instance = form.save(commit=False)
             instance.user = user_obj.helpouser
-            instance.date = datetime.date.today()
+            instance.date = datetime.datetime.now()
             instance.save()
         return redirect('index')
 
@@ -124,11 +70,60 @@ def editPost(request, pk):
             }
     return render(request,"editPost.html",context)
 
-
-
 def updatePostDate(post):
     post.date = datetime.date.today()
     post.save()
 
+############## show Posts + filter ##############
+def resetFilters(request):
+    global Cat_Filter,City_Filter,Asking_Filter
+    Cat_Filter = None
+    City_Filter = None
+    Asking_Filter = None
+    return redirect('showAllPosts')
+
+def updateFilters(cat,city,ask):
+    global Cat_Filter,City_Filter,Asking_Filter
+    Cat_Filter=cat
+    City_Filter=city
+    Asking_Filter=ask
 
 
+def getFilterdPosts():
+    posts = Post.objects.all()
+    if Cat_Filter:
+        posts=posts.filter(category=Cat_Filter)
+    if City_Filter:
+        posts=posts.filter(city=City_Filter)
+    if Asking_Filter:
+        posts=posts.filter(is_asking__in=[Asking_Filter])
+    return posts.order_by('-date')
+
+def showAllPosts(request):
+    ##filter section
+    form = filterPostForm()
+    if request.method=='POST':
+        form = filterPostForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            updateFilters(
+                instance.category,
+                instance.city,
+                instance.is_asking
+            )
+            posts = getFilterdPosts()
+    else:
+        posts = getFilterdPosts()
+
+    posts_paginator = Paginator(posts,POSTS_PER_PAGE)
+    page_num = request.GET.get('page')
+    page = posts_paginator.get_page(page_num)
+    context ={
+        'posts':posts,
+        'page':page,
+        'form':form,
+        'cat':Cat_Filter,
+        'city':City_Filter,
+        'asl':Asking_Filter
+    }
+    return render(request,'allPosts.html',context)
