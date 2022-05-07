@@ -3,6 +3,11 @@ from .models import Post,Category
 
 
 class createPostForm(forms.ModelForm):
+    info = forms.CharField(widget=forms.Textarea(
+        attrs={
+            'dir': 'rtl',
+        }
+    ))
     class Meta():
         model = Post
         fields = ['info','city','is_asking','category']

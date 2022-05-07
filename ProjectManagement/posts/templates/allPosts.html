@@ -99,13 +99,15 @@
                                     <b></td>
                             </tr>
                             <tr>
-                                <td>{{item.user.user.phone_number}}</td>
-                                <td class="td_spc"></td>
-                                <td><b>:פלאפון<b></td>
-                                <td class="td_sep"></td>
-                                <td>{{item.user.user.email}}</td>
-                                <td class="td_spc"></td>
-                                <td><b>:אימייל<b></td>
+                                {%if not item.user.user.high_privacy%}
+                                    <td>{{item.user.user.phone_number}}</td>
+                                    <td class="td_spc"></td>
+                                    <td><b>:פלאפון<b></td>
+                                    <td class="td_sep"></td>
+                                    <td>{{item.user.user.email}}</td>
+                                    <td class="td_spc"></td>
+                                    <td><b>:אימייל<b></td>
+                                {%endif%}
                             </tr>
                             </tbody>
                         </table>
@@ -119,7 +121,7 @@
                         <a href="{% url 'editPost' item.id %}" class="btn btn-outline-danger btn-sm">עריכה</a>
                         {%endif%}
                         <span style="float:left;">
-                            <b>{{ item.date }}</b>
+                            <b>{{ item.date | date:"D d M Y, H:i"}}</b>
                         </span>
                     </div>
                 </div>

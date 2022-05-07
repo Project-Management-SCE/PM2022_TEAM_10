@@ -24,7 +24,7 @@ def createPost(request):
             instance.user = user_obj.helpouser
             instance.date = datetime.datetime.now()
             instance.save()
-        return redirect('index')
+        return redirect('showAllPosts')
 
     context={'form':form,'user_obj':user_obj}
     return render(request, 'createPostForm.html', context)
@@ -71,7 +71,7 @@ def editPost(request, pk):
     return render(request,"editPost.html",context)
 
 def updatePostDate(post):
-    post.date = datetime.date.today()
+    post.date = datetime.datetime.now()
     post.save()
 
 ############## show Posts + filter ##############
