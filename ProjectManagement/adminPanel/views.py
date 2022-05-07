@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from accounts.models import HelpoUser,User,associationManager
-from accounts.forms import UserUpdateform, HelpoUserUpdateform
+from accounts.forms import UserUpdateform, HelpoUserUpdateform, AssociationManagerUpdateform
 from posts.models import Post,Category
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ObjectDoesNotExist
@@ -51,7 +51,7 @@ def AdminUpdateHelpoUser(request, pk):  # pk - primary key
     return render(request, 'registration/updateHelpoUser.html', context)
 
 
-#################manager user##############################
+################# manager user ##############################
 
 def manager_users(response):
     if not response.user.is_superuser:  # Restrict the accses only for admins
@@ -59,8 +59,34 @@ def manager_users(response):
     association_users = associationManager.objects.all()
     return render(response,"admin_manager_users.html",{'users':association_users})
 
-#need to add update for asso manager
+
+def AdminUpdateManagerUser(request, pk):  # pk - primary key
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+    u_id = int(pk)
+    user = associationManager.objects.get(user_id=u_id)
+
+    if request.method == 'POST':
+        u_form = UserUpdateform(request.POST, instance=user.user)
+        m_form = AssociationManagerUpdateform(request.POST, instance=user)
+
+        if u_form.is_valid() and m_form.is_valid():
+            u_form.save()
+            m_form.save()
+            return redirect('/adminPanel/manager_users')
     
+    else:
+        u_form = UserUpdateform(instance=user.user)
+        m_form = AssociationManagerUpdateform(instance=user)
+
+    context = {
+                'u_form' : u_form,
+                'm_form' : m_form,
+                'user_id': u_id
+            }
+
+    return render(request, 'registration/updateAssociationManager.html', context)
+
 def waiting_manager_users(response):
     if not response.user.is_superuser:  # Restrict the accses only for admins
         return render(response,"admin_error.html",{})

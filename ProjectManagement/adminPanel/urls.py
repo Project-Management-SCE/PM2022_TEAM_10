@@ -6,7 +6,9 @@ urlpatterns = [
     path("", views.adminPanel, name="adminPanel"), # View 1 
     path("helpo_users", views.helpo_users, name="helpo_users"), # View 2
     path("AdminUpdateHelpoUser/<str:pk>/", views.AdminUpdateHelpoUser, name="AdminUpdateHelpoUser"), 
+    
     path("manager_users", views.manager_users, name="manager_users"), # View 3
+    path("AdminUpdateManagerUser/<str:pk>/", views.AdminUpdateManagerUser, name="AdminUpdateManagerUser"), 
     path("waiting_manager_users", views.waiting_manager_users, name="waiting_manager_users"),
     path("ApproveManager/<str:pk>/", views.ApproveManager, name="ApproveManager"), 
     path("delete_approve_request/<str:pk>/", views.delete_approve_request, name="delete_approve_request"), 
