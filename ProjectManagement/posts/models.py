@@ -1,6 +1,6 @@
 from django.db import models
 from accounts.models import HelpoUser
-
+import datetime
 # Create your models here.
 
 class Category(models.Model):
@@ -15,7 +15,12 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, default=None,null=True,blank=True)
     city = models.CharField(max_length=100,blank=True)
     is_asking=models.BooleanField(default=False)    # False = offering help
-    date = models.DateField()
+    date = models.DateTimeField()
     
+    def __str__(self):
+        id = str(self.id)
+        if self.category:
+            return 'Post number: ' + id + ' - ' +self.user.user.first_name +' '+self.user.user.last_name + ' - ' + self.category 
+        return 'Post number: ' + id + ' - ' +self.user.user.first_name +' '+self.user.user.last_name 
 
 
