@@ -38,8 +38,8 @@
                 <td>{{item.user.email}}</td>
                 <td>{{item.association_number}}</td>
                 <td>
-                    <input type="submit" class="btn btn-outline-danger" value="Edit" >
-                    {% comment %} onclick="location.href='{% url 'AdminUpdateHelpoUser' item.user.id %}';" {% endcomment %}
+                    <input type="submit" class="btn btn-outline-danger" value="Edit" 
+                    onclick="location.href='{% url 'AdminUpdateManagerUser' item.user.id %}';">
                 </td>
             </tr>
             {%endfor%}
