@@ -2,7 +2,7 @@ from django.test import SimpleTestCase,TestCase
 from django.urls import reverse, resolve
 from posts.views import showAllPosts
 
-
+#inregration tests
 
 class TestUrls(TestCase):
     def setUp(self):
