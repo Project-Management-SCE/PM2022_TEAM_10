@@ -25,15 +25,16 @@ class TestModels(TestCase):
         self.category=Category.objects.create(
             name="my new category"
         )
-        
+        self.date = datetime.datetime.now()
         #create post object
         self.post=Post.objects.create(
             user=self.HelpoUserObj,
             city= "Tel-Aviv",
             info="i am writing a new post!",
             category=self.category,
-            date=datetime.date.today()
+            date=self.date
         )
+        
     
         #test method:
     def test_catagory(self):
@@ -43,7 +44,7 @@ class TestModels(TestCase):
     def test_post(self):
         self.assertFalse(self.post.is_asking)
         self.assertEqual(self.post.category.name,"my new category")
-        self.assertEqual(self.post.date,datetime.date.today())
+        self.assertEqual(self.post.date,self.date)
         self.assertTrue(self.post.user.user.is_helpo_user)
         self.assertEqual(self.post.info,"i am writing a new post!")
         self.assertEqual(self.post.city,"Tel-Aviv")

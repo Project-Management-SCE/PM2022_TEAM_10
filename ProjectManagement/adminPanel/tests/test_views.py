@@ -60,6 +60,17 @@ class TestViews(TestCase):
         self.FakePostDetails_url=reverse("AdminPostDetails", kwargs={'pk':-1})
         self.deletePost_url = reverse('AdminDeletePost',kwargs={'pk':self.post.id})
         self.edit_asso_url = reverse('searchAsso')
+        self.admin_panel_url = reverse('adminPanel')
+    
+    def test_adminPanel_with_loogin(self):
+        response = self.adminclient.get(self.admin_panel_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_index.html")
+    
+    def test_adminPanel_without_login(self):
+        response = self.client.get(self.admin_panel_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
      
     def test_adminPosts_with_loogin(self):
         response = self.adminclient.get(self.AllPosts_url)  

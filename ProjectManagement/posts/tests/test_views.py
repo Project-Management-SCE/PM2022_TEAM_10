@@ -36,7 +36,7 @@ class TestViews(TestCase):
             city= "Tel-Aviv",
             info="i am writing a new post!",
             category=self.category,
-            date=datetime.date.today()
+            date=datetime.datetime.now()
         )
         
         self.client = Client() 
