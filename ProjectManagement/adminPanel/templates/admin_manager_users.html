@@ -36,7 +36,8 @@
                     <div style="text-align:center;"> 
                         <input type="submit" class="btn btn-outline-success" value="ערוך" onclick="location.href='{% url 'AdminUpdateManagerUser' item.user.id %}';">
                         <input type="submit" class="btn btn-outline-warning" value="חסום" onclick="location.href='{% url 'changeActiveState' item.user.id %}';">
-                        <input type="submit" class="btn btn-outline-danger" value="מחק" onclick="location.href='';">
+                        <button class="btn btn-outline-danger" user-id-attr="{{item.user.id}}"
+                                user-un-attr="{{item.user.username}}" onclick="confirmDelete(this)">מחק</button>
                     </div>
                 </td>
                 <td>{{item.association_number}}</td>

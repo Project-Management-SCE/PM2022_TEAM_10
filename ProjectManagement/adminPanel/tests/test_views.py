@@ -11,6 +11,8 @@ import datetime
 class TestViews(TestCase):
     def setUp(self):
 
+        self.factory = RequestFactory()
+
         self.UserObj = User.objects.create(
             username = 'jimb2',
             first_name = 'Jim',
@@ -61,12 +63,16 @@ class TestViews(TestCase):
         self.deletePost_url = reverse('AdminDeletePost',kwargs={'pk':self.post.id})
         self.edit_asso_url = reverse('searchAsso')
         self.admin_panel_url = reverse('adminPanel')
+        self.admin_blockedUsers= reverse('blockedUsers')
+        self.admin_changeState = reverse('changeActiveState',kwargs={'pk':self.UserObj.id})
+        self.admin_deleteUser = reverse('deleteUser',kwargs={'pk':self.UserObj.id})
+
     
     def test_adminPanel_with_loogin(self):
         response = self.adminclient.get(self.admin_panel_url)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_index.html")
-    
+        
     def test_adminPanel_without_login(self):
         response = self.client.get(self.admin_panel_url)  
         self.assertEqual(200,response.status_code)
@@ -118,3 +124,32 @@ class TestViews(TestCase):
         response = self.adminclient.get(self.edit_asso_url)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_editAsso.html")
+
+
+    def test_adminChangeState(self):
+        response = self.client.get(self.admin_changeState)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        
+        response = self.adminclient.get(self.admin_changeState)  
+        self.assertEqual(302,response.status_code)
+    
+
+    def test_adminDeleteUser(self):
+        response = self.client.get(self.admin_deleteUser)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        
+        response = self.adminclient.get(self.admin_deleteUser)  
+        self.assertEqual(302,response.status_code)
+    
+
+    def test_showBlockedUsers(self):
+        response = self.client.get(self.admin_blockedUsers)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        
+        response = self.adminclient.get(self.admin_blockedUsers)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("blocked_users.html")
+ 

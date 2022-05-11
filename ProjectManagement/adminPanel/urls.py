@@ -13,6 +13,7 @@ urlpatterns = [
     path("delete_approve_request/<str:pk>/", views.delete_approve_request, name="delete_approve_request"), 
     path("changeActiveState/<str:pk>", views.changeActiveState, name="changeActiveState"),
     path("blockedUsers", views.blockedUsers, name="blockedUsers"),
+    path("deleteUser/<str:pk>", views.deleteUser, name="deleteUser"),
         
     path("posts", views.adminPosts, name="posts"), # View 3
     path("AdminPostDetails/<str:pk>/", views.AdminPostDetails, name="AdminPostDetails"), 

@@ -69,6 +69,8 @@
                     <td>
                         <div> 
                             <input type="submit" class="btn btn-outline-success" value="בטל חסימה" onclick="location.href='{% url 'changeActiveState' item.user.id %}';">
+                            <button class="btn btn-outline-danger" user-id-attr="{{item.user.id}}"
+                                    user-un-attr="{{item.user.username}}" onclick="confirmDelete(this)">מחק</button>
                         </div>
                     </td>
                     <td>{{item.city}}</td>
@@ -84,5 +86,4 @@
 
 </div>
 </div>
-
 {%endblock%}

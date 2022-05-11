@@ -17,18 +17,28 @@ def adminPanel(response):
 
 #############################users###########################
 def changeActiveState(request,pk):
-    #add check if admin
+    if not request.user.is_superuser:  # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
     user = User.objects.get(id=pk)
     user.is_active = not user.is_active
     user.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    # return render(request,"admin_index.html",{})
+
 
 def blockedUsers(request):
-    #add check if admin
+    if not request.user.is_superuser:  # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
     asso_users=associationManager.objects.filter(user__is_active__in=[False])
     helpo_users = HelpoUser.objects.filter(user__is_active__in=[False])
     return render(request,'blocked_users.html',{'a_users':asso_users,'h_users':helpo_users})
 
+def deleteUser(request,pk):
+    if not request.user.is_superuser:  # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+    user = User.objects.get(id=pk)
+    user.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 #############################helpo users###########################
 
