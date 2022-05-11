@@ -4,8 +4,8 @@
 
 <div class="card mb-4">
     <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Helpo users
+        <i class="fas fa-solid fa-person-chalkboard"></i>
+        מנהלי עמותות
     </div>
 <div class="card-body">
     <table id="datatablesSimple">
@@ -35,7 +35,7 @@
                 <td>
                     <div style="text-align:center;"> 
                         <input type="submit" class="btn btn-outline-success" value="ערוך" onclick="location.href='{% url 'AdminUpdateManagerUser' item.user.id %}';">
-                        <input type="submit" class="btn btn-outline-warning" value="חסום" onclick="location.href='';">
+                        <input type="submit" class="btn btn-outline-warning" value="חסום" onclick="location.href='{% url 'changeActiveState' item.user.id %}';">
                         <input type="submit" class="btn btn-outline-danger" value="מחק" onclick="location.href='';">
                     </div>
                 </td>

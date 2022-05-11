@@ -1,3 +1,4 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from accounts.models import HelpoUser,User,associationManager
 from accounts.forms import UserUpdateform, HelpoUserUpdateform, AssociationManagerUpdateform
@@ -14,13 +15,27 @@ def adminPanel(response):
         return render(response,"admin_error.html",{})
     return render(response,"admin_index.html",{})
 
+#############################users###########################
+def changeActiveState(request,pk):
+    #add check if admin
+    user = User.objects.get(id=pk)
+    user.is_active = not user.is_active
+    user.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-#############################helpo users###########################3
+def blockedUsers(request):
+    #add check if admin
+    asso_users=associationManager.objects.filter(user__is_active__in=[False])
+    helpo_users = HelpoUser.objects.filter(user__is_active__in=[False])
+    return render(request,'blocked_users.html',{'a_users':asso_users,'h_users':helpo_users})
+
+
+#############################helpo users###########################
 
 def helpo_users(response):
     if not response.user.is_superuser:  # Restrict the accses only for admins
         return render(response,"admin_error.html",{})
-    helpo_users = HelpoUser.objects.all()
+    helpo_users = HelpoUser.objects.filter(user__is_active__in=[True])
     return render(response,"admin_helpo_users.html",{'users':helpo_users})
 
 def AdminUpdateHelpoUser(request, pk):  # pk - primary key
@@ -56,7 +71,7 @@ def AdminUpdateHelpoUser(request, pk):  # pk - primary key
 def manager_users(response):
     if not response.user.is_superuser:  # Restrict the accses only for admins
         return render(response,"admin_error.html",{})
-    association_users = associationManager.objects.all()
+    association_users = associationManager.objects.filter(user__is_active__in=[True])
     return render(response,"admin_manager_users.html",{'users':association_users})
 
 

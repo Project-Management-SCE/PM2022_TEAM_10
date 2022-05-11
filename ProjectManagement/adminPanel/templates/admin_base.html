@@ -11,6 +11,7 @@
         <title>Helpo - Admin</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="{% static 'admin_dash/css/styles.css' %}" rel="stylesheet" />
+        <link href="{% static 'admin_dash/css/admin_tables.css' %}" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     {%if not user.is_superuser%}
@@ -57,41 +58,42 @@
                             </a>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
-                                Posts
+                                פוסטים
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseHome" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{% url 'categories' %}">Categories</a>
+                                    <a class="nav-link" href="{% url 'categories' %}">קטגוריות</a>
                                 </nav>
                             </div>
                             <div class="collapse" id="collapseHome" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{% url 'posts' %}">Posts</a>
+                                    <a class="nav-link" href="{% url 'posts' %}">פוסטים</a>
                                 </nav>
                             </div>
                             
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUsers" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                Users
+                                משתמשים
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseUsers" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{% url 'helpo_users' %}">Helpo Users</a>
-                                    <a class="nav-link" href="{% url 'manager_users' %}">Associations Managers</a>
-                                    <a class="nav-link" href="{% url 'waiting_manager_users' %}">Approve Associations Managers</a>
+                                    <a class="nav-link" href="{% url 'helpo_users' %}">משתמשי הלפו</a>
+                                    <a class="nav-link" href="{% url 'manager_users' %}">מנהלי עמותות</a>
+                                    <a class="nav-link" href="{% url 'waiting_manager_users' %}">אישור מנהלים</a>
+                                    <a class="nav-link" href="{% url 'blockedUsers' %}">משתמשים חסומים</a>
                                 </nav>
                             </div>
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAssociations" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-people-roof"></i></div>
-                                Associations
+                                עמותות
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseAssociations" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{% url 'searchAsso' %}">Edit</a>
+                                    <a class="nav-link" href="{% url 'searchAsso' %}">עריכה</a>
                                 </nav>
                             </div>
 

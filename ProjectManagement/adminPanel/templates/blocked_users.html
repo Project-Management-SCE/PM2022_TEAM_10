@@ -1,0 +1,88 @@
+{% extends 'admin_base.html' %}
+
+{%block content%}
+
+
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-ban"></i>
+        משתמשים חסומים
+    </div>
+<div class="card-body">
+    <table id="datatablesSimple">
+        <thead>
+            <tr>
+                <th>אפשרויות</th>
+                <th>עיר / מס׳ עמותה</th>
+                <th>מייל</th>
+                <th>פלאפון</th>
+                <th>שם מלא</th>
+                <th>מס׳ מזהה</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>אפשרויות</th>
+                <th>מס׳ עמותה</th>
+                <th>מייל</th>
+                <th>פלאפון</th>
+                <th>שם מלא</th>
+                <th>מס׳ מזהה</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            {%if a_users %}
+                <tr>
+                    <td><hr/></td>
+                    <td><hr/></td>
+                    <td><hr/></td>
+                    <td><hr/></td>
+                    <td><hr/></td>
+                    <td><b style="font-size:16px;">מנהלי עמותות</b></td>
+                </tr>
+                {% for item in a_users%}
+                <tr>
+                    <td>
+                        <div> 
+                            <input type="submit" class="btn btn-outline-success" value="בטל חסימה" onclick="location.href='{% url 'changeActiveState' item.user.id %}';">
+                        </div>
+                    </td>
+                    <td>{{item.association_number}}</td>
+                    <td>{{item.user.email}}</td>
+                    <td>{{item.user.phone_number}}</td>
+                    <td>{{item.user.first_name}} {{item.user.last_name}}</td>
+                    <td>{{item.user.id}}</td>
+                </tr>
+                {%endfor%}
+            {%endif%}
+            {%if h_users %}
+                <tr>
+                    <td><hr/></td>
+                    <td><hr/></td>
+                    <td><hr/></td>
+                    <td><hr/></td>
+                    <td><hr/></td>
+                    <td><b style="font-size:16px;">משתמשי הלפו</b></td>
+                </tr>
+                {% for item in h_users%}
+                <tr>
+                    <td>
+                        <div> 
+                            <input type="submit" class="btn btn-outline-success" value="בטל חסימה" onclick="location.href='{% url 'changeActiveState' item.user.id %}';">
+                        </div>
+                    </td>
+                    <td>{{item.city}}</td>
+                    <td>{{item.user.email}}</td>
+                    <td>{{item.user.phone_number}}</td>
+                    <td>{{item.user.first_name}} {{item.user.last_name}}</td>
+                    <td>{{item.user.id}}</td>
+                </tr>
+                {%endfor%}
+            {%endif%}
+        </tbody>
+    </table>
+
+</div>
+</div>
+
+{%endblock%}
