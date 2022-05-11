@@ -11,36 +11,39 @@
     <table id="datatablesSimple">
         <thead>
             <tr>
-                <th>id</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Association ID</th>
-                <th>Options</th>
+                <th>אפשרויות</th>
+                <th>מס׳ עמותה</th>
+                <th>מייל</th>
+                <th>פלאפון</th>
+                <th>שם מלא</th>
+                <th>מס׳ מזהה</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
-                <th>id</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Association ID</th>
-                <th>Options</th>
+                <th>אפשרויות</th>
+                <th>מס׳ עמותה</th>
+                <th>מייל</th>
+                <th>פלאפון</th>
+                <th>שם מלא</th>
+                <th>מס׳ מזהה</th>
             </tr>
         </tfoot>
         <tbody>
             {% for item in users%}
             <tr>
-                <td>{{item.user.id}}</td>
-                <td>{{item.user.first_name}} {{item.user.last_name}}</td>
-                <td>{{item.user.phone_number}}</td>
-                <td>{{item.user.email}}</td>
-                <td>{{item.association_number}}</td>
                 <td>
-                    <input type="submit" class="btn btn-outline-danger" value="Edit" 
-                    onclick="location.href='{% url 'AdminUpdateManagerUser' item.user.id %}';">
+                    <div style="text-align:center;"> 
+                        <input type="submit" class="btn btn-outline-success" value="ערוך" onclick="location.href='{% url 'AdminUpdateManagerUser' item.user.id %}';">
+                        <input type="submit" class="btn btn-outline-warning" value="חסום" onclick="location.href='';">
+                        <input type="submit" class="btn btn-outline-danger" value="מחק" onclick="location.href='';">
+                    </div>
                 </td>
+                <td>{{item.association_number}}</td>
+                <td>{{item.user.email}}</td>
+                <td>{{item.user.phone_number}}</td>
+                <td>{{item.user.first_name}} {{item.user.last_name}}</td>
+                <td>{{item.user.id}}</td>
             </tr>
             {%endfor%}
         </tbody>
