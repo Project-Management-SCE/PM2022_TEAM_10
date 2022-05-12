@@ -21,7 +21,7 @@ class Post(models.Model):
     def __str__(self):
         id = str(self.id)
         if self.category:
-            return 'Post number: ' + id + ' - ' +self.user.user.first_name +' '+self.user.user.last_name + ' - ' + self.category 
+            return 'Post number: ' + id + ' - ' +self.user.user.first_name +' '+self.user.user.last_name + ' - ' + str(self.category)
         return 'Post number: ' + id + ' - ' +self.user.user.first_name +' '+self.user.user.last_name 
 
 
