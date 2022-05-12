@@ -16,6 +16,7 @@ class Post(models.Model):
     city = models.CharField(max_length=100,blank=True)
     is_asking=models.BooleanField(default=False)    # False = offering help
     date = models.DateTimeField()
+    reports_counter = models.IntegerField(default=0)
     
     def __str__(self):
         id = str(self.id)
