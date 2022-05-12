@@ -23,6 +23,14 @@ urlpatterns = [
     path("editCategory/<str:pk>/", views.editCategory, name="editCategory"), 
     path("deleteCategory/<str:pk>", views.deleteCategory, name="deleteCategory"),
     path("searchAssociation", views.searchAsso, name="searchAsso"),
+    
+    path("reports_posts", views.reports_posts, name="reports_posts"),
+    path("reportsPostDetails/<str:pk>", views.reportsPostDetails, name="reportsPostDetails"),
+    path("deletePostReports/<str:pk>", views.deletePostReports, name="deletePostReports"),
+    path("deletePostReported/<str:pk>", views.deletePostReported, name="deletePostReported"),
+
+
+    
 ]
 
 

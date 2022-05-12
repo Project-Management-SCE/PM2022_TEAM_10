@@ -7,7 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import Categoryform
 from associations.models import Association
-
+from reports.models import PostReport
 
 # Create your views here.
 def adminPanel(response):
@@ -167,6 +167,9 @@ def AdminPostDetails(request,pk):
 
 
 def AdminDeletePost(request,pk):
+    return deletePost(request,pk,False)
+
+def deletePost(request,pk,isReported):
     if not request.user.is_superuser:   # Restrict the accses only for admins
         return render(request,"admin_error.html",{})
   
@@ -175,8 +178,16 @@ def AdminDeletePost(request,pk):
     except ObjectDoesNotExist as e:
         return render(request,"admin_error.html",{})
     
-    req.delete()
-    return redirect('posts')
+    if not isReported:
+        req.delete()
+        return redirect('posts')
+
+    #need to add 1 to the user deleted_post field!!!!!!!!!!!!!!
+    else:
+        # req.user.deleted_posts =req.user.deleted_posts=1
+        # req.user.save()
+        req.delete()
+        return redirect('reports_posts')
 
 
 ##################### Categories ###############################
@@ -251,3 +262,49 @@ def searchAsso(request):
         return  render(request, 'admin_editAsso.html',{'obj':obj})
         
     return render(request, 'admin_editAsso.html',{})
+
+
+
+############### reports on posts #######################
+
+def reports_posts(response):
+    if not response.user.is_superuser:   # Restrict the accses only for admins
+        return render(response,"admin_error.html",{})
+    posts = Post.objects.filter().exclude(reports_counter__in=[0,2]) #NEED TO ADD 1!!!!!!
+    context={'posts':posts}
+    return render(response,"admin_reports_posts.html",context)
+
+
+def reportsPostDetails(request,pk):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+  
+    try:
+        req = Post.objects.get(id=pk)
+    except ObjectDoesNotExist as e:
+        return render(request,"admin_error.html",{})
+    
+    reports =  PostReport.objects.filter(post = req)
+    return render(request,"admin_post_reports_details.html",{'item':req,'reports':reports})
+
+def deletePostReports(request,pk):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+    try:
+        req = Post.objects.get(id=pk)
+    except ObjectDoesNotExist as e:
+        return render(request,"admin_error.html",{})
+    
+    
+    reports = PostReport.objects.filter(post = req)
+    for x in reports:
+        x.delete()
+    
+    req.reports_counter = 0
+    req.save()    
+    
+    return redirect('reports_posts')
+
+
+def deletePostReported(request,pk):
+    return deletePost(request,pk,True)    
