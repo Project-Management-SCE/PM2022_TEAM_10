@@ -1,4 +1,3 @@
-
 from django.test import TestCase, Client
 from django.urls import reverse
 from accounts.models import User,HelpoUser
@@ -10,12 +9,14 @@ class TestViews(TestCase):
         self.user1 = User.objects.create_user(username='username', password='password')     
 
         self.UserObj = User.objects.create(
+            id = '123',
             username = 'jimb',
             first_name = 'Jim',
             last_name = 'Botten',
             phone_number = '0524619773',
             is_active = False
         )
+        
 
         self.HelpoUserObj = HelpoUser.objects.create(
             user = self.user1,
@@ -40,8 +41,15 @@ class TestViews(TestCase):
         self.createReportPost_url = reverse('createReportPost', kwargs={'pk':self.post.id})
         self.createReportPost_postError_url = reverse('createReportPost',kwargs={'pk':'345'})
 
+        self.reportUser_url = reverse('reportUser', kwargs={'pk':self.UserObj.id})
 
 
+    def reportUser(self):
+        response = self.client.get(self.reportUser_url)  # Get response from the url
+        self.assertEqual(200,response.status_code)
+        self.assertEqual(self.UserObj , response.context['reported_obj'])
+        self.assertTemplateUsed("userReportPage.html")
+        
     def test_createReportPost_with_login(self):
         #error page  -  post not found
         self.client.login(username="username",password="password")
