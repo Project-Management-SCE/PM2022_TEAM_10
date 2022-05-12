@@ -24,5 +24,6 @@ urlpatterns = [
     path('associations/', include('associations.urls')),
     path('adminPanel/', include('adminPanel.urls')),
     path('posts/', include('posts.urls')),
+    path('reports/', include('reports.urls')),
 
 ]
