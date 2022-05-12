@@ -10,12 +10,11 @@
         {%if user_obj.is_authenticated%}
             <div class="section-title"> 
                 <h2 style="font-size:24px;">
-                    דיווח על פוסט מס׳ {{post_obj.id}}
+                    דיווח על משתמש {{reported_obj.username}}
                 </h2>
                 <br>
                 <br>
-                :תוכן הפוסט
-                <p>{{post_obj.info}}</p>
+
             </div>
         <hr>
         <div class="row content" style="display: flex;align-items: center;justify-content: center; text-align:right;" >
@@ -30,7 +29,7 @@
         </div>
         {%else%}
             <div class="section-title"> 
-                <h3>hello {{user_obj.name}}<br/><span>only Helpo users can write posts </span></h3>
+                <h3>hello {{user_obj.name}}<br/><span>only Helpo users can report user </span></h3>
             </div>
         {%endif%}
     </div>

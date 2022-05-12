@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from .forms import createPostForm,filterPostForm
 from django.core.paginator import Paginator
+from reports.models import PostReport
 import datetime
 # Create your views here.
 POSTS_PER_PAGE = 3
@@ -115,6 +116,8 @@ def showAllPosts(request):
     else:
         posts = getFilterdPosts()
 
+    reported = PostReport.objects.filter(user_id=request.user.id)
+    reported= list(map(lambda x :x.post.id,reported))
     posts_paginator = Paginator(posts,POSTS_PER_PAGE)
     page_num = request.GET.get('page')
     page = posts_paginator.get_page(page_num)
@@ -124,6 +127,7 @@ def showAllPosts(request):
         'form':form,
         'cat':Cat_Filter,
         'city':City_Filter,
-        'asl':Asking_Filter
+        'asl':Asking_Filter,
+        'reported':reported
     }
     return render(request,'allPosts.html',context)

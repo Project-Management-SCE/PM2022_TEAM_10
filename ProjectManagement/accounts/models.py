@@ -19,7 +19,7 @@ class User(AbstractUser):
     is_association_manager = models.BooleanField(default=False)
     is_helpo_user = models.BooleanField(default=False)
     high_privacy = models.BooleanField(default=False)
-
+    reports_counter = models.IntegerField(default=0)
     # is_volenteer = models.BooleanField('volenteer status', default=False)
 
 class associationManager(models.Model):
