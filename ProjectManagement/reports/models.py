@@ -10,6 +10,11 @@ class PostReport(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, default=None,null=True)
     info = models.CharField(max_length=50)
 
+class UserReport(models.Model):
+    reporter = models.ForeignKey(User, on_delete=models.CASCADE, default=None,null=True,related_name='%(class)s_reporters')
+    reported = models.ForeignKey(User, on_delete=models.CASCADE, default=None,null=True)
+    reason = models.CharField(max_length=50)
     
-
-
+    def __str__(self):
+        return f'reporter:{self.reporter.username} -> reported:{self.reported.username}'
+    

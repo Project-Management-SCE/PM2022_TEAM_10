@@ -1,5 +1,5 @@
 from django import forms
-from .models import PostReport
+from .models import PostReport,UserReport
 
 
 INFO_CHOICES= [
@@ -19,3 +19,14 @@ class reportPostForm(forms.ModelForm):
     class Meta():
         model = PostReport
         fields = ['info',]
+
+class reportUserForm(forms.ModelForm):
+    reason = forms.CharField(widget=forms.Textarea(
+        attrs={
+            'dir': 'rtl',
+        }
+    ))
+
+    class Meta():
+        model = UserReport
+        fields = ['reason',]
