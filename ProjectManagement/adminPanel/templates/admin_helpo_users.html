@@ -2,49 +2,56 @@
 
 {%block content%}
 
+
 <div class="card mb-4">
     <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Helpo users
+        <i class="fas fa-solid fa-handshake-angle"></i>
+        משתמשי הלפו
     </div>
 <div class="card-body">
     <table id="datatablesSimple">
         <thead>
             <tr>
-                <th>id</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>City</th>
-                <th>Options</th>
+                <th>אפשרויות</th>
+                <th>עיר</th>
+                <th>מייל</th>
+                <th>פלאפון</th>
+                <th>שם מלא</th>
+                <th>מס׳ מזהה</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
-                <th>id</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>City</th>
-                <th>Options</th>
+                <th>אפשרויות</th>
+                <th>עיר</th>
+                <th>מייל</th>
+                <th>פלאפון</th>
+                <th>שם מלא</th>
+                <th>מס׳ מזהה</th>
             </tr>
         </tfoot>
         <tbody>
             {% for item in users%}
             <tr>
-                <td>{{item.user.id}}</td>
-                <td>{{item.user.first_name}} {{item.user.last_name}}</td>
-                <td>{{item.user.phone_number}}</td>
-                <td>{{item.user.email}}</td>
-                <td>{{item.city}}</td>
                 <td>
-                    <input type="submit" class="btn btn-outline-danger" value="Edit" onclick="location.href='{% url 'AdminUpdateHelpoUser' item.user.id %}';">
+                    <div style="text-align:center;"> 
+                        <input type="submit" class="btn btn-outline-success" value="ערוך" onclick="location.href='{% url 'AdminUpdateHelpoUser' item.user.id %}';">
+                        <input type="submit" class="btn btn-outline-warning" value="חסום" onclick="location.href='{% url 'changeActiveState' item.user.id %}';">
+                        <button class="btn btn-outline-danger" user-id-attr="{{item.user.id}}"
+                            user-un-attr="{{item.user.username}}" onclick="confirmDelete(this)">מחק</button>
+                    </div>
                 </td>
+                <td>{{item.city}}</td>
+                <td>{{item.user.email}}</td>
+                <td>{{item.user.phone_number}}</td>
+                <td>{{item.user.first_name}} {{item.user.last_name}}</td>
+                <td>{{item.user.id}}</td>
             </tr>
             {%endfor%}
         </tbody>
     </table>
 </div>
 </div>
+
 
 {%endblock%}

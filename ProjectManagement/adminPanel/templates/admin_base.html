@@ -11,6 +11,7 @@
         <title>Helpo - Admin</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="{% static 'admin_dash/css/styles.css' %}" rel="stylesheet" />
+        <link href="{% static 'admin_dash/css/admin_tables.css' %}" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     {%if not user.is_superuser%}
@@ -57,41 +58,42 @@
                             </a>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseHome" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-comments"></i></div>
-                                Posts
+                                פוסטים
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseHome" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{% url 'categories' %}">Categories</a>
+                                    <a class="nav-link" href="{% url 'categories' %}">קטגוריות</a>
                                 </nav>
                             </div>
                             <div class="collapse" id="collapseHome" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{% url 'posts' %}">Posts</a>
+                                    <a class="nav-link" href="{% url 'posts' %}">פוסטים</a>
                                 </nav>
                             </div>
                             
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUsers" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                Users
+                                משתמשים
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseUsers" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{% url 'helpo_users' %}">Helpo Users</a>
-                                    <a class="nav-link" href="{% url 'manager_users' %}">Associations Managers</a>
-                                    <a class="nav-link" href="{% url 'waiting_manager_users' %}">Approve Associations Managers</a>
+                                    <a class="nav-link" href="{% url 'helpo_users' %}">משתמשי הלפו</a>
+                                    <a class="nav-link" href="{% url 'manager_users' %}">מנהלי עמותות</a>
+                                    <a class="nav-link" href="{% url 'waiting_manager_users' %}">אישור מנהלים</a>
+                                    <a class="nav-link" href="{% url 'blockedUsers' %}">משתמשים חסומים</a>
                                 </nav>
                             </div>
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAssociations" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-people-roof"></i></div>
-                                Associations
+                                עמותות
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseAssociations" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{% url 'searchAsso' %}">Edit</a>
+                                    <a class="nav-link" href="{% url 'searchAsso' %}">עריכה</a>
                                 </nav>
                             </div>
 
@@ -110,7 +112,21 @@
             {% endblock %}
                 </main> 
             </div>
-        </div>
+        </div> 
+        <!--Function to delete a user-->
+        <script>
+            function confirmDelete(object) {
+                let user_id = object.getAttribute('user-id-attr');
+                let _un = object.getAttribute('user-un-attr');
+                let text = "? "+ _un + " אתה בטוח כי אתה רוצה למחוק את המשתמש";
+                if (confirm(text) == true) {
+                    location.href="/adminPanel/deleteUser/"+user_id;
+                }
+            }
+        </script>
+        <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="{% static 'admin_dash/js/scripts.js' %}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
