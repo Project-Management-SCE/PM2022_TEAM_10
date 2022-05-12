@@ -1,7 +1,7 @@
 from django.test import SimpleTestCase,TestCase
 from accounts.models import User
 from django.urls import reverse, resolve
-from reports.views import reportUser
+from reports.views import reportUser, createReportPost
 
 class TestUrls(TestCase):
     
@@ -18,3 +18,8 @@ class TestUrls(TestCase):
     def test_reportUser_url(self):
         url = reverse('reportUser', kwargs={'pk':self.UserObj.id})
         self.assertEqual(resolve(url).func, reportUser)
+        
+    def test_all_associations_page_url_is_resolved(self):
+        url = reverse('createReportPost',kwargs={'pk':1})
+        self.assertEqual(resolve(url).func, createReportPost)
+

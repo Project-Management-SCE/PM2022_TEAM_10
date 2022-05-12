@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from reports.forms import reportPostForm,reportUserForm
 from posts.models import Post
+from reports.models import PostReport
 from django.core.exceptions import ObjectDoesNotExist
 from accounts.models import User
 
@@ -11,6 +12,8 @@ def createReportPost(request,pk):
     try:
         p = Post.objects.get(id=pk)
     except ObjectDoesNotExist as e:
+        return render(request, 'error_page.html', {})
+    if PostReport.objects.filter(post_id=pk,user_id=request.user.id):
         return render(request, 'error_page.html', {})
     form = reportPostForm()
     user_obj=request.user
