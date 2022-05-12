@@ -19,6 +19,7 @@ class User(AbstractUser):
     is_association_manager = models.BooleanField(default=False)
     is_helpo_user = models.BooleanField(default=False)
     high_privacy = models.BooleanField(default=False)
+
     # is_volenteer = models.BooleanField('volenteer status', default=False)
 
 class associationManager(models.Model):
@@ -38,6 +39,8 @@ class associationManager(models.Model):
 class HelpoUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     city = models.CharField(max_length=100)
+    # deleted_posts = models.IntegerField(default=0)
+
 
     def __str__(self):
         return self.user.username

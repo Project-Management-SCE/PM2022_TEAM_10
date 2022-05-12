@@ -66,7 +66,7 @@ class TestViews(TestCase):
         self.admin_blockedUsers= reverse('blockedUsers')
         self.admin_changeState = reverse('changeActiveState',kwargs={'pk':self.UserObj.id})
         self.admin_deleteUser = reverse('deleteUser',kwargs={'pk':self.UserObj.id})
-
+        self.reports_posts_url = reverse('reports_posts')
     
     def test_adminPanel_with_loogin(self):
         response = self.adminclient.get(self.admin_panel_url)  
@@ -152,4 +152,15 @@ class TestViews(TestCase):
         response = self.adminclient.get(self.admin_blockedUsers)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("blocked_users.html")
- 
+    
+    def test_reports_posts(self):
+        response = self.client.get(self.reports_posts_url,follow=True)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        
+        response = self.adminclient.get(self.reports_posts_url,follow=True)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_reports_posts.html")
+    
+
+    

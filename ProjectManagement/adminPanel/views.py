@@ -167,6 +167,9 @@ def AdminPostDetails(request,pk):
 
 
 def AdminDeletePost(request,pk):
+    return deletePost(request,pk,False)
+
+def deletePost(request,pk,isReported):
     if not request.user.is_superuser:   # Restrict the accses only for admins
         return render(request,"admin_error.html",{})
   
@@ -175,8 +178,16 @@ def AdminDeletePost(request,pk):
     except ObjectDoesNotExist as e:
         return render(request,"admin_error.html",{})
     
-    req.delete()
-    return redirect('posts')
+    if not isReported:
+        req.delete()
+        return redirect('posts')
+
+    #need to add 1 to the user deleted_post field!!!!!!!!!!!!!!
+    else:
+        # req.user.deleted_posts =req.user.deleted_posts=1
+        # req.user.save()
+        req.delete()
+        return redirect('reports_posts')
 
 
 ##################### Categories ###############################
@@ -275,3 +286,25 @@ def reportsPostDetails(request,pk):
     
     reports =  PostReport.objects.filter(post = req)
     return render(request,"admin_post_reports_details.html",{'item':req,'reports':reports})
+
+def deletePostReports(request,pk):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+    try:
+        req = Post.objects.get(id=pk)
+    except ObjectDoesNotExist as e:
+        return render(request,"admin_error.html",{})
+    
+    
+    reports = PostReport.objects.filter(post = req)
+    for x in reports:
+        x.delete()
+    
+    req.reports_counter = 0
+    req.save()    
+    
+    return redirect('reports_posts')
+
+
+def deletePostReported(request,pk):
+    return deletePost(request,pk,True)    

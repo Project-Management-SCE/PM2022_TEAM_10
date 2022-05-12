@@ -64,6 +64,11 @@
             </div>
         </div>
 
+        <div style="text-align:center;"> 
+            <input type="submit" class="btn btn-outline-danger" value="מחק פוסט" onclick="location.href='{% url 'deletePostReported' item.id %}';">
+            <input type="submit" class="btn btn-outline-warning" value="מחק דיווחים" onclick="location.href='{% url 'deletePostReports' item.id %}';" >
+            
+        </div>
 
         
 <div class="card mb-4">

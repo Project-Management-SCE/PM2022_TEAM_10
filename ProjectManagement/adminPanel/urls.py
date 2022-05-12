@@ -26,6 +26,8 @@ urlpatterns = [
     
     path("reports_posts", views.reports_posts, name="reports_posts"),
     path("reportsPostDetails/<str:pk>", views.reportsPostDetails, name="reportsPostDetails"),
+    path("deletePostReports/<str:pk>", views.deletePostReports, name="deletePostReports"),
+    path("deletePostReported/<str:pk>", views.deletePostReported, name="deletePostReported"),
 
 
     
