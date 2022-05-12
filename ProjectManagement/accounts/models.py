@@ -20,6 +20,9 @@ class User(AbstractUser):
     is_helpo_user = models.BooleanField(default=False)
     high_privacy = models.BooleanField(default=False)
     reports_counter = models.IntegerField(default=0)
+
+    blocked_date = models.DateTimeField(blank=True)
+    blocked_reason = models.CharField(max_length=100,default=None)
     # is_volenteer = models.BooleanField('volenteer status', default=False)
 
 class associationManager(models.Model):

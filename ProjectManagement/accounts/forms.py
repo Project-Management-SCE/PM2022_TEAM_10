@@ -110,4 +110,15 @@ class HelpoUserUpdateform(forms.ModelForm):
     class Meta(UserCreationForm.Meta):
         model = HelpoUser
         fields = ( 'city',)
-    
+
+class UserBlockForm(forms.ModelForm):
+    blocked_reason = forms.CharField(widget=forms.Textarea(
+        attrs={
+            'dir': 'rtl',
+        }
+    ))
+    class Meta:
+        model = User
+        fields = [ 'blocked_reason',]
+        labels = {
+        }

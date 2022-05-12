@@ -50,6 +50,10 @@
         </div>
 
         <div style="text-align:center;"> 
+            <button class="btn btn-outline-danger" user-id-attr="{{item.user.id}}"
+                user-un-attr="{{item.user.username}}" onclick="confirmDelete(this)">מחק</button>
+            <input type="submit" class="btn btn-outline-secondary" value="מחק דיווחים" onclick="location.href='{% url 'deleteUserReports' item.user.id %}';" >
+            <input type="submit" class="btn btn-outline-warning" value="חסימה" onclick="location.href='{% url 'blockUser' item.user.id %}';" >
         </div>
     
         

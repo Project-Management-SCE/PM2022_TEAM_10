@@ -31,6 +31,10 @@ urlpatterns = [
 
     path("reports_users", views.reports_users, name="reports_users"),
     path("reportsUserDetails/<str:pk>", views.reportsUserDetails, name="reportsUserDetails"),
+    path("deleteUserReports/<str:pk>", views.deleteUserReports, name="deleteUserReports"),
+    path("blockUser/<str:pk>", views.blockUser, name="blockUser"),
+
+
 
 ]
 
