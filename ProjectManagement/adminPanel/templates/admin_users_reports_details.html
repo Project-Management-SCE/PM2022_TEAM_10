@@ -1,0 +1,96 @@
+{% extends 'admin_base.html' %}
+
+
+{% block content %}
+
+
+    <div class="container" style="margin-top: 70px; align-items: center; justify-content: center;">
+        <div class="card">
+            <div class="card-header" style="text-align:right;">
+                <span style="float:left;">
+                    {{item.user.username}}
+                </span>
+                שם משתמש
+            </div>
+            <div class="card-body" style="text-align:right;">
+                <table class="table" style="text-align:center;">
+                    <thead>
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col">פרטים</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>{{item.user.first_name}} {{item.user.last_name}}</td>
+                        <td><b>:שם מלא<b></td>
+                      </tr>
+    
+                      <tr>
+                        <td>{{item.user.email}}</td>
+                        <td><b>:אימייל<b></td>
+                      </tr>
+    
+                      <tr>
+                        <td>{{item.user.phone_number}}</td>
+                        <td><b>:פלאפון<b></td>
+                      </tr>
+                      <tr>
+                        <td>{{item.city}}</td>
+                        <td><b>:עיר<b></td>
+                      </tr>
+                      <tr style="color:firebrick;">
+                        <td >{{item.deleted_posts}}</td>
+                        <td><b>:מס׳ פוסטים שנמחקו<b></td>
+                      </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <div style="text-align:center;"> 
+        </div>
+    
+        
+<div class="card mb-4">
+    <div class="card-header">
+        :דיווחים על המשתמש
+    </div>
+<div class="card-body">
+    <table id="datatablesSimple">
+        <thead>
+            <tr>
+                <th>סיבת הדיווח</th>
+                <th>מייל</th>
+                <th>פלאפון</th>
+                <th>שם מלא</th>
+                <th>מס׳ מזהה</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>סיבת הדיווח</th>
+                <th>מייל</th>
+                <th>פלאפון</th>
+                <th>שם מלא</th>
+                <th>מס׳ מזהה</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            {% for item in reports%}
+            <tr>
+                <td>{{item.reason}}</td>
+                <td>{{item.reporter.email}}</td>
+                <td>{{item.reporter.phone_number}}</td>
+                <td>{{item.reporter.first_name}} {{item.user.last_name}}</td>
+                <td>{{item.reporter.id}}</td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+
+{%endblock%}

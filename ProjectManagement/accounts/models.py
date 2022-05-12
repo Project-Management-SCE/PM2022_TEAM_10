@@ -39,7 +39,7 @@ class associationManager(models.Model):
 class HelpoUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     city = models.CharField(max_length=100)
-    # deleted_posts = models.IntegerField(default=0)
+    deleted_posts = models.IntegerField(default=0)
 
 
     def __str__(self):

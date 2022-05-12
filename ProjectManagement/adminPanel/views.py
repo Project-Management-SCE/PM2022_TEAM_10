@@ -7,7 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import Categoryform
 from associations.models import Association
-from reports.models import PostReport
+from reports.models import PostReport,UserReport
 
 # Create your views here.
 def adminPanel(response):
@@ -182,10 +182,9 @@ def deletePost(request,pk,isReported):
         req.delete()
         return redirect('posts')
 
-    #need to add 1 to the user deleted_post field!!!!!!!!!!!!!!
     else:
-        # req.user.deleted_posts =req.user.deleted_posts=1
-        # req.user.save()
+        req.user.deleted_posts =req.user.deleted_posts=1
+        req.user.save()
         req.delete()
         return redirect('reports_posts')
 
@@ -270,7 +269,7 @@ def searchAsso(request):
 def reports_posts(response):
     if not response.user.is_superuser:   # Restrict the accses only for admins
         return render(response,"admin_error.html",{})
-    posts = Post.objects.filter().exclude(reports_counter__in=[0,2]) #NEED TO ADD 1!!!!!!
+    posts = Post.objects.filter().exclude(reports_counter__in=[0,1,2]) 
     context={'posts':posts}
     return render(response,"admin_reports_posts.html",context)
 
@@ -308,3 +307,24 @@ def deletePostReports(request,pk):
 
 def deletePostReported(request,pk):
     return deletePost(request,pk,True)    
+
+
+############### reports on users #######################
+def reports_users(response):
+    if not response.user.is_superuser:   # Restrict the accses only for admins
+        return render(response,"admin_error.html",{})
+    users = HelpoUser.objects.filter().exclude(user__reports_counter__in=[0],deleted_posts__in=[0,1,2,3,4]) 
+    context={'users':users}
+    return render(response,"admin_reports_users.html",context)
+
+def reportsUserDetails(request,pk):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+  
+    try:
+        req = HelpoUser.objects.get(user_id=pk)
+    except ObjectDoesNotExist as e:
+        return render(request,"admin_error.html",{})
+    
+    reports =  UserReport.objects.filter(reported_id = pk)
+    return render(request,"admin_users_reports_details.html",{'item':req,'reports':reports})

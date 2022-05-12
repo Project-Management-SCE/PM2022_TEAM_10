@@ -7,8 +7,8 @@
 
 <div class="card mb-4">
         <div class="card-header">
-            <i class="fas fa-regular fa-comment"></i>
-            פוסטים
+            <i class="fas fa-solid fa-triangle-exclamation"></i>
+            דיווחים על פוסטים
         </div>
         
         <div class="card-body" >
@@ -43,7 +43,7 @@
                 {%for item in posts%}    
                 <tr>
                         <td>
-                            <input type="submit" class="btn btn-outline-danger" value="פרטים"  onclick="location.href='{% url 'reportsPostDetails' item.id %}';" >
+                             <input type="submit" class="btn btn-outline-danger" value="פרטים"  onclick="location.href='{% url 'reportsPostDetails' item.id %}';" >
                         </td>
                         <td>
                             {{item.reports_counter }}
