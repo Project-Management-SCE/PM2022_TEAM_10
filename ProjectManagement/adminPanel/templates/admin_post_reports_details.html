@@ -1,0 +1,131 @@
+{% extends 'admin_base.html' %}
+
+
+{% block content %}
+
+
+    <div class="container" style="margin-top: 70px; align-items: center; justify-content: center;">
+        <div class="card">
+            <div class="card-header">
+                <span style="float:left;">
+                    <b>{{ item.category.name }}</b>
+                </span>
+
+                <b><span style="float:right;">
+                    {% if item.is_asking %}
+                        בקשת עזרה
+                    {% else %}
+                        הצעת עזרה
+                    {% endif %}
+                </span></b>
+            </div>
+            <div class="card-body" style="text-align:right;">
+                <h4 class="card-title"></h4>
+                <table style="float:right;">
+                    <thead>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>{{item.city}}</td>
+                        <td class="td_spc"></td>
+                        <td><b>:עיר<b></td>
+                        <td class="td_sep"></td>
+                        <td>{{item.user.user.first_name}} {{item.user.user.last_name}}</td>
+                        <td class="td_spc"></td>
+                        <td><b>
+                            {% if item.is_asking %}
+                                :שם המבקש
+                            {% else %}
+                                :שם המציע
+                            {% endif %}
+                            <b></td>
+                    </tr>
+                    <tr>
+                            <td>{{item.user.user.phone_number}}</td>
+                            <td class="td_spc"></td>
+                            <td><b>:פלאפון<b></td>
+                            <td class="td_sep"></td>
+                            <td>{{item.user.user.email}}</td>
+                            <td class="td_spc"></td>
+                            <td><b>:אימייל<b></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr/>
+            <div class="card-body" style="text-align:right;">
+                <p class="card-text">{{ item.info }}</p>
+            </div>
+            <div class="card-footer" style="text-align:right;">
+
+                <span style="float:left;">
+                    <b>{{ item.date | date:"D d M Y, H:i"}}</b>
+                </span>
+            </div>
+        </div>
+
+
+        
+<div class="card mb-4">
+    <div class="card-header">
+        :דיווחים על הפוסט
+    </div>
+<div class="card-body">
+    <table id="datatablesSimple">
+        <thead>
+            <tr>
+                {% comment %} <th>אפשרויות</th> {% endcomment %}
+                <th>עיר</th>
+                <th>מייל</th>
+                <th>פלאפון</th>
+                <th>שם מלא</th>
+                <th>מס׳ מזהה</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                {% comment %} <th>אפשרויות</th> {% endcomment %}
+                <th>עיר</th>
+                <th>מייל</th>
+                <th>פלאפון</th>
+                <th>שם מלא</th>
+                <th>מס׳ מזהה</th>
+                <th>סיבת הדיווח</th>
+
+            </tr>
+        </tfoot>
+        <tbody>
+            {% for item in reports%}
+            <tr>
+                {% comment %} <td>
+                    <div style="text-align:center;"> 
+                        <input type="submit" class="btn btn-outline-success" value="ערוך" onclick="location.href='{% url 'AdminUpdateHelpoUser' item.user.id %}';">
+                        <input type="submit" class="btn btn-outline-warning" value="חסום" onclick="location.href='{% url 'changeActiveState' item.user.id %}';">
+                        <button class="btn btn-outline-danger" user-id-attr="{{item.user.id}}"
+                            user-un-attr="{{item.user.username}}" onclick="confirmDelete(this)">מחק</button>
+                    </div>
+                </td> {% endcomment %}
+                <td>{{item.user.city}}</td>
+                <td>{{item.user.user.email}}</td>
+                <td>{{item.user.user.phone_number}}</td>
+                <td>{{item.user.user.first_name}} {{item.user.last_name}}</td>
+                <td>{{item.user.user.id}}</td>
+                <td>{{item.info}}</td>
+
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+</div>
+
+
+
+
+
+
+
+
+    </div>
+
+{%endblock%}
