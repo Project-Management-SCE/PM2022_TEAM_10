@@ -121,7 +121,11 @@
                             {%if request.user.id == item.user_id%}
                             <a href="{% url 'editPost' item.id %}" class="btn btn-outline-secondary btn-sm">עריכה</a>
                             {%endif%}
+                            {%if item.id not in reported%}
                             <a href="" class="btn btn-danger btn-sm">דווח</a>
+                            {%else%}
+                            <a>דיווחת על פוסט זה</a>
+                            {%endif%}
                         {%endif%}
                         <span style="float:left;">
                             <b>{{ item.date | date:"D d M Y, H:i"}}</b>
