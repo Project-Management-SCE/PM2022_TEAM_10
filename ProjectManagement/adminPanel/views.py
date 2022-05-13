@@ -40,7 +40,7 @@ def deleteUser(request,pk):
     user = User.objects.get(id=pk)
     rpr = request.META.get('HTTP_REFERER')
     user.delete()
-    if 'http://127.0.0.1:8000/adminPanel/reportsUserDetails' in rpr:
+    if 'http://127.0.0.1:8000/adminPanel/reportsUserDetails' in str(rpr):
         return redirect('reports_users')
     return HttpResponseRedirect(rpr)
 
@@ -273,7 +273,7 @@ def searchAsso(request):
 def reports_posts(response):
     if not response.user.is_superuser:   # Restrict the accses only for admins
         return render(response,"admin_error.html",{})
-    posts = Post.objects.filter().exclude(reports_counter__in=[0,1,2]) 
+    posts = Post.objects.filter().exclude(reports_counter__in=[0,1,2]).order_by('-reports_counter') 
     context={'posts':posts}
     return render(response,"admin_reports_posts.html",context)
 
@@ -354,9 +354,13 @@ def deleteUserReports(request,pk):
 def blockUser(request, pk): # pk - primary key
     if not request.user.is_superuser:   # Restrict the accses only for admins
         return render(request,"admin_error.html",{})
+
     try:
         req = User.objects.get(id=pk)
     except ObjectDoesNotExist as e:
+        return render(request,"admin_error.html",{})
+
+    if not req.is_active:
         return render(request,"admin_error.html",{})
 
     if request.method == 'POST':
@@ -364,8 +368,11 @@ def blockUser(request, pk): # pk - primary key
 
         if u_form.is_valid() :
             instance= u_form.save(commit=False)
-            instance.blocked_date = datetime.now()
+            # instance.blocked_date = datetime.now()
             instance.is_active = False
+            instance.reports_counter = 0
+            if instance.is_helpo_user:
+                instance.helpouser.deleted_posts=0
             instance.save()
             return redirect('adminPanel')
     

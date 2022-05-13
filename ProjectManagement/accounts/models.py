@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinLengthValidator
@@ -21,8 +22,8 @@ class User(AbstractUser):
     high_privacy = models.BooleanField(default=False)
     reports_counter = models.IntegerField(default=0)
 
-    blocked_date = models.DateTimeField(blank=True)
-    blocked_reason = models.CharField(max_length=100,default=None)
+    blocked_date = models.DateTimeField(auto_now_add=True, blank=True,)
+    blocked_reason = models.CharField(max_length=100,default="")
     # is_volenteer = models.BooleanField('volenteer status', default=False)
 
 class associationManager(models.Model):

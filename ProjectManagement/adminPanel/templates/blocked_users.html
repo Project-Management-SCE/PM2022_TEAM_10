@@ -13,6 +13,7 @@
         <thead>
             <tr>
                 <th>אפשרויות</th>
+                <th>סיבת החסימה</th>
                 <th>עיר / מס׳ עמותה</th>
                 <th>מייל</th>
                 <th>פלאפון</th>
@@ -32,12 +33,13 @@
         </tfoot>
         <tbody>
             {%if a_users %}
-                <tr>
-                    <td><hr/></td>
-                    <td><hr/></td>
-                    <td><hr/></td>
-                    <td><hr/></td>
-                    <td><hr/></td>
+                <tr style="background-color:lightgray;">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td><b style="font-size:16px;">מנהלי עמותות</b></td>
                 </tr>
                 {% for item in a_users%}
@@ -47,6 +49,7 @@
                             <input type="submit" class="btn btn-outline-success" value="בטל חסימה" onclick="location.href='{% url 'changeActiveState' item.user.id %}';">
                         </div>
                     </td>
+                    <td>{{item.user.blocked_reason}}</td>
                     <td>{{item.association_number}}</td>
                     <td>{{item.user.email}}</td>
                     <td>{{item.user.phone_number}}</td>
@@ -56,12 +59,13 @@
                 {%endfor%}
             {%endif%}
             {%if h_users %}
-                <tr>
-                    <td><hr/></td>
-                    <td><hr/></td>
-                    <td><hr/></td>
-                    <td><hr/></td>
-                    <td><hr/></td>
+                <tr style="background-color:lightgray;">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td><b style="font-size:16px;">משתמשי הלפו</b></td>
                 </tr>
                 {% for item in h_users%}
@@ -73,6 +77,7 @@
                                     user-un-attr="{{item.user.username}}" onclick="confirmDelete(this)">מחק</button>
                         </div>
                     </td>
+                    <td>{{item.user.blocked_reason}}</td>
                     <td>{{item.city}}</td>
                     <td>{{item.user.email}}</td>
                     <td>{{item.user.phone_number}}</td>

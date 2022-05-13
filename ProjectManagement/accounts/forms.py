@@ -120,5 +120,7 @@ class UserBlockForm(forms.ModelForm):
     class Meta:
         model = User
         fields = [ 'blocked_reason',]
+        
         labels = {
+            'blocked_reason':'סיבה',
         }
