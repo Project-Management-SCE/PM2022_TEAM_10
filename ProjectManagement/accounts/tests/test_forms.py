@@ -1,5 +1,5 @@
 from django.test import TestCase
-from accounts.forms import AssociationManagerSignUpform, AssociationManagerUpdateform, UserUpdateform, HelpoUserUpdateform, HelpoUserSignUpform
+from accounts.forms import AssociationManagerSignUpform, AssociationManagerUpdateform, UserUpdateform, HelpoUserUpdateform, HelpoUserSignUpform,UserBlockForm
 from associations.models import Association
 
 class TestForms(TestCase):
@@ -26,6 +26,11 @@ class TestForms(TestCase):
 
     def test_update_HelpoUserUpdateform_no_data(self):
         form = HelpoUserUpdateform(data={})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(len(form.errors),1)
+
+    def test_update_UserBlockForm_no_data(self):
+        form = UserBlockForm(data={})
         self.assertFalse(form.is_valid())
         self.assertEqual(len(form.errors),1)
 
@@ -67,5 +72,10 @@ class TestForms(TestCase):
         )
         form = AssociationManagerSignUpform(data={'username':'abc','first_name':'JIM', 'last_name':'Botten', 'email':'J@b.com'
                                     ,'phone_number':'0500500501','password1':'JjBotten1280','password2':'JjBotten1280', 'association_number':'123123'})
+        self.assertTrue(form.is_valid())
+        self.assertEqual(len(form.errors),0)
+
+    def test_update_UserBlockForm_with_data(self):
+        form = UserBlockForm(data={'blocked_reason':'stam'})
         self.assertTrue(form.is_valid())
         self.assertEqual(len(form.errors),0)

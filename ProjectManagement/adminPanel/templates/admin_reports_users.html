@@ -5,14 +5,16 @@
 
 <div class="card mb-4">
     <div class="card-header">
-        <i class="fas fa-solid fa-handshake-angle"></i>
-        משתמשי הלפו
+        <i class="fas fa-solid fa-triangle-exclamation"></i>
+        דיווחים על משתמשים
     </div>
 <div class="card-body">
     <table id="datatablesSimple">
         <thead>
             <tr>
                 <th>אפשרויות</th>
+                <th>מס׳ דיווחים</th>
+                <th>מס׳ פוסטים שנמחקו</th>
                 <th>עיר</th>
                 <th>מייל</th>
                 <th>פלאפון</th>
@@ -35,12 +37,12 @@
             <tr>
                 <td>
                     <div style="text-align:center;"> 
-                        <input type="submit" class="btn btn-outline-success" value="ערוך" onclick="location.href='{% url 'AdminUpdateHelpoUser' item.user.id %}';">
-                        <input type="submit" class="btn btn-outline-warning" value="חסום" onclick="location.href='{% url 'blockUser' item.user.id %}';">
-                        <button class="btn btn-outline-danger" user-id-attr="{{item.user.id}}"
-                            user-un-attr="{{item.user.username}}" onclick="confirmDelete(this)">מחק</button>
+                        <input type="submit" class="btn btn-outline-dark" value="פרטים" onclick="location.href='{% url 'reportsUserDetails' item.user.id %}';">            
+                        
                     </div>
                 </td>
+                <td>{{item.user.reports_counter}}</td>
+                <td>{{item.deleted_posts}}</td>
                 <td>{{item.city}}</td>
                 <td>{{item.user.email}}</td>
                 <td>{{item.user.phone_number}}</td>

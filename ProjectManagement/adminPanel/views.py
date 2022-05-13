@@ -1,13 +1,14 @@
+from datetime import datetime
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from accounts.models import HelpoUser,User,associationManager
-from accounts.forms import UserUpdateform, HelpoUserUpdateform, AssociationManagerUpdateform
+from accounts.forms import UserUpdateform, HelpoUserUpdateform, AssociationManagerUpdateform,UserBlockForm
 from posts.models import Post,Category
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import Categoryform
 from associations.models import Association
-from reports.models import PostReport
+from reports.models import PostReport,UserReport
 
 # Create your views here.
 def adminPanel(response):
@@ -37,8 +38,11 @@ def deleteUser(request,pk):
     if not request.user.is_superuser:  # Restrict the accses only for admins
         return render(request,"admin_error.html",{})
     user = User.objects.get(id=pk)
+    rpr = request.META.get('HTTP_REFERER')
     user.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    if 'http://127.0.0.1:8000/adminPanel/reportsUserDetails' in str(rpr):
+        return redirect('reports_users')
+    return HttpResponseRedirect(rpr)
 
 #############################helpo users###########################
 
@@ -182,10 +186,9 @@ def deletePost(request,pk,isReported):
         req.delete()
         return redirect('posts')
 
-    #need to add 1 to the user deleted_post field!!!!!!!!!!!!!!
     else:
-        # req.user.deleted_posts =req.user.deleted_posts=1
-        # req.user.save()
+        req.user.deleted_posts =req.user.deleted_posts=1
+        req.user.save()
         req.delete()
         return redirect('reports_posts')
 
@@ -270,7 +273,7 @@ def searchAsso(request):
 def reports_posts(response):
     if not response.user.is_superuser:   # Restrict the accses only for admins
         return render(response,"admin_error.html",{})
-    posts = Post.objects.filter().exclude(reports_counter__in=[0,2]) #NEED TO ADD 1!!!!!!
+    posts = Post.objects.filter().exclude(reports_counter__in=[0,1,2]).order_by('-reports_counter') 
     context={'posts':posts}
     return render(response,"admin_reports_posts.html",context)
 
@@ -308,3 +311,77 @@ def deletePostReports(request,pk):
 
 def deletePostReported(request,pk):
     return deletePost(request,pk,True)    
+
+
+############### reports on users #######################
+def reports_users(response):
+    if not response.user.is_superuser:   # Restrict the accses only for admins
+        return render(response,"admin_error.html",{})
+    users = HelpoUser.objects.filter().exclude(user__reports_counter__in=[0],deleted_posts__in=[0,1,2,3,4]) 
+    context={'users':users}
+    return render(response,"admin_reports_users.html",context)
+
+def reportsUserDetails(request,pk):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+  
+    try:
+        req = HelpoUser.objects.get(user_id=pk)
+    except ObjectDoesNotExist as e:
+        return render(request,"admin_error.html",{})
+    
+    reports =  UserReport.objects.filter(reported_id = pk)
+    return render(request,"admin_users_reports_details.html",{'item':req,'reports':reports})
+
+def deleteUserReports(request,pk):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+    try:
+        req = HelpoUser.objects.get(user_id=pk)
+    except ObjectDoesNotExist as e:
+        return render(request,"admin_error.html",{})
+    
+    
+    reports = UserReport.objects.filter(reported_id = pk)
+    for x in reports:
+        x.delete()
+    
+    req.user.reports_counter = 0
+    req.user.save()    
+    
+    return redirect('reports_users')
+
+def blockUser(request, pk): # pk - primary key
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+
+    try:
+        req = User.objects.get(id=pk)
+    except ObjectDoesNotExist as e:
+        return render(request,"admin_error.html",{})
+
+    if not req.is_active:
+        return render(request,"admin_error.html",{})
+
+    if request.method == 'POST':
+        u_form = UserBlockForm(request.POST, instance=req)
+
+        if u_form.is_valid() :
+            instance= u_form.save(commit=False)
+            # instance.blocked_date = datetime.now()
+            instance.is_active = False
+            instance.reports_counter = 0
+            if instance.is_helpo_user:
+                instance.helpouser.deleted_posts=0
+            instance.save()
+            return redirect('adminPanel')
+    
+    else:
+        u_form = UserBlockForm(instance=req)
+
+    context = {
+                'form' : u_form,
+                'item':req
+            }
+
+    return render(request, 'blockingForm.html', context)
