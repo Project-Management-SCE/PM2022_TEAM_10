@@ -122,7 +122,7 @@
                             <a href="{% url 'editPost' item.id %}" class="btn btn-outline-secondary btn-sm">עריכה</a>
                             {%endif%}
                             {%if item.id not in reported%}
-                            <a href="" class="btn btn-danger btn-sm">דווח</a>
+                            <a href="{% url 'createReportPost' item.id %}" class="btn btn-danger btn-sm">דווח</a>
                             {%else%}
                             <a>דיווחת על פוסט זה</a>
                             {%endif%}
