@@ -238,3 +238,14 @@ class TestViews(TestCase):
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("blockingForm.html")
 
+
+    def test_deletePostReported_with_login(self):
+        response = self.adminclient.get(self.deletePost_url,follow=True)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_posts.html")
+        
+    def test_deletePostReports_without_login(self):
+        response = self.client.get(self.deletePost_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html") 
+
