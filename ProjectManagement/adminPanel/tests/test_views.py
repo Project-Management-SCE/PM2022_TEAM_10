@@ -1,4 +1,5 @@
 
+from operator import truediv
 from urllib import response
 from django.test import TestCase, Client
 from django.urls import reverse
@@ -26,17 +27,17 @@ class TestViews(TestCase):
         self.UserObj.password="123456"
         self.UserObj.save()
         
-        user1 = User.objects.create_user(username='username', password='password')
+        self.user1 = User.objects.create_user(username='username', password='password')
         
         #create helpo user
         self.HelpoUserObj = HelpoUser.objects.create(
-            user = user1,
+            user = self.user1,
             city = "BS"
         )
         
-        user1.is_superuser=True
-        user1.is_staff=True
-        user1.save()
+        self.user1.is_superuser=True
+        self.user1.is_staff=True
+        self.user1.save()
         
         #create Category
         # self.category=Category.objects.create(
@@ -67,6 +68,16 @@ class TestViews(TestCase):
         self.admin_changeState = reverse('changeActiveState',kwargs={'pk':self.UserObj.id})
         self.admin_deleteUser = reverse('deleteUser',kwargs={'pk':self.UserObj.id})
         self.reports_posts_url = reverse('reports_posts')
+        self.reports_users_url = reverse('reports_users')
+        self.reportsUserDetails_url = reverse('reportsUserDetails',kwargs={'pk':self.user1.id})
+        self.reportsUserDetails_fakeUser_url = reverse('reportsUserDetails',kwargs={'pk':-1})
+        self.deleteUserReports_url = reverse('deleteUserReports',kwargs={'pk':self.user1.id})
+        self.deleteUserReports_fakeUser_url = reverse('deleteUserReports',kwargs={'pk':-1})
+        self.blockUser_url = reverse('blockUser',kwargs={'pk':self.user1.id})
+        self.blockUser_fakeUser_url = reverse('blockUser',kwargs={'pk':-1})
+
+
+        
     
     def test_adminPanel_with_loogin(self):
         response = self.adminclient.get(self.admin_panel_url)  
@@ -162,5 +173,68 @@ class TestViews(TestCase):
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_reports_posts.html")
     
+    def test_reports_users(self):
+        response = self.client.get(self.reports_users_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        
+        response = self.adminclient.get(self.reports_users_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_reports_users.html")
 
+    def test_reportsUserDetails(self):
+        response = self.client.get(self.reportsUserDetails_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+
+        response = self.adminclient.get(self.reportsUserDetails_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_users_reports_details.html")
+
+        response = self.adminclient.get(self.reportsUserDetails_fakeUser_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+
+    def test_deleteUserReports(self):
+        response = self.client.get(self.deleteUserReports_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+
+        response = self.adminclient.get(self.deleteUserReports_url,follow=True)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_reports_users.html")
+
+        response = self.adminclient.get(self.deleteUserReports_fakeUser_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+
+    def test_blockUser(self):
+        response = self.client.get(self.blockUser_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
     
+        response = self.adminclient.get(self.blockUser_fakeUser_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+
+        self.user1.is_active=False
+        self.user1.save()
+        response = self.adminclient.get(self.blockUser_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+
+        self.user1.is_active=True
+        self.user1.save()
+        
+        response = self.adminclient.get(self.blockUser_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("blockingForm.html")
+
+        response = self.adminclient.post(self.blockUser_url, data ={'blocked_reason':'impostor'},follow=True)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_index.html")
+
+        response = self.adminclient.post(self.blockUser_url, data ={})
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("blockingForm.html")
+
