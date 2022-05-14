@@ -25,5 +25,6 @@ urlpatterns = [
     path('adminPanel/', include('adminPanel.urls')),
     path('posts/', include('posts.urls')),
     path('reports/', include('reports.urls')),
+    path('feedbacks/', include('feedbacks.urls')),
 
 ]
