@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'adminPanel.apps.AdminpanelConfig',
     'posts.apps.PostsConfig',
     'reports.apps.ReportsConfig',
-
+    'feedbacks.apps.FeedbacksConfig',
 ]
 
 MIDDLEWARE = [
