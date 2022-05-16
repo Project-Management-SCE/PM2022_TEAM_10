@@ -99,7 +99,7 @@
                             
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseReports" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                דיווחים
+                                דיווחים ומשובים
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseReports" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
@@ -110,6 +110,11 @@
                             <div class="collapse" id="collapseReports" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="{% url 'reports_users' %}">דיווחים על משתמשים </a>
+                                </nav>
+                            </div>
+                            <div class="collapse" id="collapseReports" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="{% url 'AllFeedbacks' %}">צפייה במשובים </a>
                                 </nav>
                             </div>
                             
@@ -136,6 +141,17 @@
                 let text = "? "+ _un + " אתה בטוח כי אתה רוצה למחוק את המשתמש";
                 if (confirm(text) == true) {
                     location.href="/adminPanel/deleteUser/"+user_id;
+                }
+            }
+        </script>
+
+        <!--Function to delete a feedback-->
+        <script>
+            function confirmDeleteFeedback(object) {
+                let report_id = object.getAttribute('report-id-attr');
+                let text =   " אתה בטוח כי אתה רוצה למחוק את משוב מספר " + report_id  + "? ";
+                if (confirm(text) == true) {
+                    location.href="/adminPanel/deleteFeedback/"+report_id;
                 }
             }
         </script>
