@@ -11,11 +11,11 @@
             
           {% if user.is_authenticated %}
           <div class="section-title"> 
-            <h3>You are already logged in, <span>Enjoy our site</span></h3>
+            <h3>אתה כבר מחובר</h3>
           </div>
           {% else %}
           <div class="section-title">
-            <h3>Have an account? <span>Login now!</span></h3>
+            <h3>יש לך משתמש באתר?<span> התחבר כעת</span></h3>
           </div>
           
           <div class="row content" style="display: flex;align-items: center;justify-content: center;" >
@@ -24,7 +24,7 @@
               {%csrf_token%}
               {{form|crispy}}
               <button style="margin-top: 10px;" type="submit" class="btn btn-outline-danger">Login</button>
-              <p> Don't have an account? <a href="/accounts/pickType">CLICK HERE</a></p>
+              <p> אינך רשום? <a href="/accounts/pickType">הירשם כעת</a></p>
             </form>
           </div>
           {% endif%}
