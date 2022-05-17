@@ -1,5 +1,6 @@
 from django import forms
 from posts.models import Category
+from adminPanel.models import AdminMessage
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -17,3 +18,19 @@ class Categoryform(forms.ModelForm):
                 raise forms.ValidationError("This category allready exists")
         except ObjectDoesNotExist as e:
             return data
+
+class AdminMessageForm(forms.ModelForm):
+    
+    content = forms.CharField(widget=forms.Textarea(
+        attrs={
+            'dir': 'rtl',
+        }
+    ))
+    class Meta():
+        model = AdminMessage
+        fields = ['content']
+    
+        labels = {
+            "subject":'נושא',
+            "content":'תוכן',
+        }
