@@ -8,4 +8,6 @@ class Feedback(models.Model):
     content = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.subject
+        if self.user.is_helpo_user:
+            return f'Helpo_user: {self.user.username} -> ' + self.subject
+        return f'Menager: {self.user.username} -> ' + self.subject
