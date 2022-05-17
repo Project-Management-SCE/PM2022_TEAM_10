@@ -11,9 +11,9 @@ class FeedbackFrom(forms.ModelForm):
     
     class Meta():
         model = Feedback
-        fields = ['subject','content',]
+        fields = ['subject','content']
     
         labels = {
-            "content":'תוכן',
             "subject":'נושא',
+            "content":'תוכן',
         }
