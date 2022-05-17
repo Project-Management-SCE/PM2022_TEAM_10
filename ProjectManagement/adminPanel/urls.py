@@ -35,6 +35,12 @@ urlpatterns = [
     path("blockUser/<str:pk>", views.blockUser, name="blockUser"),
 
 
+    path("AllFeedbacks", views.AllFeedbacks, name="AllFeedbacks"),
+    path("deleteFeedback/<str:pk>", views.deleteFeedback, name="deleteFeedback"),
+
+
+
+
 
 ]
 

@@ -9,7 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .forms import Categoryform
 from associations.models import Association
 from reports.models import PostReport,UserReport
-
+from feedbacks.models import Feedback
 # Create your views here.
 def adminPanel(response):
     if not response.user.is_superuser:  # Restrict the accses only for admins
@@ -385,3 +385,29 @@ def blockUser(request, pk): # pk - primary key
             }
 
     return render(request, 'blockingForm.html', context)
+
+
+
+
+
+########### feedbacks ############
+def AllFeedbacks(response):
+    if not response.user.is_superuser:   # Restrict the accses only for admins
+        return render(response,"admin_error.html",{})
+    asso_feedbacks=Feedback.objects.filter(user__is_association_manager__in=[True])
+    helpo_feedbacks = Feedback.objects.filter(user__is_helpo_user__in=[True])
+    context={'a_users':asso_feedbacks, 'h_users':helpo_feedbacks}
+    return render(response,"admin_AllFeedbacks.html",context)
+
+
+def deleteFeedback(request,pk):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+  
+    try:
+        req = Feedback.objects.get(id=pk)
+    except ObjectDoesNotExist as e:
+        return render(request,"admin_error.html",{})
+    
+    req.delete()
+    return redirect('AllFeedbacks')
