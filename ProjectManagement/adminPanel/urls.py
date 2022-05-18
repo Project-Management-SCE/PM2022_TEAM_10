@@ -38,6 +38,7 @@ urlpatterns = [
     path("AllFeedbacks", views.AllFeedbacks, name="AllFeedbacks"),
     path("deleteFeedback/<str:pk>", views.deleteFeedback, name="deleteFeedback"),
 
+    path("showActivityTracking/", views.showActivityTracking, name="showActivityTracking"),
 
 
 

@@ -1,9 +1,19 @@
+
+table thead tr{
+    background-color: rgba(88, 88, 88, 0.116);
+}
+
+table tbody tr{
+    background-color: rgba(0, 247, 124, 0.048);
+}
+
 table#datatablesSimple{
     text-align: center;
 }
 table#datatablesSimple th{
     text-align: center; 
 }
+
 .card-header{
     text-align:center;
     font-size:22px;
