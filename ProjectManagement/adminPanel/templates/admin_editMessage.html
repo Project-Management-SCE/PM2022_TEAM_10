@@ -1,0 +1,36 @@
+{% extends 'admin_base.html' %}
+
+
+{% block content %}
+<!-- <section id="hero">
+</section> -->
+<div class="card mb-4">
+    
+    <div class="card-header">
+        <div class="row content" style="display: flex;align-items: center;justify-content: center; margin-top:10px" >
+
+        <i class="fas fa-solid fa-message"></i>
+            
+                עריכת הודעה מס׳  {{obj.id}}    
+        </div>
+    </div>   
+
+    <div class="card-body">
+        <div class="row content" style="display: flex;align-items: center;justify-content: center;" >
+                {% load crispy_forms_tags %}
+                <form method = "POST" style="width: 350px; height: 500px;">
+                    {%csrf_token%}
+                    <fieldset class = "form-group">
+                        {{form|crispy}}       <!--User form-->
+                    </fieldset>
+                <button type="submit" class="btn btn-outline-danger" style="margin-top:10px;">שמור שינויים</button>
+                </form>
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{%endblock%}

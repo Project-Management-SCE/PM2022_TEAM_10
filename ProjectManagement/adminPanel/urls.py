@@ -39,6 +39,8 @@ urlpatterns = [
     path("deleteFeedback/<str:pk>", views.deleteFeedback, name="deleteFeedback"),
 
     path("adminMessages", views.adminMessages, name="adminMessages"),
+    path("editAdminMessage/<str:pk>/", views.editAdminMessage, name="editAdminMessage"), 
+    path("deleteAdminMessage/<str:pk>", views.deleteAdminMessage, name="deleteAdminMessage"),
 
 
 

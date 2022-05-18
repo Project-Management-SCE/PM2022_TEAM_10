@@ -1,10 +1,12 @@
 
+import imp
 from operator import truediv
 from urllib import response
 from django.test import TestCase, Client
 from django.urls import reverse
 from posts.models import Post
 from accounts.models import User,HelpoUser
+from adminPanel.models import AdminMessage
 #from home.models import Category
 from django.test.client import RequestFactory
 import datetime 
@@ -52,6 +54,10 @@ class TestViews(TestCase):
            # category=self.category,
             date=datetime.date.today()
         )
+
+        self.adminMsg = AdminMessage.objects.create(
+            content = "ABCDEFG"
+        )
         
         self.adminclient = Client() # Create cliend
         self.adminclient.login(username="username",password="password")
@@ -75,6 +81,10 @@ class TestViews(TestCase):
         self.deleteUserReports_fakeUser_url = reverse('deleteUserReports',kwargs={'pk':-1})
         self.blockUser_url = reverse('blockUser',kwargs={'pk':self.user1.id})
         self.blockUser_fakeUser_url = reverse('blockUser',kwargs={'pk':-1})
+        self.adminMessagesUrl = reverse('adminMessages')
+        self.adminEditMessageUrl = reverse('editAdminMessage',kwargs={'pk':self.adminMsg.id})
+        self.adminDeleteMessageUrl = reverse('deleteAdminMessage',kwargs={'pk':self.adminMsg.id})
+        self.adminDeleteMessage_FakeUrl = reverse('deleteAdminMessage',kwargs={'pk':self.adminMsg.id})
 
 
         
@@ -249,3 +259,42 @@ class TestViews(TestCase):
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_error.html") 
 
+
+    def test_adminMessages(self):
+        response = self.client.get(self.adminMessagesUrl)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+
+        response = self.adminclient.get(self.adminMessagesUrl)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_messages.html")
+
+        response = self.adminclient.post(self.adminMessagesUrl, data ={'content':'impostor'},follow=True)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_messages.html")
+    
+    def test_adminEditMessages(self):
+        response = self.client.get(self.adminEditMessageUrl)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+
+        response = self.adminclient.get(self.adminEditMessageUrl)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_messages.html")
+
+        response = self.adminclient.post(self.adminEditMessageUrl, data ={'content':'impostor'},follow=True)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_messages.html")
+
+    def test_adminDeleteMessages(self):
+        response = self.client.get(self.adminDeleteMessageUrl)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+
+        response = self.adminclient.get(self.adminDeleteMessageUrl,follow=True)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_messages.html")
+
+        response = self.adminclient.get(self.adminDeleteMessageUrl,follow=True)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_messages.html")

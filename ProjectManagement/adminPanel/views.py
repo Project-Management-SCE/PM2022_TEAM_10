@@ -433,3 +433,40 @@ def adminMessages(request):
         'objects':AdminMessage.objects.all()
     }
     return render(request, 'admin_messages.html',context)
+
+def editAdminMessage(request,pk):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+    
+    m = AdminMessage.objects.get(id=pk)
+    if request.method == 'POST':
+        form = AdminMessageForm(request.POST, instance=m)
+
+        if form.is_valid():
+            form.save()
+            return redirect('adminMessages')
+    
+    else:
+        form=AdminMessageForm(instance=m)
+
+    context = {
+                'form' : form,
+                'obj':m,
+            }
+
+    return render(request, 'admin_editMessage.html', context)
+
+def deleteAdminMessage(request,pk):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+  
+    try:
+        req = AdminMessage.objects.get(id=pk)
+    except ObjectDoesNotExist as e:
+            return redirect('adminMessages')
+    
+    req.delete()
+    return redirect('adminMessages')
+
+
+    #later add treatment for exceptions!
