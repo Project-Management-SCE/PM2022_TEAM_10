@@ -24,6 +24,9 @@ class AdminMessageForm(forms.ModelForm):
     content = forms.CharField(widget=forms.Textarea(
         attrs={
             'dir': 'rtl',
+            'rows': 3,
+            'cols': 40,
+            'style': 'height: 6em; resize:none;',
         }
     ))
     class Meta():
@@ -31,6 +34,5 @@ class AdminMessageForm(forms.ModelForm):
         fields = ['content']
     
         labels = {
-            "subject":'נושא',
             "content":'תוכן',
         }

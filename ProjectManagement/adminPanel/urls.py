@@ -38,7 +38,7 @@ urlpatterns = [
     path("AllFeedbacks", views.AllFeedbacks, name="AllFeedbacks"),
     path("deleteFeedback/<str:pk>", views.deleteFeedback, name="deleteFeedback"),
 
-
+    path("adminMessages", views.adminMessages, name="adminMessages"),
 
 
 
