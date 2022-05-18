@@ -95,6 +95,7 @@
                 <li><a  href="{% url 'profile' user.associationmanager.association_number %}">העמותה שלי</a></li>
                 {%endif%}
                 {%if user.is_helpo_user %}
+                  <li><a href="{% url 'helpo_porfile' user.id %}">דף פרופיל</a></li>
                   <li><a href="{% url 'updateHelpoUser' user.id %}">עריכת פרטים</a></li>
                   <li><a class="nav-link" href="{% url 'showMyPosts' user.id %}">הפוסטים שלי</a></li>
                 {%endif%}

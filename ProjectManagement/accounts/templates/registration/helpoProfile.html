@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block link_css %}
+{%load static%}
+    <link href="{% static 'css/asso_profile.css' %}?{%now 'U'%}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<style>
+    .btn_prf
+    {
+        width:180px;
+        margin-top:3px;
+    }
+</style>
+<section id="contact" class="contact">
+    <div class="container emp-profile">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="profile-img">
+                                <img src="https://www.clipartkey.com/mpngs/m/74-744136_blank-person.png" alt=""/>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-8" >
+                            <div class="profile-head" style="text-align:right;" >
+                                        <h1>
+                                            {{obj.user.last_name}} {{obj.user.first_name}}
+                                        </h1>
+
+                                <ul class="nav nav-tabs nav justify-content-end " id="myTab" role="tablist" >
+                                    <li class="nav-item"  >
+                                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="" role="tab" aria-controls="home" aria-selected="true">אודות</a>
+                                    </li>
+                                    {% comment %} <li class="nav-item">
+                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Timeline</a>
+                                    </li>  {% endcomment %}
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="profile-work">
+                                <div class="btn-group-vertical" role="group" aria-label="Basic example" style="padding-left:17%;">
+                                   {%if user == obj.user%}
+                                        <a href="{% url 'updateHelpoUser' obj.user.id %}">
+                                            <button type="submit" class="btn btn-danger btn_prf" >
+                                                עריכת פרופיל </button>
+                                        </a>
+                                    {%endif%} 
+
+                                </div>
+
+                                <!--אם נרצה לרשום משהו בצד-->
+                                {% comment %} <p>WORK LINK</p>
+                                <a href="">Website Link</a><br/>
+                                <a href="">Bootsnipp Profile</a><br/>
+                                <a href="">Bootply Profile</a>
+                                <p>SKILLS</p>
+                                <a href="">Web Designer</a><br/>
+                                <a href="">Web Developer</a><br/>
+                                <a href="">WordPress</a><br/>
+                                <a href="">WooCommerce</a><br/>
+                                <a href="">PHP, .Net</a><br/> {% endcomment %}
+                            </div>
+
+                        </div>
+                        <div class="col-md-8">
+                            <div class="tab-content profile-tab" id="myTabContent" style="text-align:right;">
+                                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                    <h5><b>:פרטי המשתמש</b></h5>
+                                    <div class="row" >
+                                        <div class="col-md-6">
+                                            {{obj.user.id}}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label><b>מספר</b></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            {{obj.user.username}}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label><b> שם משתמש</b></label>
+                                        </div>
+                                    </div>
+                                    <br><h5><b>:צור קשר</b></h5>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            {{obj.city}}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label>עיר</label>
+                                        </div>
+                                    </div>                                            
+                                   {%if not obj.user.high_privacy%}
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            {{obj.user.phone_number}}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label><b>מספר טלפון</b></label>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            {%if obj.user.email%}
+                                                {{obj.user.email}}
+                                            {%endif%}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label><b>דואר אלקטרוני</b></label>
+                                        </div>
+                                    </div> 
+                                    {%endif%}
+
+
+
+                                </div>
+                                {% comment %} <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Experience</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p>Expert</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Hourly Rate</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p>10$/hr</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Total Projects</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p>230</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>English Level</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p>Expert</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Availability</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p>6 months</p>
+                                                </div>
+                                            </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>Your Bio</label><br/>
+                                            <p>Your detail description</p>
+                                        </div>
+                                    </div>
+                                </div> {% endcomment %}
+                            </div>
+                        </div>
+            </div>
+</section>
+
+{% endblock %}
