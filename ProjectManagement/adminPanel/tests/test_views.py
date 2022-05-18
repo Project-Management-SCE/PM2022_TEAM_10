@@ -9,6 +9,7 @@ from accounts.models import User,HelpoUser
 from adminPanel.models import AdminMessage
 #from home.models import Category
 from django.test.client import RequestFactory
+from associations.models import Association
 import datetime 
 
 class TestViews(TestCase):
@@ -81,10 +82,12 @@ class TestViews(TestCase):
         self.deleteUserReports_fakeUser_url = reverse('deleteUserReports',kwargs={'pk':-1})
         self.blockUser_url = reverse('blockUser',kwargs={'pk':self.user1.id})
         self.blockUser_fakeUser_url = reverse('blockUser',kwargs={'pk':-1})
+        self.showActivityTracking_url = reverse('showActivityTracking')
         self.adminMessagesUrl = reverse('adminMessages')
         self.adminEditMessageUrl = reverse('editAdminMessage',kwargs={'pk':self.adminMsg.id})
         self.adminDeleteMessageUrl = reverse('deleteAdminMessage',kwargs={'pk':self.adminMsg.id})
         self.adminDeleteMessage_FakeUrl = reverse('deleteAdminMessage',kwargs={'pk':self.adminMsg.id})
+
 
 
         
@@ -258,7 +261,20 @@ class TestViews(TestCase):
         response = self.client.get(self.deletePost_url)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_error.html") 
+    
+    def test_show_activity_tracking_without_login(self):
+        response = self.client.get(self.showActivityTracking_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html") 
 
+    def test_show_activity_tracking_with_login(self):
+        response = self.adminclient.get(self.showActivityTracking_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertEqual(response.context['num_of_posts'],Post.objects.all().count())
+        self.assertEqual(response.context['num_of_associations'],Association.objects.all().count())
+        self.assertEqual(response.context['num_of_users'],User.objects.filter(is_superuser__in=[False]).count())
+
+        self.assertTemplateUsed("activity_tracking.html") 
 
     def test_adminMessages(self):
         response = self.client.get(self.adminMessagesUrl)  

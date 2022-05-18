@@ -104,6 +104,7 @@
                                     <a class="nav-link" href="{% url 'reports_posts' %}">דיווחים על פוסטים </a>
                                     <a class="nav-link" href="{% url 'reports_users' %}">דיווחים על משתמשים </a>
                                     <a class="nav-link" href="{% url 'AllFeedbacks' %}">צפייה במשובים </a>
+                                    <a class="nav-link" href="{% url 'showActivityTracking' %}">דו"ח פעילות </a>
                                 </nav>
                             </div>
 
@@ -114,7 +115,7 @@
                             </a>
                             <div class="collapse" id="collapseExtra" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="">הודעות מערכת</a>
+                                    <a class="nav-link" href="{% url 'adminMessages' %}">הודעות מערכת</a>
                                 </nav>
                             </div>
     

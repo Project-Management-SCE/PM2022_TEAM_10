@@ -42,6 +42,9 @@ urlpatterns = [
     path("editAdminMessage/<str:pk>/", views.editAdminMessage, name="editAdminMessage"), 
     path("deleteAdminMessage/<str:pk>", views.deleteAdminMessage, name="deleteAdminMessage"),
 
+    path("showActivityTracking/", views.showActivityTracking, name="showActivityTracking"),
+
+
 
 
 ]
