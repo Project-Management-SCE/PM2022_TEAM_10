@@ -4,9 +4,9 @@
 
 
 <div class="card mb-4">
-    <div class="card-header">
-        <i class="fas fa-ban"></i>
-        משובים ממשתמשים
+    <div class="card-header"> 
+        <i class="fa-regular fa-message"></i>
+                       משובים ממשתמשים
     </div>
 <div class="card-body">
     <table id="datatablesSimple" >
@@ -52,7 +52,8 @@
                     <td>
                         <div> 
                             <button class="btn btn-outline-danger" report-id-attr="{{item.id}}"
-                                     onclick="confirmDeleteFeedback(this)">מחק</button>                        </div>
+                                     onclick="confirmDeleteFeedback(this)">מחק</button>                        
+                        </div>
                     </td>
                     <td style="max-width:300px;">{{item.content}}</td>
                     <td>{{item.subject}}</td>

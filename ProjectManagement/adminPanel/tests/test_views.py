@@ -8,6 +8,7 @@ from accounts.models import User,HelpoUser
 #from home.models import Category
 from django.test.client import RequestFactory
 import datetime 
+from feedbacks.models import Feedback
 
 class TestViews(TestCase):
     def setUp(self):
@@ -39,11 +40,6 @@ class TestViews(TestCase):
         self.user1.is_staff=True
         self.user1.save()
         
-        #create Category
-        # self.category=Category.objects.create(
-        #     name="my new category"
-        # )
-        
         #create post object
         self.post=Post.objects.create(
             user=self.HelpoUserObj,
@@ -51,6 +47,13 @@ class TestViews(TestCase):
             info="i am writing a new post!",
            # category=self.category,
             date=datetime.date.today()
+        )
+        
+        #create feedback object
+        self.feedback = Feedback.objects.create(
+            user=self.user1,
+            subject="subject of feedback",
+            content= "content of feedback"
         )
         
         self.adminclient = Client() # Create cliend
@@ -75,9 +78,9 @@ class TestViews(TestCase):
         self.deleteUserReports_fakeUser_url = reverse('deleteUserReports',kwargs={'pk':-1})
         self.blockUser_url = reverse('blockUser',kwargs={'pk':self.user1.id})
         self.blockUser_fakeUser_url = reverse('blockUser',kwargs={'pk':-1})
-
-
-        
+        self.deleteFeedback_url = reverse('deleteFeedback',kwargs={'pk':self.feedback.id})
+        self.deleteFeedback_fake_url = reverse('deleteFeedback',kwargs={'pk':-1})
+        self.AllFeedbacks_url = reverse('AllFeedbacks')
     
     def test_adminPanel_with_loogin(self):
         response = self.adminclient.get(self.admin_panel_url)  
@@ -249,3 +252,31 @@ class TestViews(TestCase):
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_error.html") 
 
+    def test_deleteFeedback(self):
+        #not admin
+        response = self.client.get(self.deleteFeedback_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html") 
+        
+        #admin
+        response = self.adminclient.get(self.deleteFeedback_url,follow=True)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_AllFeedbacks.html")
+        
+        #admin with fake feedback
+        response = self.adminclient.get(self.deleteFeedback_fake_url,follow=True)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        
+    def test_AllFeedbacks(self):
+        #not admin
+        response = self.client.get(self.AllFeedbacks_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html") 
+        
+        #admin
+        response = self.adminclient.get(self.AllFeedbacks_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_AllFeedbacks.html")
+        
+        
