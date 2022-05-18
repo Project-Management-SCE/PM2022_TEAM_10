@@ -16,6 +16,20 @@ def adminPanel(response):
         return render(response,"admin_error.html",{})
     return render(response,"admin_index.html",{})
 
+
+########## activity tracking #########
+def showActivityTracking(response):
+    if not response.user.is_superuser:  # Restrict the accses only for admins
+        return render(response,"admin_error.html",{})
+    num_of_users = User.objects.filter(is_superuser__in=[False]).count()    # Dont count superusers!
+    num_of_associations = Association.objects.all().count()
+    num_of_posts = Post.objects.all().count()
+
+    context = {'num_of_users': num_of_users, 'num_of_associations':num_of_associations, 'num_of_posts':num_of_posts}
+    return render(response,"activity_tracking.html",context)
+
+    
+
 #############################users###########################
 def changeActiveState(request,pk):
     if not request.user.is_superuser:  # Restrict the accses only for admins
@@ -411,3 +425,5 @@ def deleteFeedback(request,pk):
     
     req.delete()
     return redirect('AllFeedbacks')
+
+
