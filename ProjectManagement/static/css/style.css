@@ -65,7 +65,7 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(0, 0, 0, 0.9);
   transition: all 0.5s;
   z-index: 997;
-  padding: 20px 0;
+  padding:10px;
 }
 #header .logo {
   font-size: 30px;
@@ -82,9 +82,9 @@ h1, h2, h3, h4, h5, h6 {
 #header .logo img {
   max-height: 40px;
 }
-#header.header-scrolled, #header.header-inner-pages {
-  padding: 12px 0;
-}
+/* #header.header-scrolled, #header.header-inner-pages {
+  padding: 0;
+} */
 
 /*--------------------------------------------------------------
 # Navigation Menu
