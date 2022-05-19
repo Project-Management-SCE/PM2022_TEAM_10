@@ -109,6 +109,25 @@ def updateHelpoUser(request, pk): # pk - primary key
 
 
 
+def helpo_porfile(response,pk):
+    helpo_user = HelpoUser.objects.get(user_id = pk)
+    return render(response,"registration/helpoProfile.html",{'obj':helpo_user})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     # manager = associationManager.objects.get(user_id = pk)
     # user_id = int(pk)
