@@ -5,11 +5,14 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import auth
 from django.contrib.auth import login as login
 from django.views.generic import CreateView
+from django.core.exceptions import ObjectDoesNotExist
 
 from  associations.models import Association
 from .models import User, HelpoUser, associationManager
 from .forms import AssociationManagerUpdateform,UserUpdateform, AssociationManagerSignUpform, HelpoUserSignUpform, HelpoUserUpdateform
 from django.contrib import messages
+from posts.models import Post
+from reports.models import PostReport
 
 # Create your views here.
 
@@ -110,8 +113,14 @@ def updateHelpoUser(request, pk): # pk - primary key
 
 
 def helpo_porfile(response,pk):
-    helpo_user = HelpoUser.objects.get(user_id = pk)
-    return render(response,"registration/helpoProfile.html",{'obj':helpo_user})
+    try:
+        helpo_user = HelpoUser.objects.get(user_id = pk)
+    except ObjectDoesNotExist as e:
+        return render(response,"admin_error.html",{})
+    posts = Post.objects.all().filter(user = helpo_user).order_by('-date') # '-' means reverse order 
+    reported = PostReport.objects.filter(user_id=response.user.id)
+    reported= list(map(lambda x :x.post.id,reported))
+    return render(response,"registration/helpoProfile.html",{'obj':helpo_user,'posts':posts,'reported':reported})
 
 
 
