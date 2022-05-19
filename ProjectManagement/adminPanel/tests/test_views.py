@@ -1,12 +1,15 @@
 
+import imp
 from operator import truediv
 from urllib import response
 from django.test import TestCase, Client
 from django.urls import reverse
 from posts.models import Post
 from accounts.models import User,HelpoUser
+from adminPanel.models import AdminMessage
 #from home.models import Category
 from django.test.client import RequestFactory
+from associations.models import Association
 import datetime 
 from feedbacks.models import Feedback
 
@@ -48,6 +51,10 @@ class TestViews(TestCase):
            # category=self.category,
             date=datetime.date.today()
         )
+
+        self.adminMsg = AdminMessage.objects.create(
+            content = "ABCDEFG"
+        )
         
         #create feedback object
         self.feedback = Feedback.objects.create(
@@ -81,6 +88,15 @@ class TestViews(TestCase):
         self.deleteFeedback_url = reverse('deleteFeedback',kwargs={'pk':self.feedback.id})
         self.deleteFeedback_fake_url = reverse('deleteFeedback',kwargs={'pk':-1})
         self.AllFeedbacks_url = reverse('AllFeedbacks')
+        self.showActivityTracking_url = reverse('showActivityTracking')
+        self.adminMessagesUrl = reverse('adminMessages')
+        self.adminEditMessageUrl = reverse('editAdminMessage',kwargs={'pk':self.adminMsg.id})
+        self.adminDeleteMessageUrl = reverse('deleteAdminMessage',kwargs={'pk':self.adminMsg.id})
+        self.adminDeleteMessage_FakeUrl = reverse('deleteAdminMessage',kwargs={'pk':self.adminMsg.id})
+
+
+
+        
     
     def test_adminPanel_with_loogin(self):
         response = self.adminclient.get(self.admin_panel_url)  
@@ -251,32 +267,56 @@ class TestViews(TestCase):
         response = self.client.get(self.deletePost_url)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_error.html") 
-
-    def test_deleteFeedback(self):
-        #not admin
-        response = self.client.get(self.deleteFeedback_url)  
+    
+    def test_show_activity_tracking_without_login(self):
+        response = self.client.get(self.showActivityTracking_url)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_error.html") 
-        
-        #admin
-        response = self.adminclient.get(self.deleteFeedback_url,follow=True)  
+
+    def test_show_activity_tracking_with_login(self):
+        response = self.adminclient.get(self.showActivityTracking_url)  
         self.assertEqual(200,response.status_code)
-        self.assertTemplateUsed("admin_AllFeedbacks.html")
-        
-        #admin with fake feedback
-        response = self.adminclient.get(self.deleteFeedback_fake_url,follow=True)  
+        self.assertEqual(response.context['num_of_posts'],Post.objects.all().count())
+        self.assertEqual(response.context['num_of_associations'],Association.objects.all().count())
+        self.assertEqual(response.context['num_of_users'],User.objects.filter(is_superuser__in=[False]).count())
+
+        self.assertTemplateUsed("activity_tracking.html") 
+
+    def test_adminMessages(self):
+        response = self.client.get(self.adminMessagesUrl)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_error.html")
-        
-    def test_AllFeedbacks(self):
-        #not admin
-        response = self.client.get(self.AllFeedbacks_url)  
+
+        response = self.adminclient.get(self.adminMessagesUrl)
         self.assertEqual(200,response.status_code)
-        self.assertTemplateUsed("admin_error.html") 
-        
-        #admin
-        response = self.adminclient.get(self.AllFeedbacks_url)  
+        self.assertTemplateUsed("admin_messages.html")
+
+        response = self.adminclient.post(self.adminMessagesUrl, data ={'content':'impostor'},follow=True)
         self.assertEqual(200,response.status_code)
-        self.assertTemplateUsed("admin_AllFeedbacks.html")
-        
-        
+        self.assertTemplateUsed("admin_messages.html")
+    
+    def test_adminEditMessages(self):
+        response = self.client.get(self.adminEditMessageUrl)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+
+        response = self.adminclient.get(self.adminEditMessageUrl)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_messages.html")
+
+        response = self.adminclient.post(self.adminEditMessageUrl, data ={'content':'impostor'},follow=True)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_messages.html")
+
+    def test_adminDeleteMessages(self):
+        response = self.client.get(self.adminDeleteMessageUrl)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+
+        response = self.adminclient.get(self.adminDeleteMessageUrl,follow=True)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_messages.html")
+
+        response = self.adminclient.get(self.adminDeleteMessageUrl,follow=True)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_messages.html")

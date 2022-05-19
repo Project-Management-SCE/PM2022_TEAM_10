@@ -1,5 +1,5 @@
 from django.test import TestCase
-from adminPanel.forms import Categoryform
+from adminPanel.forms import Categoryform,AdminMessageForm
 from posts.models import Category
 
 
@@ -24,3 +24,14 @@ class TestForms(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(len(form.errors),1)
         
+    
+    def test_AdminMessageForm(self):   
+        #no data
+        form = AdminMessageForm(data={})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(len(form.errors),1)
+
+        #with data
+        form = AdminMessageForm(data={'content':'abcdefu'})
+        self.assertTrue(form.is_valid())
+        self.assertEqual(len(form.errors),0)

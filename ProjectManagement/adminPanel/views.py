@@ -6,15 +6,31 @@ from accounts.forms import UserUpdateform, HelpoUserUpdateform, AssociationManag
 from posts.models import Post,Category
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import Categoryform
+from .forms import Categoryform,AdminMessageForm
 from associations.models import Association
 from reports.models import PostReport,UserReport
 from feedbacks.models import Feedback
+from adminPanel.models import AdminMessage
+
 # Create your views here.
 def adminPanel(response):
     if not response.user.is_superuser:  # Restrict the accses only for admins
         return render(response,"admin_error.html",{})
     return render(response,"admin_index.html",{})
+
+
+########## activity tracking #########
+def showActivityTracking(response):
+    if not response.user.is_superuser:  # Restrict the accses only for admins
+        return render(response,"admin_error.html",{})
+    num_of_users = User.objects.filter(is_superuser__in=[False]).count()    # Dont count superusers!
+    num_of_associations = Association.objects.all().count()
+    num_of_posts = Post.objects.all().count()
+
+    context = {'num_of_users': num_of_users, 'num_of_associations':num_of_associations, 'num_of_posts':num_of_posts}
+    return render(response,"activity_tracking.html",context)
+
+    
 
 #############################users###########################
 def changeActiveState(request,pk):
@@ -411,3 +427,60 @@ def deleteFeedback(request,pk):
     
     req.delete()
     return redirect('AllFeedbacks')
+
+########### Admin messages ##########
+
+def adminMessages(request):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+    form = AdminMessageForm()
+    if request.method=='POST':
+        form = AdminMessageForm(request.POST)
+        
+        if form.is_valid():
+            instance = form.save()    
+            form = AdminMessageForm()
+            return redirect('adminMessages')
+            
+    context={
+        'form':form,
+        'objects':AdminMessage.objects.all()
+    }
+    return render(request, 'admin_messages.html',context)
+
+def editAdminMessage(request,pk):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+    
+    m = AdminMessage.objects.get(id=pk)
+    if request.method == 'POST':
+        form = AdminMessageForm(request.POST, instance=m)
+
+        if form.is_valid():
+            form.save()
+            return redirect('adminMessages')
+    
+    else:
+        form=AdminMessageForm(instance=m)
+
+    context = {
+                'form' : form,
+                'obj':m,
+            }
+
+    return render(request, 'admin_editMessage.html', context)
+
+def deleteAdminMessage(request,pk):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+  
+    try:
+        req = AdminMessage.objects.get(id=pk)
+    except ObjectDoesNotExist as e:
+            return redirect('adminMessages')
+    
+    req.delete()
+    return redirect('adminMessages')
+
+
+    #later add treatment for exceptions!
