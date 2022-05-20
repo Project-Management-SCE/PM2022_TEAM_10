@@ -44,6 +44,14 @@ urlpatterns = [
 
     path("showActivityTracking/", views.showActivityTracking, name="showActivityTracking"),
 
+    path("show_questions/", views.show_questions, name="show_questions"),
+    path("add_question/", views.add_question, name="add_question"),
+    path("delete_question/<str:pk>", views.delete_question, name="delete_question"),
+    path("edit_question/<str:pk>", views.edit_question, name="edit_question"),
+
+
+
+
 
 
 

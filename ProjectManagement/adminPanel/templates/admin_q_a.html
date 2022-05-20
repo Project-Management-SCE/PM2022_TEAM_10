@@ -1,0 +1,54 @@
+{% extends 'admin_base.html' %}
+
+
+{% block content %}
+ <div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-solid fa-list"></i>
+        שאלות ותשובות
+    </div>
+    <div class="card-body">
+        <form method = "POST" action="{% url 'add_question' %}">
+            {%csrf_token%}
+            <button type="submit" class="btn btn-outline-danger" style="margin-top:10px;">הוסף שאלה</button>
+        </form>
+    </div>
+
+    <div class="card-body">
+        <table id="datatablesSimple">
+            <thead>
+                <tr>
+
+                    <th>
+                    
+                    </th>
+                    <th>
+                        תשובה
+                    </th>
+                    <th>
+                        שאלה
+                    </th>
+                </tr>
+            </thead>
+            <tbody >
+            {%for item in q_a%}     <!--Every req is a tuple (req,user)-->
+            <tr>
+                    <td>
+                        <input type="submit" class="btn btn-outline-danger" value="עריכה" onclick="location.href='{% url 'edit_question' item.id %}'">
+                        <input type="submit" class="btn btn-outline-danger" value="מחיקה"  onclick="location.href='{% url 'delete_question' item.id %}';" >
+
+                    </td>
+                    <td>
+                        {{item.Answer }}
+                    </td>
+                    <td>
+                        {{item.Question }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    
+    </div>
+</div>
+{%endblock%}
