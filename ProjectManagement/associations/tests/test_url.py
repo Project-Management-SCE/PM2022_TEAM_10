@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase,TestCase
 from django.urls import reverse, resolve
-from associations.views import All,profile,showRequest,volunteersRequests,editAssociation,submitVolunteeringRequest,deleteVolRequest
+from associations.views import All,profile,showRequest,volunteersRequests,editAssociation,submitVolunteeringRequest,deleteVolRequest,rankAssociation
 from accounts.models import User,HelpoUser,associationManager
 from associations.models import Association,volunteeringRequest
 
@@ -78,3 +78,7 @@ class TestUrls(TestCase):
     def test_all_deleteVolRequest_url_is_resolved(self):
         url = reverse('deleteVolRequest', kwargs={'pk':self.reqObj.id})
         self.assertEqual(resolve(url).func, deleteVolRequest)
+
+    def test_rankAssociation_url_is_resolved(self):
+        url = reverse('rankAssociation', kwargs={'pk':self.assoObj.id})
+        self.assertEqual(resolve(url).func, rankAssociation)

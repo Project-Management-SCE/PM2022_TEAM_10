@@ -146,7 +146,8 @@ def rankAssociation(request, pk):
         # Update association AVG rank
         updateAssociationRank(pk)
 
-        return redirect('profile',pk)
+        context = {'obj':association , 'rank':Rank.objects.get(association=association, user = user)}
+        return render(request,"profile.html",context)
 
 def getRating(request):
     # Get the choosen value from the post request (Page)
@@ -168,6 +169,7 @@ def updateAssociationRank(pk):
 
     # Count all ranks of this association
     count = ranks.count()
+
     # Calculate the sum of this association ranks
     for item in ranks:
         ranks_sum += item.rank

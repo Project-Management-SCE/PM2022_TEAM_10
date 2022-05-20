@@ -2,10 +2,11 @@
 from urllib import response
 from django.test import TestCase, Client
 from django.urls import reverse
-from associations.models import Association,volunteeringRequest
+from associations.models import Association,volunteeringRequest,Rank
 from accounts.models import User,HelpoUser,associationManager
 from django.contrib.auth import login
 from django.test.client import RequestFactory
+from associations.views import updateAssociationRank,getRating
 
 class TestViews(TestCase):
     def setUp(self):
@@ -26,6 +27,7 @@ class TestViews(TestCase):
 
         self.UserObj = User.objects.create(
             username = 'jimb',
+            password = 'A!123456',
             first_name = 'Jim',
             last_name = 'Botten',
             phone_number = '0524619773',
@@ -64,18 +66,43 @@ class TestViews(TestCase):
             info ="sdfsdfs"
         )
 
-        
+        self.rankObj = Rank.objects.create(
+            user = self.HelpoUserObj,
+            association = self.assoObj,
+            rank = 5
+        )
+
         self.client = Client() # Create cliend
+
+        self.user_client = Client() # Create cliend
+        self.user_client.login(username = 'jimb', password = 'A!123456')
+
+        self.association_manager_client = Client()
+        self.association_manager_client.login(username='username', password='password')
 
         self.profile_url=reverse('profile', kwargs={'pk':self.assoObj.id})
         self.all_url = reverse("All") 
         self.volunteer_url=reverse("submitVolunteeringRequest", kwargs={'pk':self.assoObj.id})
         self.requests_url = reverse('volunteersRequests',kwargs={'pk':self.assoObj.id})
         self.show_request_url = reverse('showRequest',kwargs={'pk':self.assoObj.id, 'r_pk':self.reqObj.id})
-        # self.submit_request_url = reverse('submitVolunteeringRequest',kwargs={'pk':self.assoObj.id})
         self.deleteVolRequest_url = reverse('deleteVolRequest',kwargs={'pk':self.reqObj.id})
         self.edit_association_url = reverse('editAssociation',kwargs={'pk':self.assoObj2.id})
+        self.rankAssociation_url = reverse('rankAssociation',kwargs={'pk':self.assoObj.id})
 
+
+    def test_rankAssociation(self):
+
+
+        response = self.association_manager_client.post(self.rankAssociation_url,follow=True)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("error_page.html")
+
+        response = self.client.post(self.rankAssociation_url,follow=True) 
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("profile.html")
+
+    def test_updateAssociationRank(self):
+        updateAssociationRank(self.assoObj.id)
 
 
     def test_index(self):
