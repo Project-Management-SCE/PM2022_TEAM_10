@@ -9,5 +9,5 @@ urlpatterns = [
     path("profile/<str:pk>/volunteersRequests", views.volunteersRequests, name="volunteersRequests"),
     path("profile/<str:pk>/volunteersRequests/<str:r_pk>", views.showRequest, name="showRequest"),
     path("deleteVolRequest/<str:pk>", views.deleteVolRequest, name="deleteVolRequest"),
-    
+    path("rankAssociation/<str:pk>", views.rankAssociation, name="rankAssociation"),
 ]

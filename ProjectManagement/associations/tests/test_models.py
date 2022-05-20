@@ -1,6 +1,6 @@
 # Create your tests here.
 from django.test import TestCase
-from associations.models import Association,volunteeringRequest
+from associations.models import Association,volunteeringRequest,Rank
 from accounts.models import User, associationManager,HelpoUser
 
 class TestModels(TestCase):
@@ -27,6 +27,7 @@ class TestModels(TestCase):
             city = "BS"
         )
         
+
         #create association object
         self.assoObj = Association.objects.create(
             id = '123123123',
@@ -48,8 +49,17 @@ class TestModels(TestCase):
             user=self.HelpoUserObj,
             info="i want to volunteer!"
         )
+
+        self.rankObj = Rank.objects.create(
+            user = self.HelpoUserObj,
+            association = self.assoObj,
+            rank = 5
+        )
     
-    
+    def test_rank(self):
+        self.assertEqual(self.rankObj.user.city,'BS')
+        self.assertEqual(self.rankObj.rank,5)
+
     #test method:
     def test_association(self):               
         self.assertEqual(self.assoObj.name,'asso1')

@@ -88,6 +88,14 @@
                             <div class="tab-content profile-tab" id="myTabContent" style="text-align:right;">
                                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                     <h5><b>:פרטי העמותה</b></h5>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            {{obj.rank_avg|floatformat:2}}
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label><b>דירוג</b></label>
+                                        </div>
+                                    </div>
                                     <div class="row" >
                                         <div class="col-md-6">
                                             {{obj.id}}
@@ -220,6 +228,39 @@
                         </div>
                     </div>
                     <hr>
+                    {% if user.is_helpo_user %}
+
+                    <form method="post" action="{% url 'rankAssociation' obj.id %}">
+                        {%csrf_token%}
+                        <div class="rating-css" style="position:absolute; float: left;">
+                            <div>דרג את העמותה</div>
+                            <div class="star-icon">
+                                
+                                <label for="rating1">1</label>
+                                <input type="radio" name="rating1" id="rating1">
+
+                                <label for="rating2">2</label>
+                                <input type="radio" name="rating2" id="rating2">
+                                
+                                <label for="rating3">3</label>
+                                <input type="radio" name="rating3" id="rating3">
+                                
+                                <label for="rating4">4</label>
+                                <input type="radio" name="rating4" id="rating4">
+                                
+                                <label for="rating5">5</label>
+                                <input type="radio" name="rating5" id="rating5">
+                                <br>
+
+                                <button type="submit" class="btn btn-danger" id="shlah" >שלח</button>
+                                {% if rank %}
+                                <label for="shlah">הדירוג שלך לעמותה זו הוא: <b>{{rank.rank}}</b></label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                    {% endif %}
+                    
                     <div style="text-align:right;">
                         <h5><b>מידע נוסף</b></h5>
                         <p>

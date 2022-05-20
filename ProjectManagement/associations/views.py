@@ -1,5 +1,5 @@
 from multiprocessing import context
-from .models import Association,volunteeringRequest
+from .models import Association,volunteeringRequest,Rank
 from django.contrib.auth.decorators import login_required
 from .forms import volunteeringRequestform
 from django.shortcuts import redirect, render
@@ -11,8 +11,8 @@ from .forms import associationUpdateForm
 # Create your views here.
 
 def profile(response,pk):
-    asso = Association.objects.get(id = pk)
-    return render(response,"profile.html",{'obj':asso})
+    association = Association.objects.get(id = pk)
+    return render(response,"profile.html",{'obj':association})
 
 def All(response):
     _context = Association.objects.all()
@@ -112,3 +112,69 @@ def editAssociation(request,pk):
             }
 
     return render(request,"updateAssoDetails.html",context)
+
+
+
+
+# Rank Profile Functions
+@login_required
+def rankAssociation(request, pk):
+    # Only helpo users can rank associations
+    if not request.user.is_helpo_user:
+        return render(request,"error_page.html",{})
+
+    if request.method == 'POST':
+        # Get the choosen rating of radio button
+        choosen_rank = getRating(request)
+
+        # Setup objects
+        association = Association.objects.get(id=pk)
+        user = HelpoUser.objects.get(user = request.user)
+
+        # New rank of this profile by the current user
+        if Rank.objects.filter(association=association, user = user).count() == 0:
+            Rank.objects.create(association=association, user = user, rank=choosen_rank)
+            print("New rank by this user")
+        
+        # Update rank
+        else:
+            rank = Rank.objects.get(association=association, user = user)
+            rank.rank = choosen_rank
+            rank.save()
+            print("Update rank by this user")
+
+        # Update association AVG rank
+        updateAssociationRank(pk)
+
+        context = {'obj':association , 'rank':Rank.objects.get(association=association, user = user)}
+        return render(request,"profile.html",context)
+
+def getRating(request):
+    # Get the choosen value from the post request (Page)
+        if request.POST.get('rating5') == 'on':
+            return 5       
+        elif request.POST.get('rating4') == 'on':
+            return 4
+        elif request.POST.get('rating3') == 'on':
+            return 3                        
+        elif request.POST.get('rating2') == 'on':
+            return 2
+        return 1
+
+def updateAssociationRank(pk):
+    # Setup
+    ranks_sum = 0
+    association = Association.objects.get(id=pk)
+    ranks =  Rank.objects.filter(association=association)
+
+    # Count all ranks of this association
+    count = ranks.count()
+
+    # Calculate the sum of this association ranks
+    for item in ranks:
+        ranks_sum += item.rank
+
+    # Update association details
+    association.rank_avg = ranks_sum/count
+    association.save()
+

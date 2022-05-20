@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import associationManager,HelpoUser
+from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 
 
@@ -15,6 +16,7 @@ class Association(models.Model):
     phone = models.CharField(max_length=10, blank=True)
     info = models.TextField(max_length=500,blank=True)
     email = models.EmailField(max_length=50,null=True,blank=True)
+    rank_avg = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)],default=1)
     
     def __str__(self):
         return self.name
@@ -26,3 +28,7 @@ class volunteeringRequest(models.Model):
     info = models.TextField(max_length=500)
 
         
+class Rank(models.Model):
+    association = models.ForeignKey(Association, on_delete=models.CASCADE, default=None,null=True)
+    user = models.ForeignKey(HelpoUser, on_delete=models.CASCADE, default=None,null=True)
+    rank = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], default=1)
