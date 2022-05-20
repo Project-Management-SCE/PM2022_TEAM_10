@@ -11,6 +11,7 @@ from adminPanel.models import AdminMessage
 from django.test.client import RequestFactory
 from associations.models import Association
 import datetime 
+from feedbacks.models import Feedback
 
 class TestViews(TestCase):
     def setUp(self):
@@ -42,11 +43,6 @@ class TestViews(TestCase):
         self.user1.is_staff=True
         self.user1.save()
         
-        #create Category
-        # self.category=Category.objects.create(
-        #     name="my new category"
-        # )
-        
         #create post object
         self.post=Post.objects.create(
             user=self.HelpoUserObj,
@@ -58,6 +54,13 @@ class TestViews(TestCase):
 
         self.adminMsg = AdminMessage.objects.create(
             content = "ABCDEFG"
+        )
+        
+        #create feedback object
+        self.feedback = Feedback.objects.create(
+            user=self.user1,
+            subject="subject of feedback",
+            content= "content of feedback"
         )
         
         self.adminclient = Client() # Create cliend
@@ -82,6 +85,9 @@ class TestViews(TestCase):
         self.deleteUserReports_fakeUser_url = reverse('deleteUserReports',kwargs={'pk':-1})
         self.blockUser_url = reverse('blockUser',kwargs={'pk':self.user1.id})
         self.blockUser_fakeUser_url = reverse('blockUser',kwargs={'pk':-1})
+        self.deleteFeedback_url = reverse('deleteFeedback',kwargs={'pk':self.feedback.id})
+        self.deleteFeedback_fake_url = reverse('deleteFeedback',kwargs={'pk':-1})
+        self.AllFeedbacks_url = reverse('AllFeedbacks')
         self.showActivityTracking_url = reverse('showActivityTracking')
         self.adminMessagesUrl = reverse('adminMessages')
         self.adminEditMessageUrl = reverse('editAdminMessage',kwargs={'pk':self.adminMsg.id})
