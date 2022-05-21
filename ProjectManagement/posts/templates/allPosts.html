@@ -88,7 +88,7 @@
                                 <td class="td_spc"></td>
                                 <td><b>:עיר<b></td>
                                 <td class="td_sep"></td>
-                                <td>{{item.user.user.first_name}} {{item.user.user.last_name}}</td>
+                                <td><a href="{% url 'helpo_porfile' item.user.user.id %}">{{item.user.user.first_name}} {{item.user.user.last_name}}</a></td>
                                 <td class="td_spc"></td>
                                 <td><b>
                                     {% if item.is_asking %}
