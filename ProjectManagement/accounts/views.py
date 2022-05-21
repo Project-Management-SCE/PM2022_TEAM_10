@@ -123,9 +123,9 @@ def helpo_porfile(response,pk):
     return render(response,"registration/helpoProfile.html",{'obj':helpo_user,'posts':posts,'reported':reported})
 
 
-
-
-
+def searchUsers(response):
+    _context = HelpoUser.objects.all()
+    return render(response,"searchUsers.html",{"context":_context})
 
 
 
