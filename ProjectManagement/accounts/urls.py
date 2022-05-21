@@ -10,6 +10,8 @@ urlpatterns = [
     path('pickType', views.pickType, name='pickType'),
     path('updateAssociationManager/<str:pk>/', views.updateAssociationManager,name='updateAssociationManager'),
     path('updateHelpoUser/<str:pk>/', views.updateHelpoUser,name='updateHelpoUser'),
-    path("helpo_porfile/<str:pk>", views.helpo_porfile, name="helpo_porfile")
+    path("helpo_porfile/<str:pk>", views.helpo_porfile, name="helpo_porfile"),
+    path("searchUsers", views.searchUsers, name="searchUsers")
+
 
 ]
