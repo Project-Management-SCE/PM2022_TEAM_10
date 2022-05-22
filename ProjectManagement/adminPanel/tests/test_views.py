@@ -12,6 +12,7 @@ from django.test.client import RequestFactory
 from associations.models import Association
 import datetime 
 from feedbacks.models import Feedback
+from home.models import QuestionAnswer
 
 class TestViews(TestCase):
     def setUp(self):
@@ -48,7 +49,7 @@ class TestViews(TestCase):
             user=self.HelpoUserObj,
             city= "Tel-Aviv",
             info="i am writing a new post!",
-           # category=self.category,
+            # category=self.category,
             date=datetime.date.today()
         )
 
@@ -61,6 +62,11 @@ class TestViews(TestCase):
             user=self.user1,
             subject="subject of feedback",
             content= "content of feedback"
+        )
+
+        self.q_a = QuestionAnswer.objects.create(
+            Question = 'q',
+            Answer = 'a'
         )
         
         self.adminclient = Client() # Create cliend
@@ -94,9 +100,38 @@ class TestViews(TestCase):
         self.adminDeleteMessageUrl = reverse('deleteAdminMessage',kwargs={'pk':self.adminMsg.id})
         self.adminDeleteMessage_FakeUrl = reverse('deleteAdminMessage',kwargs={'pk':self.adminMsg.id})
 
+        self.show_questions_url = reverse('show_questions')
+        self.add_question_url = reverse('add_question')
+        self.delete_question_url = reverse('delete_question',kwargs={'pk':self.q_a.id})
 
 
-        
+    
+
+    def test_delete_question_without_login(self):
+        response = self.client.get(self.delete_question_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+
+
+    def test_add_question_with_login(self):
+        response = self.adminclient.get(self.add_question_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_add_q_a.html")        
+
+    def test_add_question_without_login(self):
+        response = self.client.get(self.add_question_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+
+    def test_show_questions_with_login(self):
+        response = self.adminclient.get(self.show_questions_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_q_a.html")        
+
+    def test_show_questions_without_login(self):
+        response = self.client.get(self.show_questions_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")      
     
     def test_adminPanel_with_loogin(self):
         response = self.adminclient.get(self.admin_panel_url)  
