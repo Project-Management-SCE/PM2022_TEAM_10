@@ -32,7 +32,7 @@ class TestViews(TestCase):
         self.pick_type_url = reverse("pickType")
         self.helpo_porfile_url = reverse('helpo_porfile',kwargs={'pk':self.user.id})
         self.helpo_porfile_fake_url = reverse('helpo_porfile',kwargs={'pk':-1})
-
+        self.searchUsers_url= reverse('searchUsers')
 
     def test_pick_type(self):
         response = self.client.get(self.pick_type_url)
@@ -52,3 +52,9 @@ class TestViews(TestCase):
         response = self.client.get(self.helpo_porfile_fake_url)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_error.html")
+
+    def test_searchUsers(self):
+        response = self.client.get(self.searchUsers_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("searchUsers.html")
+        self.assertEqual(list(HelpoUser.objects.all()),list(response.context["context"]))
