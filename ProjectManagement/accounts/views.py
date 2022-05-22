@@ -125,7 +125,8 @@ def helpo_porfile(response,pk):
 
 def searchUsers(response):
     _context = HelpoUser.objects.all()
-    return render(response,"searchUsers.html",{"context":_context})
+    
+    return render(response,"searchUsers.html",{"context":_context,"a":5})
 
 
 

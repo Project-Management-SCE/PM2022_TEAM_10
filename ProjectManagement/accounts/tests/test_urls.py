@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from accounts.views import logout, pickType, login,helpo_porfile
+from accounts.views import logout, pickType, login,helpo_porfile,searchUsers
 
 class TestUrls(SimpleTestCase):
     
@@ -17,4 +17,6 @@ class TestUrls(SimpleTestCase):
         self.assertEqual(resolve(url).func, helpo_porfile)
 
 
-        
+    def test_searchUsers_url_is_resolved(self):
+        url = reverse('searchUsers')
+        self.assertEqual(resolve(url).func, searchUsers)
