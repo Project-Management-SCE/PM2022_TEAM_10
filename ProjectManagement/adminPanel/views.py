@@ -6,17 +6,79 @@ from accounts.forms import UserUpdateform, HelpoUserUpdateform, AssociationManag
 from posts.models import Post,Category
 from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import Categoryform,AdminMessageForm
+from .forms import Categoryform,AdminMessageForm,Q_A_form
 from associations.models import Association
 from reports.models import PostReport,UserReport
 from feedbacks.models import Feedback
 from adminPanel.models import AdminMessage
+from home.models import QuestionAnswer
 
 # Create your views here.
 def adminPanel(response):
     if not response.user.is_superuser:  # Restrict the accses only for admins
         return render(response,"admin_error.html",{})
     return render(response,"admin_index.html",{})
+
+
+
+
+######### Qestions & Answers
+def show_questions(request):
+    if not request.user.is_superuser:  # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+    
+    q_a = QuestionAnswer.objects.all()
+    context = {'q_a':q_a}
+
+    return render(request,'admin_q_a.html',context)
+    
+
+def add_question(request):
+    if not request.user.is_superuser:   # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+        
+    form = Q_A_form()
+    if request.method=='POST':
+        form = Q_A_form(request.POST)
+        
+        if form.is_valid():
+            form.save()    
+            return redirect('/adminPanel/show_questions')
+            
+    context={
+        'form':form,
+    }
+    return render(request,'admin_add_q_a.html',context)
+
+def delete_question(request,pk):
+    if not request.user.is_superuser:  # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+    q_a = QuestionAnswer.objects.get(id=pk)
+    q_a.delete()
+    return redirect('/adminPanel/show_questions')
+
+def edit_question(request,pk):
+    if not request.user.is_superuser:  # Restrict the accses only for admins
+        return render(request,"admin_error.html",{})
+
+    q_a = QuestionAnswer.objects.get(id=pk)
+    form = Q_A_form()
+    if request.method=='POST':
+        form = Q_A_form(request.POST, instance=q_a)
+        
+        if form.is_valid():
+            form.save()    
+            return redirect('/adminPanel/show_questions')
+    
+    else:
+        form = Q_A_form(instance=q_a)
+
+    context={
+        'form':form,
+        'q_a':q_a
+    }
+    return render(request,'admin_add_q_a.html',context)
+
 
 
 ########## activity tracking #########

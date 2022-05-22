@@ -1,6 +1,8 @@
 from django import forms
+from pkg_resources import require
 from posts.models import Category
 from adminPanel.models import AdminMessage
+from home.models import QuestionAnswer
 from django.core.exceptions import ObjectDoesNotExist
 
 
@@ -18,6 +20,38 @@ class Categoryform(forms.ModelForm):
                 raise forms.ValidationError("This category allready exists")
         except ObjectDoesNotExist as e:
             return data
+
+
+class Q_A_form(forms.ModelForm):
+    Question = forms.CharField(widget=forms.Textarea(
+        attrs={
+            'dir': 'rtl',
+            'rows': 3,
+            'cols': 40,
+            'style': 'height: 6em; resize:none;',
+        }
+    ))
+    
+    Answer = forms.CharField(widget=forms.Textarea(
+        attrs={
+            'dir': 'rtl',
+            'rows': 3,
+            'cols': 40,
+            'style': 'height: 6em; resize:none;',
+        }
+    ))
+
+    class Meta():
+        model = QuestionAnswer
+        fields = ['Question','Answer']
+    
+        labels = {
+            "Question":'שאלה',
+            "Answer":'תשובה',
+        }
+
+        
+    
 
 class AdminMessageForm(forms.ModelForm):
     
