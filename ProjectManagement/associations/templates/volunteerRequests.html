@@ -18,18 +18,6 @@
                         <th>
 
                         </th>
-                        {% comment %} <th>
-                            פרטי הבקשה
-                        </th> {% endcomment %}
-                        {% comment %}<th>
-                             מס' פלאפון
-                        </th>
-                        <th>
-                            עיר
-                        </th>
-                        <th>
-                            אימייל
-                        </th> {% endcomment %}
                         <th>
                             שם מתנדב
                         </th>
@@ -47,20 +35,9 @@
                                 <button type="button" class="btn btn-outline-dark" >הצג פרטים</button>
                             </a>
                         </td>
-                        {% comment %} <td>
-                            {{ item.0.info }}
-                        </td>
+
                         <td>
-                            {{ item.1.user.phone_number }}
-                        </td>
-                        <td>
-                            {{ item.1.city }}
-                        </td>
-                        <td>
-                            {{ item.1.user.email }}
-                        </td> {% endcomment %}
-                        <td>
-                            {{ item.1.user.first_name }} {{ item.1.user.last_name }}
+                            <a href="{% url 'helpo_porfile' item.1.user.id %}">{{ item.1.user.first_name }} {{ item.1.user.last_name }}</a>
                         </td>
                         <td>
                             {{ item.0.id }}

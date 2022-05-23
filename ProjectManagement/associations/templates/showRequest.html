@@ -20,7 +20,7 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>{{helpo_user.user.first_name}} {{helpo_user.user.last_name}}</td>
+                    <td><a href="{% url 'helpo_porfile' helpo_user.user.id %}">{{helpo_user.user.first_name}} {{helpo_user.user.last_name}}</a></td>
                     <td><b>:שם המבקש<b></td>
                   </tr>
 
