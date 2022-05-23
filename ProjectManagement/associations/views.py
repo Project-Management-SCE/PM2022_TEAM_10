@@ -170,14 +170,11 @@ def updateAssociationRank(pk):
 
     # Count all ranks of this association
     count = ranks.count()
-    print(f"count is {count}")
     # Calculate the sum of this association ranks
     for item in ranks:
-        print(f"rank is {item.rank}")
         ranks_sum += item.rank
 
     # Update association details
     association.rank_avg = ranks_sum/count
-    print(f"avg is {association.rank_avg}")
     association.save()
 
