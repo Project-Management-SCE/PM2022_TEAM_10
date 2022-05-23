@@ -7,12 +7,15 @@ from django.shortcuts import redirect, render
 from accounts.models import HelpoUser
 from django.core.exceptions import ObjectDoesNotExist
 from .forms import associationUpdateForm
+from home.models import Image
+from home.forms import ImageFrom
 
 # Create your views here.
 
 def profile(response,pk):
     association = Association.objects.get(id = pk)
-    return render(response,"profile.html",{'obj':association})
+    images = Image.objects.filter(asso_id = pk)
+    return render(response,"profile.html",{'obj':association,'images':images})
 
 def All(response):
     _context = Association.objects.all()
@@ -98,15 +101,22 @@ def editAssociation(request,pk):
 
     if request.method == 'POST':
         form = associationUpdateForm(request.POST, instance=asso_obj)
-
-        if form.is_valid():
+        i_form = ImageFrom(request.POST,files=request.FILES)
+        if form.is_valid() and i_form.is_valid():
             form.save()
+            instance = i_form.save(commit=False)
+            instance.asso = asso_obj
+            instance.save()
+
             return redirect('profile',pk=asso_obj.id)
     
     else:
         form=associationUpdateForm(instance=asso_obj)
+        i_form = ImageFrom()
+
 
     context = {
+                'i_form': i_form,
                 'form' : form,
                 'obj':asso_obj,
             }
