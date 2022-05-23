@@ -78,7 +78,7 @@
           {% comment %} <li><a class="nav-link" href="#portfolio">Portfolio</a></li> {% endcomment %}
           {% comment %} <li><a class="nav-link" href="#team">Team</a></li> {% endcomment %}
           <li><a class="nav-link" href="{% url 'All' %}">עמותות</a></li>
-          <li><a class="nav-link" href="#contact">צור קשר</a></li>
+          {% comment %} <li><a class="nav-link" href="#contact">צור קשר</a></li> {% endcomment %}
 
           {% if not user.is_authenticated%}
           <li><a class="nav-link scrollto" href="{% url 'pickType' %}">הרשמה</a></li>
