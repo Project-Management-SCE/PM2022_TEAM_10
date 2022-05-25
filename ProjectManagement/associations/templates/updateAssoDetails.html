@@ -17,10 +17,12 @@
 
         <div class="row content" style="display: flex;align-items: center;justify-content: center;" >
                 {% load crispy_forms_tags %}
-                <form method = "POST" style="width: 350px; height: 700px;">
+                <form method = "POST" enctype="multipart/form-data" style="width: 350px; height: 800px;">
                     {%csrf_token%}
                     <fieldset class = "form-group">
                         {{form|crispy}}       <!--User form-->
+                        <br>
+                        {{i_form|crispy}}
                     </fieldset>
                 <button type="submit" class="btn btn-outline-danger" style="margin-top:10px;">Submit</button>
                 </form>

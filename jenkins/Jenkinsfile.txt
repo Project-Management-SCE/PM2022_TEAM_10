@@ -25,7 +25,9 @@ pipeline {
                 withEnv(["HOME=${env.WORKSPACE}"]){
                     dir("ProjectManagement"){
                         sh 'python -m coverage run manage.py test'
+                        //metrics
                         sh 'python -m coverage report'
+                        sh 'python -m pylint accounts adminPanel associations feedbacks home posts reports'
                     }
                 }
             }
