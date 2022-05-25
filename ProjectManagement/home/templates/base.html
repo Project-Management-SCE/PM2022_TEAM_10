@@ -99,7 +99,6 @@
                   <li><a href="{% url 'updateHelpoUser' user.id %}">עריכת פרטים</a></li>
                   <li><a class="nav-link" href="{% url 'showMyPosts' user.id %}">הפוסטים שלי</a></li>
                 {%endif%}
-                <li ><a href="{% url 'QuestionsAndAnswers' %}">שאלות נפוצות</a></li>
                 {%if not user.is_superuser%}
                   <li ><a href="{% url 'sendFeedback' %}">כתוב משו"ב</a></li>
                 {%endif%}
