@@ -8,11 +8,10 @@ class ImageFrom(forms.ModelForm):
     #         attrs={"multiple":True},
     #     )
     # )
-    
     class Meta():
         model = Image
         fields = ['img',]
-    
         labels = {
             "img":'תמונה',
         }
+        

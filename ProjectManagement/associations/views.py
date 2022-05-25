@@ -1,17 +1,14 @@
-from multiprocessing import context
-from .models import Association,volunteeringRequest,Rank
 from django.contrib.auth.decorators import login_required
-from .forms import volunteeringRequestform
 from django.shortcuts import redirect, render
-#from home.models import Category
-from accounts.models import HelpoUser
 from django.core.exceptions import ObjectDoesNotExist
-from .forms import associationUpdateForm
+from accounts.models import HelpoUser
 from home.models import Image
 from home.forms import ImageFrom
+from .models import Association,volunteeringRequest,Rank
+from .forms import volunteeringRequestform,associationUpdateForm
+#from home.models import Category
 
 # Create your views here.
-
 def profile(response,pk):
     association = Association.objects.get(id = pk)
     images = Image.objects.filter(asso_id = pk)
@@ -28,7 +25,6 @@ def submitVolunteeringRequest(request,pk):
     user_obj=request.user.helpouser
     if request.method=='POST':
         form = volunteeringRequestform(request.POST)
-        
         if form.is_valid():
             instance = form.save(commit=False)
             instance.user = user_obj
@@ -69,7 +65,7 @@ def showRequest(request,pk,r_pk):
     try:
         req = volunteeringRequest.objects.get(id=r_pk)
         asso_obj=Association.objects.get(id=pk)
-    except ObjectDoesNotExist as e:
+    except ObjectDoesNotExist:
         return render(request,"error_page.html",{})
 
     if isTheManager(request,asso_obj) or req.association_id != pk:
@@ -109,11 +105,9 @@ def editAssociation(request,pk):
             instance.save()
 
             return redirect('profile',pk=asso_obj.id)
-    
     else:
         form=associationUpdateForm(instance=asso_obj)
         i_form = ImageFrom()
-
 
     context = {
                 'i_form': i_form,
@@ -123,12 +117,9 @@ def editAssociation(request,pk):
 
     return render(request,"updateAssoDetails.html",context)
 
-
-
-
 # Rank Profile Functions
 @login_required
-def rankAssociation(request, pk):
+def rankAssociation(request, pk):#not all path got a return stamtement itzik check this!
     # Only helpo users can rank associations
     if not request.user.is_helpo_user:
         return render(request,"error_page.html",{})
@@ -145,7 +136,6 @@ def rankAssociation(request, pk):
         if Rank.objects.filter(association=association, user = user).count() == 0:
             Rank.objects.create(association=association, user = user, rank=choosen_rank)
             print("New rank by this user")
-        
         # Update rank
         else:
             rank = Rank.objects.get(association=association, user = user)
@@ -155,22 +145,22 @@ def rankAssociation(request, pk):
 
         # Update association AVG rank
         updateAssociationRank(pk)
-        association = Association.objects.get(id=pk) # We Updated Association Details so we need to pull i again from DB 
+        association = Association.objects.get(id=pk) # We Updated Association Details so we need to pull i again from DB
 
         context = {'obj':association , 'rank':Rank.objects.get(association=association, user = user)}
         return render(request,"profile.html",context)
 
 def getRating(request):
     # Get the choosen value from the post request (Page)
-        if request.POST.get('rating5') == 'on':
-            return 5       
-        elif request.POST.get('rating4') == 'on':
-            return 4
-        elif request.POST.get('rating3') == 'on':
-            return 3                        
-        elif request.POST.get('rating2') == 'on':
-            return 2
-        return 1
+    if request.POST.get('rating5') == 'on':
+        return 5
+    elif request.POST.get('rating4') == 'on':
+        return 4
+    elif request.POST.get('rating3') == 'on':
+        return 3
+    elif request.POST.get('rating2') == 'on':
+        return 2
+    return 1
 
 def updateAssociationRank(pk):
     # Setup
@@ -187,4 +177,3 @@ def updateAssociationRank(pk):
     # Update association details
     association.rank_avg = ranks_sum/count
     association.save()
-

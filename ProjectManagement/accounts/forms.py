@@ -1,12 +1,10 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+from django.db import transaction
+from django.core.exceptions import ObjectDoesNotExist
 
 from associations.models import Association
 from .models import User , associationManager, HelpoUser
-from django.db import transaction
-
-from django.core.exceptions import ObjectDoesNotExist
-
 
 class AssociationManagerSignUpform(UserCreationForm):
     first_name = forms.CharField(required=True)
@@ -45,13 +43,10 @@ class AssociationManagerSignUpform(UserCreationForm):
             assos = Association.objects.get(id=data)
             if assos.manager:
                 raise forms.ValidationError("This association allready got a manager")
-        except ObjectDoesNotExist as e:
+        except ObjectDoesNotExist:
             raise forms.ValidationError("Unknown association number. Enter a valid number")
         return data
 
-    
-    
-    
 class HelpoUserSignUpform(UserCreationForm):
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
@@ -81,8 +76,6 @@ class HelpoUserSignUpform(UserCreationForm):
 
         helpoUser.save()
         return user
-    
-    
 
 class UserUpdateform(forms.ModelForm):
     username = forms.CharField(required=True)
@@ -95,18 +88,15 @@ class UserUpdateform(forms.ModelForm):
         model = User
         fields = ('username','first_name', 'last_name', 'email' , 'phone_number', 'high_privacy')
 
-
-
 class AssociationManagerUpdateform(forms.ModelForm):
     association_number = forms.CharField(required=True)
-    
+
     class Meta(UserCreationForm.Meta):
         model = associationManager
         fields = ( 'association_number',)
-    
-    
+
 class HelpoUserUpdateform(forms.ModelForm):
-    
+
     class Meta(UserCreationForm.Meta):
         model = HelpoUser
         fields = ( 'city',)
@@ -120,7 +110,7 @@ class UserBlockForm(forms.ModelForm):
     class Meta:
         model = User
         fields = [ 'blocked_reason',]
-        
+
         labels = {
             'blocked_reason':'סיבה',
         }

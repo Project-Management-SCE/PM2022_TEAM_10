@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post,Category
+from .models import Post
 
 
 class createPostForm(forms.ModelForm):
@@ -29,3 +29,4 @@ class filterPostForm(forms.ModelForm):
             "category":"קטגוריה",
             "is_asking":"מבקשי עזרה"
         }
+        

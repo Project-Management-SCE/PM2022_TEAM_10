@@ -13,4 +13,3 @@ class associationManagerAdmin(admin.ModelAdmin):
     ordering = ('association_number',)
     list_filter = ('user__is_active',)
     search_fields = ('association_number',)
-

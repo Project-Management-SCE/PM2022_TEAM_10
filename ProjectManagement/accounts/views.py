@@ -1,18 +1,16 @@
-from urllib import response
-
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import auth
-from django.contrib.auth import login as login
+# from django.contrib.auth import login as login
 from django.views.generic import CreateView
 from django.core.exceptions import ObjectDoesNotExist
-
-from  associations.models import Association
-from .models import User, HelpoUser, associationManager
-from .forms import AssociationManagerUpdateform,UserUpdateform, AssociationManagerSignUpform, HelpoUserSignUpform, HelpoUserUpdateform
 from django.contrib import messages
+
+from associations.models import Association
 from posts.models import Post
 from reports.models import PostReport
+from .models import User, HelpoUser, associationManager
+from .forms import AssociationManagerUpdateform,UserUpdateform, AssociationManagerSignUpform, HelpoUserSignUpform, HelpoUserUpdateform
 
 # Create your views here.
 
@@ -33,7 +31,7 @@ class AssociationManagerSignUp(CreateView):
     form_class = AssociationManagerSignUpform
     template_name = 'registration/ManagerSignup.html'
 
-    def form_valid(self, form):  
+    def form_valid(self, form):
         asso_num = form.cleaned_data['association_number']
         asso = Association.objects.get(id=asso_num)
         user = form.save()
@@ -47,12 +45,12 @@ class HelpoUserSignUp(CreateView):
     form_class = HelpoUserSignUpform
     template_name = 'registration/HelpoUserSignup.html'
 
-    def form_valid(self, form):  
-        user = form.save()
+    def form_valid(self, form):
+        form.save()
         # login(self.request, user)
         return redirect('login')
 
-    
+
 @login_required
 def updateAssociationManager(request, pk): # pk - primary key
     user_id = int(pk)
@@ -63,14 +61,14 @@ def updateAssociationManager(request, pk): # pk - primary key
         m_form = AssociationManagerUpdateform(request.POST, instance=request.user.associationmanager)
 
         if u_form.is_valid() and m_form.is_valid():
-            if(m_form.instance.association_number != a_m):
+            if m_form.instance.association_number != a_m:
                 u_form.instance.is_active = False
 
             u_form.save()
             m_form.save()
-            messages.success(request,f'Your account has been updated!')
+            messages.success(request,'Your account has been updated!')
             return redirect('index')
-    
+
     else:
         u_form = UserUpdateform(instance=request.user)
         m_form = AssociationManagerUpdateform(instance=request.user.associationmanager)
@@ -95,9 +93,9 @@ def updateHelpoUser(request, pk): # pk - primary key
         if u_form.is_valid() and h_form.is_valid():
             u_form.save()
             h_form.save()
-            messages.success(request,f'Your account has been updated!')
+            messages.success(request,'Your account has been updated!')
             return redirect('index')
-    
+
     else:
         u_form = UserUpdateform(instance=request.user)
         h_form = HelpoUserUpdateform(instance=request.user.helpouser)
@@ -115,9 +113,9 @@ def updateHelpoUser(request, pk): # pk - primary key
 def helpo_porfile(response,pk):
     try:
         helpo_user = HelpoUser.objects.get(user_id = pk)
-    except ObjectDoesNotExist as e:
+    except ObjectDoesNotExist:
         return render(response,"admin_error.html",{})
-    posts = Post.objects.all().filter(user = helpo_user).order_by('-date') # '-' means reverse order 
+    posts = Post.objects.all().filter(user = helpo_user).order_by('-date') # '-' means reverse order
     reported = PostReport.objects.filter(user_id=response.user.id)
     reported= list(map(lambda x :x.post.id,reported))
     return render(response,"registration/helpoProfile.html",{'obj':helpo_user,'posts':posts,'reported':reported})
@@ -125,19 +123,8 @@ def helpo_porfile(response,pk):
 
 def searchUsers(response):
     _context = HelpoUser.objects.all()
-    
+
     return render(response,"searchUsers.html",{"context":_context,"a":5})
-
-
-
-
-
-
-
-
-
-
-
 
     # manager = associationManager.objects.get(user_id = pk)
     # user_id = int(pk)
@@ -146,7 +133,7 @@ def searchUsers(response):
 
     # if request.method == 'POST':
     #     form = AssociationManagerUpdateform(request.POST, instance=manager)
-    
+
     #     if form.is_valid():
     #         instance = form.save(commit=False)
     #         instance.user_id = request.user
@@ -155,6 +142,6 @@ def searchUsers(response):
     #         return redirect('index')
     # # else:
     #     # form = AssociationManagerUpdateform(instance=req_user)
-        
+
     # context = {'form': form, 'user_id': user_id}
     # return render(request, 'registration/updateAssociationManager.html', context)

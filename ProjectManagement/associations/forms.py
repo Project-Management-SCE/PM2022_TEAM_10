@@ -3,7 +3,6 @@ from .models import volunteeringRequest,Association
 
 
 class volunteeringRequestform(forms.ModelForm):
-    
     class Meta():
         model = volunteeringRequest
         fields = ['info',]
