@@ -1,4 +1,4 @@
-from datetime import datetime
+# from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinLengthValidator
@@ -12,7 +12,6 @@ last name
 email
 password
 '''
-
 class User(AbstractUser):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -32,10 +31,10 @@ class associationManager(models.Model):
 
     def __str__(self):
         status = "Wait-for-activate"
-        if(self.user.is_active):
+        if self.user.is_active:
             status = "active"
         return self.user.username + ' : ' + status
-    
+
     def user_is_active(self):
         return self.user.is_active
     user_is_active.short_description = 'Is Active'
@@ -45,28 +44,5 @@ class HelpoUser(models.Model):
     city = models.CharField(max_length=100)
     deleted_posts = models.IntegerField(default=0)
 
-
     def __str__(self):
         return self.user.username
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # class Types(models.TextChoices):
-    #     ASSOCIATION_MANAGER = 'ASSOCIATION_MANAGER', 'Association_manager'
-    #     ADMIN = 'ADMIN', 'Admin'
-
-    # type = models.CharField(_('Type'), max_length=50, choices=Types.choices, default=Types.ASSOCIATION_MANAGER)
-
-    # def get_absolute_url(self):
-    #     return reverse("users:detail", kwarg
