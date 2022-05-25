@@ -30,3 +30,4 @@ class reportUserForm(forms.ModelForm):
     class Meta():
         model = UserReport
         fields = ['reason',]
+        
