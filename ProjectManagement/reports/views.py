@@ -1,9 +1,9 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
-from reports.forms import reportPostForm,reportUserForm
-from posts.models import Post
-from reports.models import PostReport
 from django.core.exceptions import ObjectDoesNotExist
+from reports.forms import reportPostForm,reportUserForm
+from reports.models import PostReport
+from posts.models import Post
 from accounts.models import User
 
 # Create your views here.
@@ -11,7 +11,7 @@ from accounts.models import User
 def createReportPost(request,pk):
     try:
         p = Post.objects.get(id=pk)
-    except ObjectDoesNotExist as e:
+    except ObjectDoesNotExist:
         return render(request, 'error_page.html', {})
     if PostReport.objects.filter(post_id=pk,user_id=request.user.id):
         return render(request, 'error_page.html', {})
@@ -19,7 +19,6 @@ def createReportPost(request,pk):
     user_obj=request.user
     if request.method=='POST':
         form = reportPostForm(request.POST)
-        
         if form.is_valid():
             instance = form.save(commit=False)
             instance.user = request.user
@@ -37,12 +36,10 @@ def createReportPost(request,pk):
 def reportUser(request,pk):
     try:
         reported = User.objects.get(id=pk)
-    except ObjectDoesNotExist as e:
+    except ObjectDoesNotExist:
         return render(request, 'error_page.html', {})
-    
     if reported.id == request.user.id:
         return render(request, 'error_page.html', {})
-        
     form = reportUserForm()
     if request.method == 'POST':
         form = reportUserForm(request.POST)
