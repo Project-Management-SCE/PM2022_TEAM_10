@@ -1,9 +1,10 @@
 from django.test import SimpleTestCase,TestCase
 from django.urls import reverse, resolve
-from associations.views import All,profile,showRequest,volunteersRequests,editAssociation,submitVolunteeringRequest,deleteVolRequest,rankAssociation
+from associations.views import All,profile,showRequest,volunteersRequests,editAssociation,submitVolunteeringRequest,deleteVolRequest,rankAssociation,associationPhotos,deletePhoto
 from accounts.models import User,HelpoUser,associationManager
 from associations.models import Association,volunteeringRequest
-
+from home.models import Image
+import tempfile
 
 class TestUrls(TestCase):
     def setUp(self):
@@ -47,7 +48,10 @@ class TestUrls(TestCase):
             user = self.HelpoUserObj,
             info ="sdfsdfs"
         )
-
+        self.image = Image.objects.create(
+            asso = self.assoObj,
+            img = tempfile.NamedTemporaryFile(suffix=".jpg").name
+        )
 
 
     
@@ -82,3 +86,11 @@ class TestUrls(TestCase):
     def test_rankAssociation_url_is_resolved(self):
         url = reverse('rankAssociation', kwargs={'pk':self.assoObj.id})
         self.assertEqual(resolve(url).func, rankAssociation)
+
+    def test_associationPhotos_is_resolved(self):
+        url = reverse('associationPhotos', kwargs={'pk':self.assoObj.id})
+        self.assertEqual(resolve(url).func, associationPhotos)
+    
+    def test_deletePhoto_url_is_resolved(self):
+        url = reverse('deletePhoto', kwargs={'asso_pk':self.assoObj.id,'photo_pk':self.image.id})
+        self.assertEqual(resolve(url).func, deletePhoto)
