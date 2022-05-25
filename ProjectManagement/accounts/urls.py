@@ -13,5 +13,4 @@ urlpatterns = [
     path("helpo_porfile/<str:pk>", views.helpo_porfile, name="helpo_porfile"),
     path("searchUsers", views.searchUsers, name="searchUsers")
 
-
 ]

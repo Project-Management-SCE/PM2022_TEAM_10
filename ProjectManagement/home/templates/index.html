@@ -107,6 +107,32 @@
       </div>
     </section> -->
     <!-- End Team Section -->
+    <!-- ======= F.A.Q Section ======= -->
+    <section id="faq" class="faq">
+      <div class="container">
+
+
+        <div class="section-title">
+          <h2>F.A.Q</h2>
+          <h3>שאלות ותשובות <span>נפוצות</span></h3>
+        </div>
+        
+        {% for item in lst %}
+        <ul class="faq-list" style="text-align:right;">
+
+          <li>
+            <div data-bs-toggle="collapse" class="collapsed question" href="#{{item.1}}">?{{item.0.Question}}<i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
+            <div id={{item.1}} class="collapse" data-bs-parent=".faq-list">
+              <p>
+                  {{item.0.Answer}}
+              </p>
+            </div>
+          </li>
+      </ul>
+      {% endfor %}
+      
+      </div>
+    </section><!-- End F.A.Q Section --> 
 
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact">

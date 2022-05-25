@@ -23,7 +23,6 @@ class User(AbstractUser):
 
     blocked_date = models.DateTimeField(auto_now_add=True, blank=True,)
     blocked_reason = models.CharField(max_length=100,default="")
-    # is_volenteer = models.BooleanField('volenteer status', default=False)
 
 class associationManager(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)

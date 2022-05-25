@@ -18,10 +18,6 @@ def logout(request):
     auth.logout(request)
     return redirect("index")
 
-# def login_view(request):
-#     login(request)
-#     return("index")
-
 def pickType(response):
     return render(response,"registration/PickType.html",{})
 
@@ -37,7 +33,6 @@ class AssociationManagerSignUp(CreateView):
         user = form.save()
         asso.manager = user.associationmanager
         asso.save()
-        # login(self.request, user)
         return redirect('login')
 
 class HelpoUserSignUp(CreateView):
@@ -47,7 +42,6 @@ class HelpoUserSignUp(CreateView):
 
     def form_valid(self, form):
         form.save()
-        # login(self.request, user)
         return redirect('login')
 
 
@@ -125,23 +119,3 @@ def searchUsers(response):
     _context = HelpoUser.objects.all()
 
     return render(response,"searchUsers.html",{"context":_context,"a":5})
-
-    # manager = associationManager.objects.get(user_id = pk)
-    # user_id = int(pk)
-    # form = AssociationManagerUpdateform(instance=manager,)
-    # # req_user = request.user
-
-    # if request.method == 'POST':
-    #     form = AssociationManagerUpdateform(request.POST, instance=manager)
-
-    #     if form.is_valid():
-    #         instance = form.save(commit=False)
-    #         instance.user_id = request.user
-    #         instance.save()
-    #         messages.success(request, 'Your account updated successfully!')
-    #         return redirect('index')
-    # # else:
-    #     # form = AssociationManagerUpdateform(instance=req_user)
-
-    # context = {'form': form, 'user_id': user_id}
-    # return render(request, 'registration/updateAssociationManager.html', context)
