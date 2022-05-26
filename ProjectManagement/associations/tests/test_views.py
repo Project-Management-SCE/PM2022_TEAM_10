@@ -7,6 +7,10 @@ from accounts.models import User,HelpoUser,associationManager
 from django.contrib.auth import login
 from django.test.client import RequestFactory
 from associations.views import updateAssociationRank,getRating
+from home.models import Image
+from django.core.files.uploadedfile import SimpleUploadedFile
+import tempfile
+
 
 class TestViews(TestCase):
     def setUp(self):
@@ -72,6 +76,10 @@ class TestViews(TestCase):
             rank = 5
         )
 
+        self.image = Image.objects.create(
+            asso = self.assoObj2,
+            img = tempfile.NamedTemporaryFile(suffix=".jpg").name
+        )
         self.client = Client() # Create cliend
 
         self.user_client = Client() # Create cliend
@@ -88,11 +96,12 @@ class TestViews(TestCase):
         self.deleteVolRequest_url = reverse('deleteVolRequest',kwargs={'pk':self.reqObj.id})
         self.edit_association_url = reverse('editAssociation',kwargs={'pk':self.assoObj2.id})
         self.rankAssociation_url = reverse('rankAssociation',kwargs={'pk':self.assoObj.id})
+        self.associationPhotos_url = reverse('associationPhotos',kwargs={'pk':self.assoObj2.id})
+        self.deletePhoto_url = reverse('deletePhoto',kwargs={'asso_pk':self.assoObj2.id,'photo_pk': self.image.id})
+        self.deletePhoto_url_error = reverse('deletePhoto',kwargs={'asso_pk':self.assoObj2.id,'photo_pk': -1 })
 
 
     def test_rankAssociation(self):
-
-
         response = self.association_manager_client.post(self.rankAssociation_url,follow=True)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("error_page.html")
@@ -104,12 +113,10 @@ class TestViews(TestCase):
     def test_updateAssociationRank(self):
         updateAssociationRank(self.assoObj.id)
 
-
     def test_index(self):
         response = self.client.get(self.all_url)      # Get response from the url
         self.assertEqual(response.status_code, 200)     # Check status
         self.assertTemplateUsed(response, 'table.html') # Check if the right page has returned
-        
         
     def test_profile(self):
         response = self.client.get(self.profile_url)  # Get response from the url
@@ -143,6 +150,36 @@ class TestViews(TestCase):
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("error_page.html")
     
+    def test_associationPhotos(self):
+        response = self.client.get(self.associationPhotos_url,follow=True)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("error_page.html")
+
+        self.client.login(username="username",password="password")
+        response = self.client.get(self.associationPhotos_url,follow=True)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("assoPhotos.html")
+
+        response = self.client.post(self.associationPhotos_url, data ={'img':tempfile.NamedTemporaryFile(suffix=".jpg")})  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("assoPhotos.html")
+
+    def test_deletePhoto(self):
+        response = self.client.get(self.deletePhoto_url,follow=True)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("error_page.html")
+
+        self.client.login(username="username",password="password")
+        response = self.client.get(self.deletePhoto_url_error,follow=True)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("error_page.html")
+        
+        self.client.login(username="username",password="password")
+        response = self.client.get(self.deletePhoto_url,follow=True)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("assoPhotos.html")
+
+
     # def test_deleteVolRequest_url(self):
     #     response = self.client.get(self.deleteVolRequest_url)  
     #     self.assertEqual(200,response.status_code)

@@ -1,8 +1,4 @@
-
-
-
 {% extends 'base.html' %}
-
 
 {% block content %}
 <!-- <section id="hero">
@@ -15,18 +11,24 @@
             <h3>{{obj.name}}<br/><span> עריכת פרטי העמותה </span></h3>
         </div>
 
-        <div class="row content" style="display: flex;align-items: center;justify-content: center;" >
+        <div class="row content" >
+            <div class="col-md-12" style="display: flex;align-items: center;justify-content: center;" >
                 {% load crispy_forms_tags %}
-                <form method = "POST" enctype="multipart/form-data" style="width: 350px; height: 800px;">
+                <form method = "POST" enctype="multipart/form-data" style="width: 350px; height: 750px; text-align:right;">
                     {%csrf_token%}
                     <fieldset class = "form-group">
                         {{form|crispy}}       <!--User form-->
                         <br>
-                        {{i_form|crispy}}
+                        <!-- {{i_form|crispy}} -->
                     </fieldset>
-                <button type="submit" class="btn btn-outline-danger" style="margin-top:10px;">Submit</button>
+                <button type="submit" class="btn btn-outline-danger" style="margin-top:10px;width:350px;">שמור שינויים</button>
                 </form>
-
+            </div>
+                <div class="col-md-12" style="display: flex;align-items: center;justify-content: center;">
+                    <a href="{% url 'associationPhotos' obj.id %}">
+                        <button type="submit" class="btn btn-outline-dark btn_prf" style="width:350px;"> הוספת תמונות </button>
+                    </a>
+                </div>
         </div>
     </div>
 </section><!-- End About Section -->
