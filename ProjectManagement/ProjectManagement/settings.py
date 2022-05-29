@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import multiprocessing
 from pathlib import Path
 import os
 
@@ -46,6 +47,8 @@ INSTALLED_APPS = [
     'posts.apps.PostsConfig',
     'reports.apps.ReportsConfig',
     'feedbacks.apps.FeedbacksConfig',
+    'background_task',
+
 ]
 
 MIDDLEWARE = [
@@ -190,3 +193,7 @@ LOGIN_REDIRECT_URL = '/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+BACKGROUND_TASK_RUN_ASYNC = True
+
+BACKGROUND_TASK_ASYNC_THREADS = multiprocessing.cpu_count()
