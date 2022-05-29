@@ -149,7 +149,8 @@ class TestViews(TestCase):
         response = self.client.get(self.edit_association_url,follow=True)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("error_page.html")
-    
+
+#upload photos tests    
     def test_associationPhotos(self):
         response = self.client.get(self.associationPhotos_url,follow=True)  
         self.assertEqual(200,response.status_code)
