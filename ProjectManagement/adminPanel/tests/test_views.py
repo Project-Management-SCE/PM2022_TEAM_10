@@ -5,7 +5,7 @@ from urllib import response
 from django.test import TestCase, Client
 from django.urls import reverse
 from posts.models import Post
-from accounts.models import User,HelpoUser
+from accounts.models import User,HelpoUser,associationManager
 from adminPanel.models import AdminMessage
 #from home.models import Category
 from django.test.client import RequestFactory
@@ -16,7 +16,6 @@ from home.models import QuestionAnswer
 
 class TestViews(TestCase):
     def setUp(self):
-
         self.factory = RequestFactory()
 
         self.UserObj = User.objects.create(
@@ -29,11 +28,17 @@ class TestViews(TestCase):
             is_superuser=True,
             is_staff=True
         )
+
         self.UserObj.password="123456"
         self.UserObj.save()
         
         self.user1 = User.objects.create_user(username='username', password='password')
-        
+        self.user2 = User.objects.create_user(username='username2', password='password2')
+
+        self.associationManagerObj = associationManager.objects.create(
+            user = self.user2,
+            association_number = '123456'
+        )
         #create helpo user
         self.HelpoUserObj = HelpoUser.objects.create(
             user = self.user1,
@@ -78,6 +83,7 @@ class TestViews(TestCase):
         self.PostDetails_url=reverse("AdminPostDetails", kwargs={'pk':self.post.id})
         self.FakePostDetails_url=reverse("AdminPostDetails", kwargs={'pk':-1})
         self.deletePost_url = reverse('AdminDeletePost',kwargs={'pk':self.post.id})
+        self.Dont_deletePost_url = reverse('AdminDeletePost',kwargs={'pk':"99"})
         self.edit_asso_url = reverse('searchAsso')
         self.admin_panel_url = reverse('adminPanel')
         self.admin_blockedUsers= reverse('blockedUsers')
@@ -103,15 +109,104 @@ class TestViews(TestCase):
         self.show_questions_url = reverse('show_questions')
         self.add_question_url = reverse('add_question')
         self.delete_question_url = reverse('delete_question',kwargs={'pk':self.q_a.id})
+        self.adminPanel_url = reverse('adminPanel')
+        self.show_questions_url = reverse('show_questions')
+        self.edit_question_url = reverse('edit_question',kwargs={'pk':self.q_a.id})
+
+        self.helpo_users_url = reverse('helpo_users')
+        self.AdminUpdateHelpoUser_url = reverse('AdminUpdateHelpoUser',kwargs={'pk':self.HelpoUserObj.user.id})
+        self.manager_users_url = reverse('manager_users')
+
+        self.AdminUpdateManagerUser_url = reverse('AdminUpdateManagerUser',kwargs={'pk':self.associationManagerObj.user.id})
+
+        self.waiting_manager_users_url = reverse('waiting_manager_users')
+        self.ApproveManager_url = reverse('ApproveManager',kwargs={'pk':self.associationManagerObj.user.id})
+        self.DontApproveManager_url = reverse('ApproveManager',kwargs={'pk':'99'})
+
+        self.delete_approve_request_url = reverse('delete_approve_request',kwargs={'pk':self.associationManagerObj.user.id})
+        self.Dont_delete_approve_request_url = reverse('delete_approve_request',kwargs={'pk':'99'})
 
 
-    
+    def test_delete_approve_request(self):
+        response = self.client.get(self.delete_approve_request_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        response = self.adminclient.get(self.delete_approve_request_url)
+        self.assertTemplateUsed("waiting_manager_users")     
+        response = self.adminclient.get(self.Dont_delete_approve_request_url)
+        self.assertTemplateUsed("waiting_manager_users")          
 
-    def test_delete_question_without_login(self):
+    def test_ApproveManager(self):
+        response = self.client.get(self.ApproveManager_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        response = self.adminclient.get(self.ApproveManager_url)
+        self.assertTemplateUsed("waiting_manager_users")     
+        response = self.adminclient.get(self.DontApproveManager_url)
+        self.assertTemplateUsed("waiting_manager_users")       
+
+    def test_waiting_manager_users(self):
+        response = self.client.get(self.waiting_manager_users_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        response = self.adminclient.get(self.waiting_manager_users_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("waiting_manager_users.html")     
+
+    def test_AdminUpdateManagerUser(self):
+        response = self.client.get(self.AdminUpdateManagerUser_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        response = self.adminclient.get(self.AdminUpdateManagerUser_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("registration/updateAssociationManager.html")         
+
+    def test_manager_users(self):
+        response = self.client.get(self.manager_users_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        response = self.adminclient.get(self.manager_users_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_manager_users.html")        
+
+    def test_AdminUpdateHelpoUser(self):
+        response = self.client.get(self.AdminUpdateHelpoUser_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        response = self.adminclient.get(self.AdminUpdateHelpoUser_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("registration/updateHelpoUser.html")
+
+    def test_helpo_users(self):
+        response = self.client.get(self.helpo_users_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        response = self.adminclient.get(self.helpo_users_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_helpo_users.html")
+
+    def test_adminPanel(self):
+        response = self.client.get(self.adminPanel_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        response = self.adminclient.get(self.adminPanel_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_index.html")
+
+    def test_show_questions(self):
+        response = self.client.get(self.show_questions_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        response = self.adminclient.get(self.show_questions_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_q_a.html")
+
+    def test_delete_question(self):
         response = self.client.get(self.delete_question_url)
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_error.html")
-
+        response = self.adminclient.get(self.delete_question_url)
+        self.assertTemplateUsed("/adminPanel/show_questions")
 
     def test_add_question_with_login(self):
         response = self.adminclient.get(self.add_question_url)  
@@ -133,6 +228,14 @@ class TestViews(TestCase):
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_error.html")      
     
+    def test_edit_question(self):
+        response = self.client.get(self.edit_question_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")  
+        response = self.adminclient.get(self.edit_question_url)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_add_q_a.html")  
+
     def test_adminPanel_with_loogin(self):
         response = self.adminclient.get(self.admin_panel_url)  
         self.assertEqual(200,response.status_code)
@@ -174,11 +277,12 @@ class TestViews(TestCase):
         response = self.client.get(self.deletePost_url)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_error.html")
-    
-    def test_AdminDeletePost_with_login(self):
         response = self.adminclient.get(self.deletePost_url,follow=True)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_posts.html")
+        response = self.adminclient.get(self.Dont_deletePost_url,follow=True)  
+        self.assertTemplateUsed("admin_error.html")
+
     
     def test_AdminEditAsso_without_login(self):
         response = self.client.get(self.edit_asso_url)  

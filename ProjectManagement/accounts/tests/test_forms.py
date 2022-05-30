@@ -1,6 +1,7 @@
 from django.test import TestCase
 from accounts.forms import AssociationManagerSignUpform, AssociationManagerUpdateform, UserUpdateform, HelpoUserUpdateform, HelpoUserSignUpform,UserBlockForm
 from associations.models import Association
+from accounts.models import User,associationManager
 
 class TestForms(TestCase):
     #Unit test for forms without data, to check the form is getting the all the needed erros
