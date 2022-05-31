@@ -7,7 +7,7 @@ from django.urls import reverse
 from posts.models import Post
 from accounts.models import User,HelpoUser,associationManager
 from adminPanel.models import AdminMessage
-#from home.models import Category
+from posts.models import Category
 from django.test.client import RequestFactory
 from associations.models import Association
 import datetime 
@@ -17,6 +17,10 @@ from home.models import QuestionAnswer
 class TestViews(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
+
+        self.category = Category.objects.create(
+            name='categ'
+        )
 
         self.UserObj = User.objects.create(
             username = 'jimb2',
@@ -57,7 +61,13 @@ class TestViews(TestCase):
             # category=self.category,
             date=datetime.date.today()
         )
-
+        self.post2=Post.objects.create(
+            user=self.HelpoUserObj,
+            city= "Tel-Aviv",
+            info="i am writing a new post!",
+            # category=self.category,
+            date=datetime.date.today()
+        )
         self.adminMsg = AdminMessage.objects.create(
             content = "ABCDEFG"
         )
@@ -84,6 +94,8 @@ class TestViews(TestCase):
         self.FakePostDetails_url=reverse("AdminPostDetails", kwargs={'pk':-1})
         self.deletePost_url = reverse('AdminDeletePost',kwargs={'pk':self.post.id})
         self.Dont_deletePost_url = reverse('AdminDeletePost',kwargs={'pk':"99"})
+        self.deletePostReported_url = reverse('deletePostReported',args=(f'{self.post2.id}',))
+        
         self.edit_asso_url = reverse('searchAsso')
         self.admin_panel_url = reverse('adminPanel')
         self.admin_blockedUsers= reverse('blockedUsers')
@@ -126,6 +138,46 @@ class TestViews(TestCase):
         self.delete_approve_request_url = reverse('delete_approve_request',kwargs={'pk':self.associationManagerObj.user.id})
         self.Dont_delete_approve_request_url = reverse('delete_approve_request',kwargs={'pk':'99'})
 
+        self.categories_url = reverse('categories')
+        self.editCategory_url = reverse('editCategory',args=[f'{self.category.id}'])
+        self.deleteCategory_url = reverse('deleteCategory',args=[f'{self.category.id}'])
+        self.deleteCategoryNotExists_url = reverse('deleteCategory',args=['999'])
+
+    def test_deleteCategory(self):
+        response = self.client.get(self.deleteCategory_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        
+        response = self.adminclient.get(self.deleteCategory_url)
+        self.assertTemplateUsed("categoryFormPage")
+
+        response = self.adminclient.get(self.deleteCategoryNotExists_url)
+        self.assertTemplateUsed("categoryFormPage")        
+        
+        
+    def test_editCategory(self):
+        response = self.client.get(self.editCategory_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        
+        response = self.adminclient.get(self.editCategory_url)
+        self.assertTemplateUsed("categoryFormPage")
+        
+        response = self.adminclient.post(self.editCategory_url ,data ={'name':'categor'},follow=True)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("categoryFormPage")
+
+    def test_categories(self):
+        response = self.client.get(self.categories_url)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_error.html")
+        
+        response = self.adminclient.get(self.categories_url)
+        self.assertTemplateUsed("categoryFormPage")
+
+        response = self.adminclient.post(self.categories_url ,data ={'name':'categor'},follow=True)
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("categoryFormPage")
 
     def test_delete_approve_request(self):
         response = self.client.get(self.delete_approve_request_url)
@@ -245,7 +297,7 @@ class TestViews(TestCase):
         response = self.client.get(self.admin_panel_url)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_error.html")
-     
+
     def test_adminPosts_with_loogin(self):
         response = self.adminclient.get(self.AllPosts_url)  
         self.assertEqual(200,response.status_code)
@@ -280,6 +332,11 @@ class TestViews(TestCase):
         response = self.adminclient.get(self.deletePost_url,follow=True)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("admin_posts.html")
+        
+        response = self.adminclient.get(self.deletePostReported_url,follow=True)  
+        self.assertEqual(200,response.status_code)
+        self.assertTemplateUsed("admin_posts.html")
+        
         response = self.adminclient.get(self.Dont_deletePost_url,follow=True)  
         self.assertTemplateUsed("admin_error.html")
 

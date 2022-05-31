@@ -253,7 +253,7 @@ def deletePost(request,pk,isReported):
         return redirect('posts')
 
     else:
-        req.user.deleted_posts =req.user.deleted_posts=1
+        req.user.deleted_posts = req.user.deleted_posts + 1
         req.user.save()
         req.delete()
         return redirect('reports_posts')
