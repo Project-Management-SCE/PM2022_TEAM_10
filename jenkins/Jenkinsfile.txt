@@ -28,7 +28,7 @@ pipeline {
                 sh 'echo "Unit test + Integration"'
                 withEnv(["HOME=${env.WORKSPACE}"]){
                     dir("ProjectManagement"){
-                        sh 'python -m coverage run manage.py test accounts'
+                        sh 'python -m coverage run manage.py test'
                     }
                 }
             }
