@@ -8,5 +8,8 @@ EXPOSE 8000
 
 RUN python -m pip install -r requirements.txt
 
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+USER appuser
+
 WORKDIR /app/ProjectManagement
 ENTRYPOINT ["sh","ep.sh"]
