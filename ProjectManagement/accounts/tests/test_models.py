@@ -47,6 +47,7 @@ class TestModels(TestCase):
         self.associationManagerObj.user.is_active = True
         self.assertTrue(self.associationManagerObj.user.is_active)
         self.assertEqual(self.associationManagerObj.__str__(), 'jimb : active')
+        self.assertTrue(self.associationManagerObj.user_is_active())
         
         
     def test_helpo_user(self):
