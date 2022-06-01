@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-cv_10$5m^ww4wpyy54ojj8f32zg&!i^)(xkbfzyl0w2^(1-&*a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['helpo-team10.herokuapp.com', '127.0.0.1','localhost']
+ALLOWED_HOSTS = ['helpo-t10.herokuapp.com', '127.0.0.1','localhost']
 
 
 
