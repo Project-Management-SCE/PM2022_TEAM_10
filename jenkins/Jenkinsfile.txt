@@ -60,18 +60,12 @@ pipeline {
                 }
             }
             steps {
-                sh '''  
+                sh '''
                     curl https://cli-assets.heroku.com/install.sh | sh;
-
-                 '''
-                withEnv(["HOME=${env.WORKSPACE}"]){
-                    sh'''
-                        docker --version
-                        heroku container:login
-                        heroku container:push web --app helpo-team10
-                        heroku container:release web --app helpo-team10	
-                     '''
-                }
+                    heroku container:login
+                    heroku container:push web --app helpo-t10
+                    heroku container:release web --app helpo-t10
+                '''
             }
 	    }
     }
