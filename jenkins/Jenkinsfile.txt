@@ -61,8 +61,7 @@ pipeline {
                         //coverage
                         sh 'python -m coverage report --ignore-errors'
                         //static code analysis - pylint
-                        sh 'python -m pylint --exit-zero accounts'
-                        // sh 'python -m pylint --exit-zero accounts adminPanel associations feedbacks home posts reports'
+                        sh 'python -m pylint --exit-zero accounts adminPanel associations feedbacks home posts reports'
                     }
                 }
             }

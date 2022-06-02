@@ -6,12 +6,6 @@ from home.models import Image
 from home.forms import ImageFrom
 from .models import Association,volunteeringRequest,Rank
 from .forms import volunteeringRequestform,associationUpdateForm
-from django_serverside_datatable.views import ServerSideDatatableView
-
-
-class ItemListView(ServerSideDatatableView):
-    queryset = Association.objects.all()
-    columns = ['name', 'category', 'city', 'street', 'apartment','id',]
 
 # Create your views here.
 def profile(response,pk):
