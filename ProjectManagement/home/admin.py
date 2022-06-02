@@ -1,4 +1,3 @@
-from tkinter import Image
 from django.contrib import admin
 from .models import QuestionAnswer,Image
 

@@ -23,11 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-cv_10$5m^ww4wpyy54ojj8f32zg&!i^)(xkbfzyl0w2^(1-&*a'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['helpo-t10.herokuapp.com', '127.0.0.1','localhost']
+
 
 
 # Application definition
@@ -197,3 +197,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 BACKGROUND_TASK_RUN_ASYNC = True
 
 BACKGROUND_TASK_ASYNC_THREADS = multiprocessing.cpu_count()
+
+CSRF_TRUSTED_ORIGINS = ['https://helpo-team10.herokuapp.com']

@@ -1,12 +1,13 @@
 
 pipeline {
-    agent {
-        docker {
-            image 'python:3.9'
-        }
-    }
+    agent none
     stages {
         stage('Build') {
+            agent {
+                    docker {
+                        image 'python:3.9'
+                    }
+                }
             steps {
                 withEnv(["HOME=${env.WORKSPACE}"]){
                     sh 'python -m pip install --upgrade pip'
@@ -18,6 +19,11 @@ pipeline {
             }
         }
         stage('Unit Test') {
+            agent {
+                    docker {
+                        image 'python:3.9'
+                    }
+            }   
             steps {
                 sh 'echo "Unit test"'
                 withEnv(["HOME=${env.WORKSPACE}"]){
@@ -28,6 +34,11 @@ pipeline {
             }
         }
         stage('Integration Test') {
+            agent {
+                    docker {
+                        image 'python:3.9'
+                    }
+            }   
             steps {
                 sh 'echo "Integration"'
                 withEnv(["HOME=${env.WORKSPACE}"]){
@@ -38,18 +49,40 @@ pipeline {
             }
         }
         stage('Metrics') {
+            agent {
+                    docker {
+                        image 'python:3.9'
+                    }
+                }            
             steps {
                 sh 'echo "Coverage + Static code analysis"'
                 withEnv(["HOME=${env.WORKSPACE}"]){
                     dir("ProjectManagement"){
                         //coverage
-                        sh 'python -m coverage report'
+                        sh 'python -m coverage report --ignore-errors'
                         //static code analysis - pylint
-                        sh 'python -m pylint --exit-zero accounts adminPanel associations feedbacks home posts reports'
+                        sh 'python -m pylint --exit-zero accounts'
+                        // sh 'python -m pylint --exit-zero accounts adminPanel associations feedbacks home posts reports'
                     }
                 }
             }
         }
+        stage('Deploy'){
+		    agent {
+                docker {
+                    image 'cimg/base:stable'
+                    args '-u root'
+                }
+            }
+            steps {
+                sh '''
+                    curl https://cli-assets.heroku.com/install.sh | sh;
+                    heroku container:login
+                    heroku container:push web --app helpo-t10
+                    heroku container:release web --app helpo-t10
+                '''
+            }
+	    }
     }
 }
 
