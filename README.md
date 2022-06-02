@@ -1,6 +1,6 @@
 # Helpo
 
-<a href='https://helpo-t10.herokuapp.com//'><img src='ProjectManagement\static\img\Helpo-icon.ico' type='image' width="80" align ="center"></a>
+<a href='https://helpo-t10.herokuapp.com'><img src='ProjectManagement\static\img\Helpo-icon.ico' type='image' width="80" align ="center"></a>
 
 Halpo is a website that centralizes all the associations registered in Israel for volunteers and managers of associations, it allows users a convenient search of associations in which they can volunteer or be helped.
 Association owners will be able to edit the profile of the associations and receive request messages from users of the site.
