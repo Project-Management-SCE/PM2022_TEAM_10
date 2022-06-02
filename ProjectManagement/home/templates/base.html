@@ -215,14 +215,32 @@
   <script src="{% static 'js/main.js' %}"></script>
 
   <!--DataTable + Jquary-->
-  {% comment %} <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script> {% endcomment %}
-  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.5/datatables.min.js"></script>
-  <script>
-      $(document).ready(function(){
-          $('#dtBasicExample').DataTable({
-          });
-      });
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="//cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+  
+  <script language="javascript">
+    $(document).ready(function () {
+      var table=$('#items-table').dataTable({
+        serverSide: true,
+        sAjaxSource: "http://127.0.0.1:8000/associations/associationJson/",  // new url
+                                      columns: [
+                                        {name: "apartment", data: 4},
+                                        {name: "street", data: 3},
+                                        {name: "city", data: 2},
+                                        {name: "category", data: 1},
+                                        {name: "name", data: 0},
+                                        {name: "id", data: 5},
+                                        {name: "btn", data: null,defaultContent:"<button class='btn btn-outline-danger'>עבור לדף</button>",orderable:false}, 
+                                      ],
 
+      });
+      $('#items-table tbody').on( 'click', 'button', function () {
+      var data = table.api().row( $(this).parents('tr') ).data();
+      var id = data[5];
+      location.href="../associations/profile/"+id;
+  } );
+    });
   </script>
+
 
   </html>

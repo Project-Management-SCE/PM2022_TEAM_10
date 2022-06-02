@@ -18,17 +18,32 @@ pipeline {
 
             }
         }
-        stage('Test') {
+        stage('Unit Test') {
             agent {
                     docker {
                         image 'python:3.9'
                     }
-                }            
+            }   
             steps {
-                sh 'echo "Unit test + Integration"'
+                sh 'echo "Unit test"'
                 withEnv(["HOME=${env.WORKSPACE}"]){
                     dir("ProjectManagement"){
-                        sh 'python -m coverage run manage.py test'
+                        sh 'python -m coverage run manage.py test --tag=UT'
+                    }
+                }
+            }
+        }
+        stage('Integration Test') {
+            agent {
+                    docker {
+                        image 'python:3.9'
+                    }
+            }   
+            steps {
+                sh 'echo "Integration"'
+                withEnv(["HOME=${env.WORKSPACE}"]){
+                    dir("ProjectManagement"){
+                        sh 'python -m coverage run manage.py test --tag=IT'
                     }
                 }
             }

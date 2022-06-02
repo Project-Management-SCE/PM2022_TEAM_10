@@ -1,6 +1,7 @@
-from django.test import TestCase
+from django.test import TestCase,tag
 from accounts.models import User, associationManager, HelpoUser
 
+@tag('UT')
 class TestModels(TestCase):
 
     def setUp(self):
