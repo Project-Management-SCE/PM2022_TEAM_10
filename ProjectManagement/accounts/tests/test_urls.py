@@ -1,7 +1,8 @@
-from django.test import SimpleTestCase
+from django.test import SimpleTestCase,tag
 from django.urls import reverse, resolve
 from accounts.views import logout, pickType,helpo_porfile,searchUsers
 
+@tag('UT')
 class TestUrls(SimpleTestCase):
     
     def test_logout_url_is_resolved(self):

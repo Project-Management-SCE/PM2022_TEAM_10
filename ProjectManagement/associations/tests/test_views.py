@@ -1,6 +1,6 @@
 
 from urllib import response
-from django.test import TestCase, Client
+from django.test import TestCase, Client,tag
 from django.urls import reverse
 from associations.models import Association,volunteeringRequest,Rank
 from accounts.models import User,HelpoUser,associationManager
@@ -99,8 +99,8 @@ class TestViews(TestCase):
         self.associationPhotos_url = reverse('associationPhotos',kwargs={'pk':self.assoObj2.id})
         self.deletePhoto_url = reverse('deletePhoto',kwargs={'asso_pk':self.assoObj2.id,'photo_pk': self.image.id})
         self.deletePhoto_url_error = reverse('deletePhoto',kwargs={'asso_pk':self.assoObj2.id,'photo_pk': -1 })
-
-
+     
+    @tag('UT')
     def test_rankAssociation(self):
         response = self.association_manager_client.post(self.rankAssociation_url,follow=True)  
         self.assertEqual(200,response.status_code)
@@ -109,27 +109,32 @@ class TestViews(TestCase):
         response = self.client.post(self.rankAssociation_url,follow=True) 
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("profile.html")
-
+    
+    @tag('UT')
     def test_updateAssociationRank(self):
         updateAssociationRank(self.assoObj.id)
 
+    @tag('UT')
     def test_index(self):
         response = self.client.get(self.all_url)      # Get response from the url
         self.assertEqual(response.status_code, 200)     # Check status
         self.assertTemplateUsed(response, 'table.html') # Check if the right page has returned
-        
+            
+    @tag('UT')
     def test_profile(self):
         response = self.client.get(self.profile_url)  # Get response from the url
         self.assertEqual(200,response.status_code)
         self.assertEqual(self.assoObj.name,response.context['obj'].name)
         self.assertTemplateUsed("profile.html")
-        
+
+    @tag('UT')     
     def test_vol_requests(self):
         response = self.client.get(self.requests_url)  
         self.assertEqual(200,response.status_code)
         self.assertEqual(self.assoObj,response.context['asso_obj'])
         self.assertTemplateUsed("volunteerRequests.html")
-
+    
+    @tag('UT')
     def test_show_vol_request(self):
         response = self.client.get(self.show_request_url)  
         self.assertEqual(200,response.status_code)
@@ -138,19 +143,24 @@ class TestViews(TestCase):
         self.assertEqual(self.reqObj,response.context['request'])
         self.assertTemplateUsed("showRequest.html")
 
+    @tag('IT') 
     def test_edit_association(self):
+        #need to be loged in to asoo manager
         self.client.login(username="username",password="password")
+
         response = self.client.get(self.edit_association_url,follow=True)  
         self.assertEqual(200,response.status_code)
         self.assertEqual(self.assoObj2,response.context['obj'])
         self.assertTemplateUsed("updateAssoDetails.html")
 
+    @tag('UT')
     def test_edit_association_error(self):
         response = self.client.get(self.edit_association_url,follow=True)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("error_page.html")
 
-#upload photos tests    
+#upload photos tests   
+    @tag('IT')
     def test_associationPhotos(self):
         response = self.client.get(self.associationPhotos_url,follow=True)  
         self.assertEqual(200,response.status_code)
@@ -165,11 +175,13 @@ class TestViews(TestCase):
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("assoPhotos.html")
 
+    @tag('IT')
     def test_deletePhoto(self):
         response = self.client.get(self.deletePhoto_url,follow=True)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("error_page.html")
 
+        #connect to the asso manager user
         self.client.login(username="username",password="password")
         response = self.client.get(self.deletePhoto_url_error,follow=True)  
         self.assertEqual(200,response.status_code)
@@ -179,15 +191,3 @@ class TestViews(TestCase):
         response = self.client.get(self.deletePhoto_url,follow=True)  
         self.assertEqual(200,response.status_code)
         self.assertTemplateUsed("assoPhotos.html")
-
-
-    # def test_deleteVolRequest_url(self):
-    #     response = self.client.get(self.deleteVolRequest_url)  
-    #     self.assertEqual(200,response.status_code)
-    #     self.assertTemplateUsed("volunteersRequests.html")
-
-    # def test_submit_request_url(self):
-    #     self.client.login(username='username', password='password')
-    #     response = self.client.get(self.submit_request_url)      
-    #     self.assertEqual(response.status_code, 200)   
-    #     self.assertTemplateUsed(response, 'volunteerForm.html')

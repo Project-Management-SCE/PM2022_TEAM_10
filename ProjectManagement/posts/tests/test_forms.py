@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase,tag
 from posts.forms import createPostForm,filterPostForm
 from posts.models import Category
 
@@ -12,7 +12,8 @@ class TestForms(TestCase):
             name='helpy'
         )
             ##### Create posts form####
-            
+
+    @tag('UT')        
     def test_create_createPostForm_with_data(self):   
         form = createPostForm(data={'info':'i am writing a new post!','category':self.category.id})
         self.assertTrue(form.is_valid())
@@ -22,6 +23,7 @@ class TestForms(TestCase):
         self.assertTrue(form.is_valid())
         self.assertEqual(len(form.errors),0)
 
+    @tag('UT')    
     def test_create_createPostForm(self):   
         form = createPostForm(data={'category':self.category.id})
         self.assertFalse(form.is_valid())
@@ -32,6 +34,7 @@ class TestForms(TestCase):
         self.assertEqual(len(form.errors),1)
         
             ##### Filter posts form####
+    @tag('UT')    
     def test_create_filterPostForm_with_data(self):   
         form = filterPostForm(data={'city':'ofaqim','category':self.category.id})
         self.assertTrue(form.is_valid())
@@ -40,7 +43,8 @@ class TestForms(TestCase):
         form = filterPostForm(data={'city':'ofaqim'})
         self.assertTrue(form.is_valid())
         self.assertEqual(len(form.errors),0)
-
+        
+    @tag('UT')    
     def test_create_filterPostsform_without_data(self):
         form = filterPostForm(data={})
         self.assertTrue(form.is_valid())

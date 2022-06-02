@@ -1,6 +1,7 @@
 # Create your tests here.
-from django.test import TestCase
+from django.test import TestCase,tag
 from home.models import QuestionAnswer
+
 
 class TestModels(TestCase):
     def setUp(self):
@@ -8,7 +9,8 @@ class TestModels(TestCase):
             Question = 'q',
             Answer = 'a'
         )
-        
+
+    @tag('UT')    
     def test_QuestionAnswer(self):
         self.assertEqual(self.q_a_obj.Question,'q')
         self.assertEqual(self.q_a_obj.Answer,'a')
