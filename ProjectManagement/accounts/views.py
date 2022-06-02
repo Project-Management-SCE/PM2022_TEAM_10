@@ -116,6 +116,7 @@ def helpo_porfile(response,pk):
 
 
 def searchUsers(response):
-    _context = HelpoUser.objects.all()
+    # only users that not blocked
+    _context = HelpoUser.objects.filter(user__is_active__in=[True])
 
     return render(response,"searchUsers.html",{"context":_context,"a":5})

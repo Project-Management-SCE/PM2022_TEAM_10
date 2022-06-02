@@ -1,4 +1,0 @@
-For updating the Associations data base from GOV data csv:
-open shell: python manage.py shell
-then:       import associations.utils as au
-            au.InsertAssociationData()
