@@ -1,5 +1,5 @@
 # Create your tests here.
-from django.test import TestCase
+from django.test import TestCase,tag
 from reports.models import UserReport
 from accounts.models import User
 
@@ -28,7 +28,8 @@ class TestModels(TestCase):
             reported = self.user2,
             reason = "becaus"
         )
-        
+
+    @tag('UT')    
     def test_UserReport(self): 
         self.assertEqual(self.user_report.reporter,self.user1)
         self.assertEqual(self.user_report.reported,self.user2)

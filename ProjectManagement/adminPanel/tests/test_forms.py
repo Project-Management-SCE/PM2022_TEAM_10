@@ -1,8 +1,8 @@
-from django.test import TestCase
+from django.test import TestCase,tag
 from adminPanel.forms import Categoryform,AdminMessageForm
 from posts.models import Category
 
-
+@tag('UT')  
 class TestForms(TestCase):
     def setUp(self):
         self.categoryObj = Category.objects.create(

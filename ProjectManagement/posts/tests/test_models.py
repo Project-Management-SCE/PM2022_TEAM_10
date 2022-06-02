@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase,tag
 from posts.models import Post,Category
 from accounts.models import User,HelpoUser
 import datetime
@@ -36,11 +36,13 @@ class TestModels(TestCase):
         )
         
     
-        #test method:
+    #test methods:
+    @tag('UT')    
     def test_catagory(self):
         self.assertEqual(self.category.name, "my new category")
         self.assertEqual(self.category.__str__(),self.category.name)
-    #test method:
+
+    @tag('UT')    
     def test_post(self):
         self.assertFalse(self.post.is_asking)
         self.assertEqual(self.post.category.name,"my new category")

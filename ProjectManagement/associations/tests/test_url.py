@@ -1,4 +1,4 @@
-from django.test import SimpleTestCase,TestCase
+from django.test import SimpleTestCase,TestCase,tag
 from django.urls import reverse, resolve
 from associations.views import All,profile,showRequest,volunteersRequests,editAssociation,submitVolunteeringRequest,deleteVolRequest,rankAssociation,associationPhotos,deletePhoto
 from accounts.models import User,HelpoUser,associationManager
@@ -54,43 +54,52 @@ class TestUrls(TestCase):
         )
 
 
-    
+    @tag('UT')
     def test_all_associations_page_url_is_resolved(self):
         url = reverse('All')
         self.assertEqual(resolve(url).func, All)
 
+    @tag('UT')
     def test_all_profile_url_is_resolved(self):
         url = reverse('profile', kwargs={'pk':self.assoObj.id})
         self.assertEqual(resolve(url).func, profile)
-    
+
+    @tag('UT')
     def test_all_editAssociation_url_is_resolved(self):
         url = reverse('editAssociation', kwargs={'pk':self.assoObj.id})
         self.assertEqual(resolve(url).func, editAssociation)
-    
+            
+    @tag('UT')
     def test_all_volunteersRequest_url_is_resolved(self):
         url = reverse('submitVolunteeringRequest', kwargs={'pk':self.assoObj.id})
         self.assertEqual(resolve(url).func, submitVolunteeringRequest)
-
+        
+    @tag('UT')
     def test_all_volunteersRequests_url_is_resolved(self):
         url = reverse('volunteersRequests', kwargs={'pk':self.assoObj.id})
         self.assertEqual(resolve(url).func, volunteersRequests)
-
+            
+    @tag('UT')
     def test_all_showRequest_url_is_resolved(self):
         url = reverse('showRequest', kwargs={'pk':self.assoObj.id, 'r_pk':self.reqObj.id})
         self.assertEqual(resolve(url).func, showRequest)
-
+            
+    @tag('UT')
     def test_all_deleteVolRequest_url_is_resolved(self):
         url = reverse('deleteVolRequest', kwargs={'pk':self.reqObj.id})
         self.assertEqual(resolve(url).func, deleteVolRequest)
-
+            
+    @tag('UT')
     def test_rankAssociation_url_is_resolved(self):
         url = reverse('rankAssociation', kwargs={'pk':self.assoObj.id})
         self.assertEqual(resolve(url).func, rankAssociation)
-
+            
+    @tag('UT')
     def test_associationPhotos_is_resolved(self):
         url = reverse('associationPhotos', kwargs={'pk':self.assoObj.id})
         self.assertEqual(resolve(url).func, associationPhotos)
-    
+            
+    @tag('UT')  
     def test_deletePhoto_url_is_resolved(self):
         url = reverse('deletePhoto', kwargs={'asso_pk':self.assoObj.id,'photo_pk':self.image.id})
         self.assertEqual(resolve(url).func, deletePhoto)
