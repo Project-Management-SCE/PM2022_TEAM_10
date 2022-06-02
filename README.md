@@ -2,13 +2,13 @@
 
 <a href='https://helpo-t10.herokuapp.com'><img src='ProjectManagement\static\img\Helpo-icon.ico' type='image' width="50" align ="center"></a>
 
-Helpo is a website that centralizes all the associations registered in Israel for volunteers and managers of associations, it allows users a convenient search of associations in which they can volunteer or be helped.
-Association owners will be able to edit the profile of the associations and receive request messages from users of the site.
-The system allows 3 types of users, a volunteer, an association manager and a system administrator. In order to register as an association director, you must be registered in the association register of GOV Israel and wait for the approval of the system director.
-On the site you can:
-Publish posts, create profile pages and upload photos of associations, send requests to association managers, report users and posts, send feedback to improve the site to the administrator, search associations, search users, filter search, and lots more!
+<p>Helpo is a website that centralizes all the associations registered in Israel for volunteers and managers of associations, it allows users a convenient search of associations in which they can volunteer or be helped.</br>
+Association owners will be able to edit the profile of the associations and receive request messages from users of the site.</br>
+The system allows 3 types of users, a volunteer, an association manager and a system administrator. In order to register as an association director, you must be registered in the association register of GOV Israel and wait for the approval of the system director.</br>
+On the site you can:</br>
+Publish posts, create profile pages and upload photos of associations, send requests to association managers, report users and posts, send feedback to improve the site to the administrator, search associations, search users, filter search, and lots more!</p>
 
-- Link to the site: [Helpo](https://helpo-t10.herokuapp.com))
+- Link to the site: [Helpo](https://helpo-t10.herokuapp.com)
 
 ## Install
 
