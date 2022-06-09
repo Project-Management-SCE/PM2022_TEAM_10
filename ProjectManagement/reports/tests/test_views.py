@@ -96,5 +96,5 @@ class TestViews(TestCase):
         #Try to report again on the same post will now be allowed
         self.client.post(self.createReportPost_url,{'info':'abcd'})
         pr = PostReport.objects.filter(info='abcd')
-        self.assertIsNotNone(pr)
+        self.assertEqual([],list(pr))
         self.assertTemplateUsed("error_page.html")
